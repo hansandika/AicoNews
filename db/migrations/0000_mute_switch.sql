@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "scraped_from" AS ENUM('investing', 'cnbc', 'cnn');
+ CREATE TYPE "source" AS ENUM('investing', 'cnbc', 'cnn');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -15,13 +15,17 @@ CREATE TABLE IF NOT EXISTS "chat_history" (
 CREATE TABLE IF NOT EXISTS "news" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"headline" text NOT NULL,
+	"slug" text NOT NULL,
 	"content" text NOT NULL,
-	"scraped_from" "scraped_from" NOT NULL,
-	"source" text NOT NULL,
+	"content_html" text NOT NULL,
+	"source" "source" NOT NULL,
+	"source_url" text NOT NULL,
 	"thumbnail_url" text NOT NULL,
+	"author_name" varchar(100) NOT NULL,
 	"category_name" varchar(100) NOT NULL,
 	"published_at" timestamp NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "news_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (

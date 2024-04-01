@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:migrate": "drizzle-kit generate:pg --schema ./db/schema.ts --out=./db/migrations",
-    "db:push": "npx drizzle-kit push:pg"
+    "db:migrate": "drizzle-kit generate:pg --schema=./db/schema.ts --out=./db/migrations",
+    "db:push" : "node -r esbuild-register ./db/migrate.ts",
+    "db:push-force": "npx drizzle-kit push:pg"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
