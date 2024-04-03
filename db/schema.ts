@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid, date } from "drizzle-orm/pg-core";
+import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid } from "drizzle-orm/pg-core";
 
 // Tables
 export const users = pgTable("users", {

@@ -6,12 +6,13 @@ import jsonwebtoken from 'jsonwebtoken';
 import { JWT } from "next-auth/jwt";
 import { SessionInterface, UserProfile } from "@/common.types";
 import { createUser, getUser } from "./action";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/constants/env_var";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     })
   ],
   jwt: {

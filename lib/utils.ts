@@ -1,6 +1,6 @@
 import { ChatHistory } from "@/common.types";
+import { CHROMADB_COLLECTION_NAME, CHROMADB_HOST, OPENAI_API_KEY } from "@/constants/env_var";
 import { ChromaClient, OpenAIEmbeddingFunction, QueryResponse } from "chromadb";
-import "dotenv/config";
 
 const combinePageContent = (documents: string[]): string => {
   let combinedContent: string = "";
@@ -27,14 +27,14 @@ export const serializeChatHistory = (chatHistory: ChatHistory): string =>
 
 export const retrieveNews = async (query: string, slug?: string) => {
   const client = new ChromaClient({
-    path: process.env.CHROMADB_HOST as string,
+    path: CHROMADB_HOST as string,
   });
   const embedder = new OpenAIEmbeddingFunction({
-    openai_api_key: process.env.OPENAI_API_KEY as string,
+    openai_api_key: OPENAI_API_KEY as string,
     openai_model: "text-embedding-3-small",
   });
   const collection = await client.getOrCreateCollection({
-    name: process.env.CHROMADB_COLLECTION_NAME as string,
+    name: CHROMADB_COLLECTION_NAME as string,
     embeddingFunction: embedder,
   });
 

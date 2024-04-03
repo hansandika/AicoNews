@@ -2,9 +2,10 @@ import { ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageT
 import { retrieveNews, serializeChatHistory } from "./utils";
 import OpenAI from "openai";
 import { getChatHistory } from "./action";
+import { OPENAI_API_KEY } from "@/constants/env_var";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: OPENAI_API_KEY,
 });
 
 const tools: ChatCompletionTool[] = [
