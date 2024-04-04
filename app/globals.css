@@ -1,4 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 12px;
+}
+
+.flexCenter {
+  @apply flex justify-center items-center;
+}
+
+.flexBetween {
+  @apply flex justify-between items-center;
+}
+
+.flexAround {
+  @apply flex justify-around items-center;
+}
