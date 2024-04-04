@@ -1,7 +1,7 @@
 import { ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool } from "openai/resources/index.mjs";
 import { retrieveNews, serializeChatHistory } from "./utils";
 import OpenAI from "openai";
-import { getChatHistory } from "./action";
+import { getChatHistory, getNewsBySlug } from "./action";
 import { OPENAI_API_KEY } from "@/constants/env_var";
 
 const openai = new OpenAI({
@@ -36,18 +36,22 @@ const tools: ChatCompletionTool[] = [
 
 export const getUserChatResponse = async (
   input: { message: string; slug: string },
-  configurable: { userId: number }
+  configurable: { userId: string }
 ) => {
   const { message, slug } = input;
   const { userId } = configurable;
 
   let last_chat_history = "";
 
-  if (slug) {
-    const chatHistory = await getChatHistory(slug, userId);
-    const latestChatHistory = chatHistory.slice(-4);
-    last_chat_history = serializeChatHistory(latestChatHistory)
+  const newsBySlug = await getNewsBySlug(slug);
+
+  if (!newsBySlug) {
+    throw new Error("News not found");
   }
+
+  const chatHistory = await getChatHistory(newsBySlug.id, userId);
+  const latestChatHistory = chatHistory.slice(-4);
+  last_chat_history = serializeChatHistory(latestChatHistory)
 
   const messages: ChatCompletionMessageParam[] = [
     {

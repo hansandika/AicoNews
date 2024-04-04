@@ -1,5 +1,5 @@
 {
-  "id": "addb5a88-d0fa-4be3-848c-fcc3a12241ca",
+  "id": "6b42166a-6236-45bd-a4ba-b23736e27b7f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -8,15 +8,9 @@
       "name": "chat_history",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -70,7 +64,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "chat_history_user_id_news_id_pk": {
+          "name": "chat_history_user_id_news_id_pk",
+          "columns": [
+            "user_id",
+            "news_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "news": {
@@ -138,8 +140,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "published_at": {
-          "name": "published_at",
+        "published_date": {
+          "name": "published_date",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
@@ -171,9 +173,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",

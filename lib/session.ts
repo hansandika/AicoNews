@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
         // if it doesn't exist, create it
         if (!userExists.id) {
           // create the user
-          const newUser = await createUser(user.name as string, user.email as string, user.image as string, account?.provider as string)
+          await createUser(user.name as string, user.email as string, user.image as string, account?.provider as string)
         }
 
         return true

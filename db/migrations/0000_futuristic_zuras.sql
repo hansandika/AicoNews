@@ -5,11 +5,11 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "chat_history" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer NOT NULL,
+	"user_id" uuid NOT NULL,
 	"news_id" uuid NOT NULL,
 	"message" jsonb DEFAULT '[{}]'::jsonb NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "chat_history_user_id_news_id_pk" PRIMARY KEY("user_id","news_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "news" (
@@ -23,13 +23,13 @@ CREATE TABLE IF NOT EXISTS "news" (
 	"thumbnail_url" text NOT NULL,
 	"author_name" varchar(100) NOT NULL,
 	"category_name" varchar(100) NOT NULL,
-	"published_at" timestamp NOT NULL,
+	"published_date" timestamp NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "news_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"avatar_url" text NOT NULL,

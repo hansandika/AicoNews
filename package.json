@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "drizzle-kit generate:pg --schema=./db/schema.ts --out=./db/migrations",
+    "db:drop" : "drizzle-kit drop",
     "db:push": "node -r esbuild-register ./db/migrate.ts",
     "db:push-force": "npx drizzle-kit push:pg"
   },

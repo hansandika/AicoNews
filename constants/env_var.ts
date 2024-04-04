@@ -10,5 +10,6 @@ export const DATABASE_URL = process.env.DATABASE_URL as string;
 
 export const CHROMADB_HOST = process.env.CHROMADB_HOST as string;
 export const CHROMADB_COLLECTION_NAME = process.env.CHROMADB_COLLECTION_NAME as string;
+export const CHROMADB_OPENAI_MODEL = process.env.CHROMADB_OPENAI_MODEL as string;
 
 export const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;

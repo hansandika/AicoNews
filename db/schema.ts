@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid } from "drizzle-orm/pg-core";
+import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid, primaryKey } from "drizzle-orm/pg-core";
+import { ChatHistory, ChatHistoryDatabase } from "@/common.types"
 
 // Tables
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
   avatarUrl: text("avatar_url").notNull(),
@@ -29,13 +30,16 @@ export const news = pgTable("news", {
 });
 
 export const chatHistory = pgTable("chat_history", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull()
+  userId: uuid("user_id").notNull()
     .references(() => users.id),
   newsId: uuid("news_id").notNull()
     .references(() => news.id),
-  message: jsonb("message").notNull().default([{}]),
+  message: jsonb("message").notNull().default([{}]).$type<ChatHistory>(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.userId, table.newsId] }),
+  };
 });
 
 // Relations
@@ -48,6 +52,12 @@ export const newsRelations = relations(news, ({ many }) => ({
 }))
 
 export const chatHistoryRelations = relations(chatHistory, ({ one }) => ({
-  user: one(users),
-  news: one(news)
+  user: one(users, {
+    fields: [chatHistory.userId],
+    references: [users.id]
+  }),
+  news: one(news, {
+    fields: [chatHistory.newsId],
+    references: [news.id]
+  })
 }))

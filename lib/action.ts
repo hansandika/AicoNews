@@ -1,7 +1,7 @@
 import db from "@/db"
 import { chatHistory, news, users } from "@/db/schema"
 import { and, desc, eq } from "drizzle-orm"
-import { ChatHistory, ChatHistoryDatabase } from "@/common.types"
+import { ChatHistory, ChatHistoryDatabase, ChatMessage } from "@/common.types"
 
 export const getUser = async (email: string) => {
   const user = await db.query.users.findFirst({
@@ -11,13 +11,12 @@ export const getUser = async (email: string) => {
 }
 
 export const createUser = async (name: string, email: string, avatarUrl: string, provider: string) => {
-  const user = await db.insert(users).values({
+  await db.insert(users).values({
     name,
     email,
     avatarUrl,
     provider
-  }).returning();
-  return user;
+  });
 }
 
 export const getNewsBySlug = async (slug: string) => {
@@ -37,15 +36,15 @@ export const getNewsPagination = async (page: number, pageSize: number) => {
   return newsPaginate;
 }
 
-export const getChatHistory = async (slug: string, userId: number) => {
+export const getChatHistory = async (newsId: string, userId: string) => {
   const chatHistoryDb = await db.query.chatHistory.findFirst({
-    where: and(eq(chatHistory.userId, userId), eq(chatHistory.newsId, news.id)),
-  }) as ChatHistoryDatabase
+    where: and(eq(chatHistory.userId, userId), eq(chatHistory.newsId, newsId)),
+  }) as ChatHistoryDatabase;
 
   const parsedChatHistory: unknown[] = JSON.parse(chatHistoryDb.message as string);
 
   const userChatHistory: ChatHistory = parsedChatHistory.map(entry => {
-    const { message, type } = entry as { message: string; type: "human" | "AI" };
+    const { message, type } = entry as ChatMessage;
     return { message, type };
   });
 

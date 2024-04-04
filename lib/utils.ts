@@ -1,5 +1,5 @@
 import { ChatHistory } from "@/common.types";
-import { CHROMADB_COLLECTION_NAME, CHROMADB_HOST, OPENAI_API_KEY } from "@/constants/env_var";
+import { CHROMADB_COLLECTION_NAME, CHROMADB_HOST, CHROMADB_OPENAI_MODEL, OPENAI_API_KEY } from "@/constants/env_var";
 import { ChromaClient, OpenAIEmbeddingFunction, QueryResponse } from "chromadb";
 
 const combinePageContent = (documents: string[]): string => {
@@ -31,7 +31,7 @@ export const retrieveNews = async (query: string, slug?: string) => {
   });
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: OPENAI_API_KEY as string,
-    openai_model: "text-embedding-3-small",
+    openai_model: CHROMADB_OPENAI_MODEL as string,
   });
   const collection = await client.getOrCreateCollection({
     name: CHROMADB_COLLECTION_NAME as string,
