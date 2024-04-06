@@ -3,6 +3,7 @@ import Image from "next/image";
 import LargeNewsItem from "../components/LargeNewsItem";
 import { Separator } from "@/components/ui/separator";
 import NewsItem from "@/components/NewsItem";
+import { getNewsPagination } from "@/lib/action";
 const Home = async () => {
 	const newsItems = [
 		{
@@ -46,6 +47,9 @@ const Home = async () => {
 			author: "Liam Kelly",
 		},
 	];
+
+	const news = await getNewsPagination(1, 5);
+	console.log(news);
 
 	const session = await getCurrentUser();
 	return (
