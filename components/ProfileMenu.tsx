@@ -1,17 +1,16 @@
-"use client"
-import { SessionInterface } from '@/common.types'
-import { Menu, Transition } from '@headlessui/react';
-import { signOut } from 'next-auth/react';
-import Image from 'next/image';
-import React, { Fragment, useState } from 'react'
-import { LuLogOut } from 'react-icons/lu';
+"use client";
+import { SessionInterface } from "@/common.types";
+import { signOut } from "next-auth/react";
+import Image from "next/image";
+import React, { Fragment, useState } from "react";
+import { LuLogOut } from "react-icons/lu";
 
 const ProfileMenu = ({ session }: { session: SessionInterface }) => {
-  const [openModal, setOpenModal] = useState(false);
+	const [openModal, setOpenModal] = useState(false);
 
-  return (
-      <div className="flexCenter z-10 flex-col relative">
-          <Menu as="div">
+	return (
+		<div className="flexCenter z-10 flex-col relative">
+			{/* <Menu as="div">
               <Menu.Button className="flexCenter" onMouseEnter={() => setOpenModal(true)} >
                   {session?.user?.image && (
                       <Image
@@ -50,9 +49,9 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
                     </div>
                   </Menu.Items>
               </Transition>
-          </Menu>
-      </div>
-  )
-}
+          </Menu> */}
+		</div>
+	);
+};
 
-export default ProfileMenu
+export default ProfileMenu;

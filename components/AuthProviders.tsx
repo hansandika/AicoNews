@@ -1,15 +1,19 @@
-"use client"
-import { signIn } from 'next-auth/react'
-import { FcGoogle } from 'react-icons/fc'
-
+"use client";
+import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
+import { Button } from "./ui/button";
 
 const AuthProviders = () => {
-  return (
-    <button onClick={() => signIn('google')} className='flexBetween gap-2 font-normal'>
-      <FcGoogle/>
-      Sign in
-    </button>
-  )
-}
+	return (
+		<Button
+			variant={"outline"}
+			onClick={() => signIn("google")}
+			className="flexBetween gap-2 font-normal "
+		>
+			<FcGoogle />
+			Sign in with Google
+		</Button>
+	);
+};
 
-export default AuthProviders
+export default AuthProviders;
