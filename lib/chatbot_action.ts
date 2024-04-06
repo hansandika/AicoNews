@@ -1,62 +1,66 @@
-import { ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool } from "openai/resources/index.mjs";
-import { retrieveNews, serializeChatHistory } from "./utils";
+import {
+	ChatCompletionChunk,
+	ChatCompletionMessageParam,
+	ChatCompletionMessageToolCall,
+	ChatCompletionTool,
+} from "openai/resources/index.mjs";
+import { retrieveNews, serializeChatHistory } from "./utils_chromadb";
 import OpenAI from "openai";
 import { getChatHistory, getNewsBySlug } from "./action";
 import { OPENAI_API_KEY } from "@/constants/env_var";
 
 const openai = new OpenAI({
-  apiKey: OPENAI_API_KEY,
+	apiKey: OPENAI_API_KEY,
 });
 
 const tools: ChatCompletionTool[] = [
-  {
-    type: "function",
-    function: {
-      name: "retrieveNews",
-      description: "Get current news based on user questions",
-      parameters: {
-        type: "object",
-        properties: {
-          search_query: {
-            type: "string",
-            description:
-              "search query for news, e.g. 'covid-19 in Indonesia'",
-          },
-          slug: {
-            type: "string",
-            description:
-              "slug for news if available, e.g. 'covid-19-in-indonesia'",
-          },
-        },
-        required: ["search_query", "slug"],
-      },
-    },
-  },
+	{
+		type: "function",
+		function: {
+			name: "retrieveNews",
+			description: "Get current news based on user questions",
+			parameters: {
+				type: "object",
+				properties: {
+					search_query: {
+						type: "string",
+						description: "search query for news, e.g. 'covid-19 in Indonesia'",
+					},
+					slug: {
+						type: "string",
+						description:
+							"slug for news if available, e.g. 'covid-19-in-indonesia'",
+					},
+				},
+				required: ["search_query", "slug"],
+			},
+		},
+	},
 ];
 
 export const getUserChatResponse = async (
-  input: { message: string; slug: string },
-  configurable: { userId: string }
+	input: { message: string; slug: string },
+	configurable: { userId: string }
 ) => {
-  const { message, slug } = input;
-  const { userId } = configurable;
+	const { message, slug } = input;
+	const { userId } = configurable;
 
-  let last_chat_history = "";
+	let last_chat_history = "";
 
-  const newsBySlug = await getNewsBySlug(slug);
+	const newsBySlug = await getNewsBySlug(slug);
 
-  if (!newsBySlug) {
-    throw new Error("News not found");
-  }
+	if (!newsBySlug) {
+		throw new Error("News not found");
+	}
 
-  const chatHistory = await getChatHistory(newsBySlug.id, userId);
-  const latestChatHistory = chatHistory.slice(-4);
-  last_chat_history = serializeChatHistory(latestChatHistory)
+	const chatHistory = await getChatHistory(newsBySlug.id, userId);
+	const latestChatHistory = chatHistory.slice(-4);
+	last_chat_history = serializeChatHistory(latestChatHistory);
 
-  const messages: ChatCompletionMessageParam[] = [
-    {
-      role: "system",
-      content: `
+	const messages: ChatCompletionMessageParam[] = [
+		{
+			role: "system",
+			content: `
 					You are an expert financial analyst and journalist. Your task is to answer any questions about financial and economic news.
 
 					If the question is not related to a current event or news, answer it based on your own knowledge. However, if the question pertains to a current event or news, generate a comprehensive and informative answer of 500 words or less. 
@@ -70,101 +74,102 @@ export const getUserChatResponse = async (
 					slug: ${slug}
 					chat_history: ${last_chat_history}
 				`,
-    },
-    {
-      role: "user",
-      content: message,
-    },
-  ];
+		},
+		{
+			role: "user",
+			content: message,
+		},
+	];
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo-0125",
-    messages: messages,
-    tools: tools,
-    tool_choice: "auto",
-    stream: true,
-  });
+	const response = await openai.chat.completions.create({
+		model: "gpt-3.5-turbo-0125",
+		messages: messages,
+		tools: tools,
+		tool_choice: "auto",
+		stream: true,
+	});
 
-  const [response1, response2] = response.tee();
-  let streamChat = "";
-  let toolCalls: Array<ChatCompletionMessageToolCall> = [];
-  let chatCompletions: Array<ChatCompletionChunk> = [];
+	const [response1, response2] = response.tee();
+	let streamChat = "";
+	let toolCalls: Array<ChatCompletionMessageToolCall> = [];
+	let chatCompletions: Array<ChatCompletionChunk> = [];
 
-  for await (const chatCompletion of response1) {
-    let delta = chatCompletion.choices[0]?.delta;
-    console.log(`delta: ${JSON.stringify(delta)}`);
+	for await (const chatCompletion of response1) {
+		let delta = chatCompletion.choices[0]?.delta;
+		console.log(`delta: ${JSON.stringify(delta)}`);
 
-    if (delta && delta.content) {
-      streamChat += delta.content;
-    } else if (delta && delta.tool_calls) {
-      let toolCallChunks = delta.tool_calls;
+		if (delta && delta.content) {
+			streamChat += delta.content;
+		} else if (delta && delta.tool_calls) {
+			let toolCallChunks = delta.tool_calls;
 
-      for (let toolCallChunk of toolCallChunks) {
-        if (toolCalls.length <= toolCallChunk.index) {
-          toolCalls.push({
-            id: "",
-            type: "function",
-            function: { name: "", arguments: "" },
-          });
-        }
+			for (let toolCallChunk of toolCallChunks) {
+				if (toolCalls.length <= toolCallChunk.index) {
+					toolCalls.push({
+						id: "",
+						type: "function",
+						function: { name: "", arguments: "" },
+					});
+				}
 
-        let tc = toolCalls[toolCallChunk.index];
+				let tc = toolCalls[toolCallChunk.index];
 
-        if (toolCallChunk.id) {
-          tc["id"] += toolCallChunk.id;
-        }
+				if (toolCallChunk.id) {
+					tc["id"] += toolCallChunk.id;
+				}
 
-        if (toolCallChunk?.function?.name) {
-          tc["function"]["name"] += toolCallChunk.function.name;
-        }
+				if (toolCallChunk?.function?.name) {
+					tc["function"]["name"] += toolCallChunk.function.name;
+				}
 
-        if (toolCallChunk?.function?.arguments) {
-          tc["function"]["arguments"] += toolCallChunk.function.arguments;
-        }
-      }
-    }
-    chatCompletions.push(chatCompletion);
-  }
+				if (toolCallChunk?.function?.arguments) {
+					tc["function"]["arguments"] += toolCallChunk.function.arguments;
+				}
+			}
+		}
+		chatCompletions.push(chatCompletion);
+	}
 
-  console.log("stream Chat: ", streamChat);
+	console.log("stream Chat: ", streamChat);
 
-  console.log(JSON.stringify(toolCalls));
-  messages.push({ role: "assistant", tool_calls: toolCalls });
+	console.log(JSON.stringify(toolCalls));
+	messages.push({ role: "assistant", tool_calls: toolCalls });
 
-  const availableFunctions = {
-    retrieveNews: retrieveNews,
-  };
+	const availableFunctions = {
+		retrieveNews: retrieveNews,
+	};
 
-  for (const toolCall of toolCalls) {
-    const functionName = toolCall.function.name as string;
-    const functionToCall = availableFunctions[functionName as keyof typeof availableFunctions];
-    const functionArgs = JSON.parse(toolCall.function.arguments);
-    console.log("Search query:", functionArgs.search_query);
-    console.log("slug: ", functionArgs.slug);
-    const functionResponse = await functionToCall(
-      functionArgs.search_query,
-      functionArgs.slug
-    );
+	for (const toolCall of toolCalls) {
+		const functionName = toolCall.function.name as string;
+		const functionToCall =
+			availableFunctions[functionName as keyof typeof availableFunctions];
+		const functionArgs = JSON.parse(toolCall.function.arguments);
+		console.log("Search query:", functionArgs.search_query);
+		console.log("slug: ", functionArgs.slug);
+		const functionResponse = await functionToCall(
+			functionArgs.search_query,
+			functionArgs.slug
+		);
 
-    console.log("current messages 1: " + messages[0].content);
-    console.log("current messages 2: " + messages[1].content);
-    console.log("current messages 3: " + messages[2].content);
-    console.log("function response: " + functionResponse);
+		console.log("current messages 1: " + messages[0].content);
+		console.log("current messages 2: " + messages[1].content);
+		console.log("current messages 3: " + messages[2].content);
+		console.log("function response: " + functionResponse);
 
-    messages.push({
-      tool_call_id: toolCall.id,
-      role: "tool",
-      content: functionResponse,
-    }); // extend conversation with function response
+		messages.push({
+			tool_call_id: toolCall.id,
+			role: "tool",
+			content: functionResponse,
+		}); // extend conversation with function response
 
-    const secondResponse = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo-0125",
-      messages: messages,
-      stream: true,
-    });
+		const secondResponse = await openai.chat.completions.create({
+			model: "gpt-3.5-turbo-0125",
+			messages: messages,
+			stream: true,
+		});
 
-    return secondResponse;
-  }
+		return secondResponse;
+	}
 
-  return response2;
+	return response2;
 };
