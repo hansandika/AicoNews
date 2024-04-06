@@ -15,7 +15,7 @@ const Navbar = async () => {
     currentPath = window.location.hostname;
   }
   return (
-    <nav className='flexAround flex-wrap h-32 m-3'>
+    <nav className='flexAround flex-wrap min-h-32 m-3'>
       <Link href="/">
         <Image
           src="/logo.svg"
