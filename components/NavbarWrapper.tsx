@@ -9,10 +9,6 @@ import Navbar from "./Navbar";
 
 const NavbarWrapper = async () => {
 	const session = await getCurrentUser();
-	var currentPath = "/";
-	if (typeof window !== "undefined") {
-		currentPath = window.location.hostname;
-	}
 	return <Navbar session={session} />;
 };
 

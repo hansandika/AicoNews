@@ -22,6 +22,7 @@ import { signIn, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import AuthProviders from "./AuthProviders";
 import { Avatar } from "./ui/avatar";
+import { NavLinks } from "@/constants";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -38,18 +39,13 @@ const Navbar = ({ session }: NavbarProps) => {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 	console.log(session?.user);
 
-	// var currentPath = '/'
-	// if(typeof window !== 'undefined') {
-	//   currentPath = window.location.hostname;
-	// }
-	const handleSignOut = () => {
-		signOut();
-	};
-
 	return isDesktop ? (
 		<div>Desktop</div>
 	) : (
-		<div className="mx-4 py-4">
+		<div
+			className="mx-4 py-4"
+			suppressHydrationWarning
+		>
 			<div className="">
 				<Drawer direction="top">
 					<div className="flex justify-between">
@@ -83,40 +79,30 @@ const Navbar = ({ session }: NavbarProps) => {
 												className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
 											/>
 										</div>
-										<div className="mt-5 flex flex-col text-[1.25rem] font-medium">
-											<div></div>
-
-											<Link
-												href={"/"}
-												className={`
-													text-[1.25rem] w-full rounded-md py-2 ${
-														currentPath === "/"
-															? "text-[#075FC5]"
-															: "text-[#CCCCCC] hover:text-[#999999]"
-													}
-                                                    `}
-											>
-												<DrawerClose>Home</DrawerClose>
-											</Link>
-											<Link
-												href={"/news"}
-												className={`
-													text-[1.25rem] w-full rounded-md py-2 ${
-														currentPath === "/news"
-															? "text-[#075FC5]"
-															: "text-[#CCCCCC] hover:text-[#999999]"
-													}
-                                                    `}
-											>
-												<DrawerClose>News</DrawerClose>
-											</Link>
+										<div className="mt-5 flex flex-col text-[1.25rem] font-semibold">
+											{NavLinks.map((link) => {
+												return (
+													<Link
+														href={link.href}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-[#075FC5]"
+																: "text-[#CCCCCC] hover:text-[#999999]"
+														}`}
+													>
+														<DrawerClose>{link.text}</DrawerClose>
+													</Link>
+												);
+											})}
 										</div>
 										<div className="pt-4">
 											<DrawerFooter>
 												<DrawerClose asChild>
 													<Button
 														variant="destructive"
-														onClick={handleSignOut}
+														onClick={() => {
+															signOut();
+														}}
 														size="none"
 													>
 														Log out
@@ -126,7 +112,7 @@ const Navbar = ({ session }: NavbarProps) => {
 										</div>
 									</div>
 								) : (
-									<div className="flex flex-col">
+									<div className="flex flex-col p-4">
 										<DrawerHeader>
 											<DrawerTitle>Sign In to AicoNews</DrawerTitle>
 											<DrawerDescription>
@@ -161,7 +147,7 @@ const Navbar = ({ session }: NavbarProps) => {
 								className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
 							/>
 						) : (
-							<DrawerTrigger>
+							<DrawerTrigger asChild>
 								<Button>Sign In</Button>
 							</DrawerTrigger>
 						)}

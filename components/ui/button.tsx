@@ -44,9 +44,20 @@ export interface ButtonProps
 	asChild?: boolean;
 }
 
+const ForwardedSlot = React.forwardRef<
+	HTMLElement,
+	React.HTMLAttributes<HTMLElement>
+>((props, ref) => (
+	<Slot
+		ref={ref}
+		{...props}
+	/>
+));
+ForwardedSlot.displayName = "ForwardedSlot";
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	({ className, variant, size, asChild = false, ...props }, ref) => {
-		const Comp = asChild ? Slot : "button";
+		const Comp = asChild ? ForwardedSlot : "button";
 		return (
 			<Comp
 				className={cn(buttonVariants({ variant, size, className }))}

@@ -1,7 +1,52 @@
 import { getCurrentUser } from "@/lib/session";
 import Image from "next/image";
 import LargeNewsItem from "../components/LargeNewsItem";
+import { Separator } from "@/components/ui/separator";
+import NewsItem from "@/components/NewsItem";
 const Home = async () => {
+	const newsItems = [
+		{
+			title:
+				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
+			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
+			date: "April 5, 2024",
+			source: "CNN",
+			author: "Liam Kelly",
+		},
+		{
+			title:
+				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
+			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
+			date: "April 5, 2024",
+			source: "CNN",
+			author: "Liam Kelly",
+		},
+		{
+			title:
+				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
+			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
+			date: "April 5, 2024",
+			source: "CNN",
+			author: "Liam Kelly",
+		},
+		{
+			title:
+				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
+			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
+			date: "April 5, 2024",
+			source: "CNN",
+			author: "Liam Kelly",
+		},
+		{
+			title:
+				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
+			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
+			date: "April 5, 2024",
+			source: "CNN",
+			author: "Liam Kelly",
+		},
+	];
+
 	const session = await getCurrentUser();
 	return (
 		<main className="flex w-full flex-col">
@@ -12,6 +57,7 @@ const Home = async () => {
 						src="/newsimg-test.avif"
 						layout="fill"
 						alt="news image"
+						className="object-cover"
 					/>
 				</div>
 				<div className="bg-[#075FC5] w-full h-min py-4 px-5">
@@ -39,11 +85,41 @@ const Home = async () => {
 					</div>
 				</div>
 			</div>
-			{/* news item */}
+			{/* Highlights */}
 			<div className="flex flex-col gap-5 py-5">
 				<LargeNewsItem />
 				<LargeNewsItem />
 				<LargeNewsItem />
+			</div>
+
+			{/* Latest */}
+			<div className="px-5">
+				<div>
+					<h3 className="text-[1.5rem] font-bold text-[#075FC5] pb-2">
+						Latest
+					</h3>
+					{/* <hr className=" bg-[#075FC5]" /> */}
+					<Separator className="bg-[#075FC5]"></Separator>
+				</div>
+				<div className="flex flex-col py-5 px-2">
+					{newsItems.map((newsItem, index) => {
+						return (
+							<div key={index}>
+								<NewsItem
+									key={index}
+									{...newsItem}
+								/>
+								{index === newsItems.length - 1 ? (
+									<></>
+								) : (
+									<div className="py-3 ">
+										<Separator className="bg-[#CCC] h-[1px]" />
+									</div>
+								)}
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</main>
 	);
