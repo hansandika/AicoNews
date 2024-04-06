@@ -13,15 +13,13 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
-import { MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { HiMenu, HiMenuAlt1 } from "react-icons/hi";
+import { HiMenuAlt1 } from "react-icons/hi";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import AuthProviders from "./AuthProviders";
-import { Avatar } from "./ui/avatar";
 import { NavLinks } from "@/constants";
 type NavbarProps = {
 	session: SessionInterface;
@@ -51,13 +49,10 @@ const Navbar = ({ session }: NavbarProps) => {
 					<div className="flex justify-between">
 						<div className="flex gap-3 items-center">
 							<DrawerTrigger asChild>
-								{/* <div className="flex gap-2"> */}
 								<HiMenuAlt1
 									size={24}
 									className="cursor-pointer text-[#075FC5] dark:text-[#CEE4FD]"
 								/>
-
-								{/* </div> */}
 							</DrawerTrigger>
 							<DrawerContent>
 								{session?.user ? (

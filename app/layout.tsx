@@ -4,6 +4,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Script from "next/script";
 
 export const metadata: Metadata = {
 	title: "AicoNews",

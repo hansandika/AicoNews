@@ -4,6 +4,9 @@ import LargeNewsItem from "../components/LargeNewsItem";
 import { Separator } from "@/components/ui/separator";
 import NewsItem from "@/components/NewsItem";
 import { getNewsPagination } from "@/lib/action";
+import Script from "next/script";
+import { MarketData } from "@/components/MarketData";
+import MarketWidgets from "@/components/MarketWidgets";
 const Home = async () => {
 	const newsItems = [
 		{
@@ -48,8 +51,8 @@ const Home = async () => {
 		},
 	];
 
-	const news = await getNewsPagination(1, 5);
-	console.log(news);
+	// const news = await getNewsPagination(1, 5);
+	// console.log(news);
 
 	const session = await getCurrentUser();
 	return (
@@ -123,6 +126,20 @@ const Home = async () => {
 							</div>
 						);
 					})}
+				</div>
+			</div>
+
+			{/* Markets */}
+			<div className="px-5 pb-5">
+				<div>
+					<h3 className="text-[1.5rem] font-bold text-[#075FC5] pb-2">
+						Markets
+					</h3>
+					{/* <hr className=" bg-[#075FC5]" /> */}
+					<Separator className="bg-[#075FC5]"></Separator>
+				</div>
+				<div className="h-[600px]">
+					<MarketWidgets></MarketWidgets>
 				</div>
 			</div>
 		</main>
