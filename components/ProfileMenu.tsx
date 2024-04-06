@@ -1,6 +1,6 @@
 "use client"
 import { SessionInterface } from '@/common.types'
-import { Menu, Transition } from '@headlessui/react';
+// import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import React, { Fragment, useState } from 'react'
@@ -11,19 +11,18 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
 
   return (
       <div className="flexCenter z-10 flex-col relative">
-          <Menu as="div">
-              <Menu.Button className="flexCenter" onMouseEnter={() => setOpenModal(true)} >
-                  {session?.user?.image && (
-                      <Image
-                          src={session.user.avatarUrl}
-                          width={72}
-                          height={72}
-                          className="rounded-full"
-                          alt="user profile image"
-                      />
-                  )
-                }
-              </Menu.Button>
+          {/* <Menu as="div">
+              <Menu.Button className="flexCenter" onMouseEnter={() => setOpenModal(true)} > */}
+                {session?.user?.image && (
+                    <Image
+                        src={session.user.avatarUrl}
+                        width={72}
+                        height={72}
+                        className="rounded-full"
+                        alt="user profile image"
+                    />
+                )}
+              {/* </Menu.Button>
 
               <Transition
                   show={openModal}
@@ -50,7 +49,7 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
                     </div>
                   </Menu.Items>
               </Transition>
-          </Menu>
+          </Menu> */}
       </div>
   )
 }

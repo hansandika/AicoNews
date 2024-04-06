@@ -1,6 +1,8 @@
 import { ChatHistory } from "@/common.types";
 import { CHROMADB_COLLECTION_NAME, CHROMADB_HOST, CHROMADB_OPENAI_MODEL, OPENAI_API_KEY } from "@/constants/env_var";
 import { ChromaClient, OpenAIEmbeddingFunction, QueryResponse } from "chromadb";
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const combinePageContent = (documents: string[]): string => {
   let combinedContent: string = "";
@@ -10,6 +12,10 @@ const combinePageContent = (documents: string[]): string => {
 
   combinedContent = "NEWS RESULT: " + combinedContent;
   return combinedContent;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 
 export const serializeChatHistory = (chatHistory: ChatHistory): string =>
