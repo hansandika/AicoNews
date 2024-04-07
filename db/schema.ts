@@ -12,7 +12,7 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const SourceEnum = pgEnum('source', ['investing', 'cnbc', 'cnn'])
+export const SourceEnum = pgEnum('source', ['Investing', 'CNBC', 'CNN'])
 
 export const news = pgTable("news", {
   id: uuid("id").primaryKey().defaultRandom(),

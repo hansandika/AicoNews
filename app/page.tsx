@@ -49,7 +49,6 @@ const Home = async () => {
 	];
 
 	const news = await getNewsPagination(1, 5);
-	console.log(news);
 
 	const session = await getCurrentUser();
 	return (

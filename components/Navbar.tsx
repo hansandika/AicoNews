@@ -37,7 +37,6 @@ const links = [
 const Navbar = ({ session }: NavbarProps) => {
 	const currentPath = usePathname();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-	console.log(session?.user);
 
 	return isDesktop ? (
 		<div>Desktop</div>
@@ -65,7 +64,7 @@ const Navbar = ({ session }: NavbarProps) => {
 										<div className="flex justify-between items-center">
 											<Link href="/">
 												<Image
-													src="logo.svg"
+													src="/logo.svg"
 													width={120}
 													height={20}
 													alt="logo"
@@ -84,11 +83,10 @@ const Navbar = ({ session }: NavbarProps) => {
 												return (
 													<Link
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
-																? "text-[#075FC5]"
-																: "text-[#CCCCCC] hover:text-[#999999]"
-														}`}
+														className={`w-full rounded-md py-2 ${currentPath === link.href
+															? "text-[#075FC5]"
+															: "text-[#CCCCCC] hover:text-[#999999]"
+															}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -131,7 +129,7 @@ const Navbar = ({ session }: NavbarProps) => {
 							</DrawerContent>
 							<Link href="/">
 								<Image
-									src="logo.svg"
+									src="/logo.svg"
 									width={120}
 									height={20}
 									alt="logo"
