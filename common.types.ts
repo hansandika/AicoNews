@@ -22,6 +22,21 @@ export interface UserProfile {
 	provider: string;
 }
 
+export interface NewsInterface {
+	slug: string;
+	thumbnailUrl: string;
+	headline: string;
+	authorName: string;
+	publishedDate: Date;
+	sourceUrl: string;
+	source: "Investing" | "CNBC" | "CNN";
+	content: string;
+	id: string;
+	createdAt: Date;
+	contentHtml: string;
+	categoryName: string;
+}
+
 export interface SessionInterface extends Session {
 	user: User & {
 		id: string;
@@ -30,19 +45,4 @@ export interface SessionInterface extends Session {
 		avatarUrl: string;
 		image: string;
 	};
-}
-
-export interface NewsInterface {
-	source: "investing" | "cnbc" | "cnn";
-	id: string;
-	content: string;
-	createdAt: Date;
-	headline: string;
-	slug: string;
-	contentHtml: string;
-	sourceUrl: string;
-	thumbnailUrl: string;
-	authorName: string;
-	categoryName: string;
-	publishedDate: Date;
 }

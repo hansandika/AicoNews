@@ -1,5 +1,5 @@
 import { NewsInterface } from "@/common.types";
-import { formatDate, formatSource } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

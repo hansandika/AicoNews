@@ -5,7 +5,7 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'i-invdn-com.investing.com',
       'media.cnn.com',
-      'image.cnbcfm.com'
+      'image.cnbcfm.com',
     ]
   }
 };

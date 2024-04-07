@@ -1,5 +1,5 @@
 {
-  "id": "6b42166a-6236-45bd-a4ba-b23736e27b7f",
+  "id": "f409f573-aff0-44b7-b2a2-bf45f019964b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -228,9 +228,9 @@
     "source": {
       "name": "source",
       "values": {
-        "investing": "investing",
-        "cnbc": "cnbc",
-        "cnn": "cnn"
+        "Investing": "Investing",
+        "CNBC": "CNBC",
+        "CNN": "CNN"
       }
     }
   },

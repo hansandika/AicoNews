@@ -6,7 +6,6 @@ import NewsItem from "@/components/NewsItem";
 import MarketWidgets from "@/components/MarketWidgets";
 import { getNewsPagination } from "@/lib/action";
 import { formatDate } from "@/lib/utils";
-import { formatSource } from "../lib/utils";
 const Home = async () => {
 	const news = await getNewsPagination(1, 10);
 

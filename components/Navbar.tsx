@@ -106,7 +106,7 @@ const Navbar = ({ session }: NavbarProps) => {
 										<div className="flex justify-between items-center">
 											<Link href="/">
 												<Image
-													src="logo.svg"
+													src="/logo.svg"
 													alt="logo"
 													width={120}
 													height={20}
@@ -203,7 +203,7 @@ const Navbar = ({ session }: NavbarProps) => {
 								className="relative  w-[120px] h-[32px]"
 							>
 								<Image
-									src="logo.svg"
+									src="/logo.svg"
 									fill
 									alt="logo"
 								/>

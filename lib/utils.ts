@@ -16,13 +16,3 @@ export const formatDate = (date: Date) => {
 		return moment(date).fromNow();
 	}
 };
-
-export const formatSource = (source: string) => {
-	if (source === "cnn") {
-		return "CNN";
-	} else if (source === "cnbc") {
-		return "CNBC";
-	} else if (source === "investing") {
-		return "Investing.com";
-	}
-};
