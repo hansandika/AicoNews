@@ -3,112 +3,77 @@ import Image from "next/image";
 import LargeNewsItem from "../components/LargeNewsItem";
 import { Separator } from "@/components/ui/separator";
 import NewsItem from "@/components/NewsItem";
-import { getNewsPagination } from "@/lib/action";
-import Script from "next/script";
-import { MarketData } from "@/components/MarketData";
 import MarketWidgets from "@/components/MarketWidgets";
+import { getNewsPagination } from "@/lib/action";
+import { formatDate } from "@/lib/utils";
+import { formatSource } from "../lib/utils";
 const Home = async () => {
-	const newsItems = [
-		{
-			title:
-				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
-			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
-			date: "April 5, 2024",
-			source: "CNN",
-			author: "Liam Kelly",
-		},
-		{
-			title:
-				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
-			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
-			date: "April 5, 2024",
-			source: "CNN",
-			author: "Liam Kelly",
-		},
-		{
-			title:
-				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
-			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
-			date: "April 5, 2024",
-			source: "CNN",
-			author: "Liam Kelly",
-		},
-		{
-			title:
-				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
-			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
-			date: "April 5, 2024",
-			source: "CNN",
-			author: "Liam Kelly",
-		},
-		{
-			title:
-				"Taylor Swift, 1,000% returns, and FOMO are driving a $58bn market — are memecoins ruining crypto?",
-			url: "taylor-swift-memecoin-skyrockets-200-times-in-a-few-hours",
-			date: "April 5, 2024",
-			source: "CNN",
-			author: "Liam Kelly",
-		},
-	];
+	const news = await getNewsPagination(1, 10);
 
-	// const news = await getNewsPagination(1, 5);
-	// console.log(news);
-
+	const headline = news[0];
+	const highlightNews = news.slice(1, 4);
+	const newsItems = news.slice(4, 10);
 	const session = await getCurrentUser();
 	return (
 		<main className="flex w-full flex-col">
 			{/* headline */}
 			<div>
-				<div className="h-[320px] w-full relative">
+				<div className="h-[200px] sm:h-[320px] w-full relative">
 					<Image
-						src="/newsimg-test.avif"
+						src={`${headline.thumbnailUrl}`}
 						layout="fill"
 						alt="news image"
 						className="object-cover"
 					/>
 				</div>
-				<div className="bg-[#075FC5] w-full h-min py-4 px-5">
+				<div className="bg-blue-primary w-full h-min py-2 sm:py-4 container ">
 					<div>
-						<h2 className="text-[1.5rem] text-white font-semibold">
-							Lawmakers stall digital euro bill, leaving future of €1.2bn
-							project uncertain
+						<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold">
+							{headline.headline}
 						</h2>
 					</div>
-					<div className="pt-4 pb-2 flex items-center justify-between gap-1 text-[0.75rem] text-white">
+					<div className="pt-3 sm:pt-4 pb-2 flex items-center justify-between gap-1 text-[0.75rem] text-white">
 						<div className="flex gap-3 items-center">
-							<Image
-								src={session?.user.avatarUrl}
+							{/* <Image
+								src={headline.}
 								width={40}
 								height={40}
 								alt="user profile"
 								className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-							/>
+							/> */}
 							<div className="flex gap-1">
-								<p className=" font-medium">William</p>
-								<div className="font-light">• CNN</div>
+								<p className=" font-medium">{headline.authorName}</p>
+								<div className="font-light">• {headline.source}</div>
 							</div>
 						</div>
-						<div className="font-light"> April 5, 2024</div>
+						<div className="font-light">
+							{formatDate(headline.publishedDate)}
+						</div>
 					</div>
 				</div>
 			</div>
 			{/* Highlights */}
-			<div className="flex flex-col gap-5 py-5">
-				<LargeNewsItem />
-				<LargeNewsItem />
-				<LargeNewsItem />
+			<div className="flex flex-col gap-3 sm:gap-5 py-3 sm:py-5 container">
+				{highlightNews.map((newsItem, index) => {
+					return (
+						<LargeNewsItem
+							key={index}
+							{...newsItem}
+						/>
+					);
+				})}
 			</div>
 
 			{/* Latest */}
-			<div className="px-5">
+			<div className="container">
 				<div>
-					<h3 className="text-[1.5rem] font-bold text-[#075FC5] pb-2">
+					<h3 className="text-[1.5rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 						Latest
 					</h3>
-					{/* <hr className=" bg-[#075FC5]" /> */}
-					<Separator className="bg-[#075FC5]"></Separator>
+					{/* <hr className=" bg-blue-primary" /> */}
+					<Separator className="bg-blue-primary dark:bg-blue-primary-dark"></Separator>
 				</div>
-				<div className="flex flex-col py-5 px-2">
+				<div className="flex flex-col py-3 sm:py-5 px-2">
 					{newsItems.map((newsItem, index) => {
 						return (
 							<div key={index}>
@@ -120,7 +85,7 @@ const Home = async () => {
 									<></>
 								) : (
 									<div className="py-3 ">
-										<Separator className="bg-[#CCC] h-[1px]" />
+										<Separator className="bg-black-tertiary h-[1px]" />
 									</div>
 								)}
 							</div>
@@ -130,13 +95,13 @@ const Home = async () => {
 			</div>
 
 			{/* Markets */}
-			<div className="px-5 pb-5">
+			<div className="container pb-5">
 				<div>
-					<h3 className="text-[1.5rem] font-bold text-[#075FC5] pb-2">
+					<h3 className="text-[1.5rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 						Markets
 					</h3>
-					{/* <hr className=" bg-[#075FC5]" /> */}
-					<Separator className="bg-[#075FC5]"></Separator>
+					{/* <hr className=" bg-blue-primary" /> */}
+					<Separator className="bg-blue-primary dark:bg-blue-primary-dark"></Separator>
 				</div>
 				<div className="h-[600px]">
 					<MarketWidgets></MarketWidgets>

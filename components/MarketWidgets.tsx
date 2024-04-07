@@ -1,12 +1,20 @@
 "use client";
 import Script from "next/script";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function MarketWidgets() {
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const [theme, setTheme] = useState("light");
+
 	useEffect(() => {
 		// If there is no window
 		if (typeof window === "undefined") return;
+
+		// get theme from local storage
+		const storedTheme = window.localStorage.getItem("theme");
+		if (storedTheme) {
+			setTheme(storedTheme);
+		}
 
 		const scriptElement = document.createElement("script");
 		scriptElement.src =
@@ -14,7 +22,7 @@ function MarketWidgets() {
 		scriptElement.async = true;
 		scriptElement.text = `
         {
-            "colorTheme": "light",
+            "colorTheme": ${theme === "dark" ? '"dark"' : '"light"'},
             "dateRange": "1M",
             "showChart": true,
             "locale": "en",
@@ -86,6 +94,10 @@ function MarketWidgets() {
                     "d": "Ethereum"
                   },
                   {
+                    "s": "BINANCE:SOLUSDT",
+                    "d": "Solana"
+                  },
+                  {
                     "s": "BYBIT:ONDOUSDT",
                     "d": "Ondo Finance"
                   },
@@ -135,7 +147,7 @@ function MarketWidgets() {
 				containerRef.current.removeChild(scriptElement);
 			}
 		};
-	}, []);
+	}, [theme]);
 
 	return (
 		<div

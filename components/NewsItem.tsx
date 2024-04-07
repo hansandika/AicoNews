@@ -1,21 +1,21 @@
+import { NewsInterface } from "@/common.types";
+import { formatDate, formatSource } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
-type NewsProps = {
-	title: string;
-	url: string;
-	date: string;
-	source: string;
-	author: string;
-};
-
-function NewsItem({ title, url, date, source, author }: NewsProps) {
+function NewsItem({
+	authorName,
+	slug,
+	headline,
+	source,
+	publishedDate,
+}: NewsInterface) {
 	return (
-		<Link href={`/news/${url}`}>
-			<h3 className="text-[1rem] font-medium hover:underline">{title}</h3>
+		<Link href={`/news/${slug}`}>
+			<h3 className="text-[1rem] font-medium hover:underline">{headline}</h3>
 			<div className="py-1 flex gap-2 items-center font-light text-[0.75rem] text-[#999999]">
 				<p>
-					{source} • {date}
+					{source} • {formatDate(publishedDate)}
 				</p>
 			</div>
 		</Link>

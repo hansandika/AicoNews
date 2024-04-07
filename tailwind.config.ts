@@ -13,7 +13,10 @@ const config = {
 	theme: {
 		container: {
 			center: true,
-			padding: "2rem",
+			padding: {
+				DEFAULT: "0.75rem", // 12px
+				sm: "1.25rem", // 20px
+			},
 			screens: {
 				"2xl": "1400px",
 			},
@@ -59,10 +62,11 @@ const config = {
 				"black-primary": "#000000",
 				"black-secondary": "#999999",
 				"black-tertiary": "#CCCCCC",
-				white: "#F2F2F2",
+				white: "#ffffff",
 				"blue-primary": "#075FC5",
 				"blue-secondary": "#9DC9FB",
 				"blue-tertiary": "#CEE4FD",
+				"blue-primary-dark": "#2185F7",
 			},
 			borderRadius: {
 				lg: "var(--radius)",
