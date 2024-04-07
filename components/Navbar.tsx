@@ -13,16 +13,16 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
-import { MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { HiMenu, HiMenuAlt1 } from "react-icons/hi";
+import { HiMenuAlt1 } from "react-icons/hi";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import AuthProviders from "./AuthProviders";
-import { Avatar } from "./ui/avatar";
 import { NavLinks } from "@/constants";
+
+import ToggleTheme from "./ToggleTheme";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -39,10 +39,55 @@ const Navbar = ({ session }: NavbarProps) => {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	return isDesktop ? (
-		<div>Desktop</div>
+		<div className="py-4 px-8 flex justify-between items-center">
+			<Link href="/">
+				<Image
+					src="/logo.svg"
+					width={150}
+					height={20}
+					alt="logo"
+				/>
+			</Link>
+			<div className="flex items-center gap-8">
+				<div className="flex gap-8 font-medium text-[1rem]">
+					{NavLinks.map((link) => {
+						return (
+							<Link
+								key={link.text}
+								href={link.href}
+								className={`w-full rounded-md py-2 ${
+									currentPath === link.href
+										? "text-blue-primary dark:text-blue-secondary"
+										: "text-black-tertiary hover:text-black-secondary"
+								}`}
+							>
+								{link.text}
+							</Link>
+						);
+					})}
+				</div>
+				<div className="flex items-center gap-6">
+					<p>|</p>
+					<div>
+						<ToggleTheme />
+					</div>
+					{session?.user ? (
+						<Image
+							src={session?.user.image}
+							width={40}
+							height={40}
+							alt="user profile"
+							className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+						/>
+					) : (
+						<Button>Sign In</Button>
+					)}
+				</div>
+			</div>
+		</div>
 	) : (
 		<div
-			className="mx-4 py-4"
+			className="py-2 sm:py-4 container"
 			suppressHydrationWarning
 		>
 			<div className="">
@@ -50,13 +95,10 @@ const Navbar = ({ session }: NavbarProps) => {
 					<div className="flex justify-between">
 						<div className="flex gap-3 items-center">
 							<DrawerTrigger asChild>
-								{/* <div className="flex gap-2"> */}
 								<HiMenuAlt1
 									size={24}
-									className="cursor-pointer text-[#075FC5] dark:text-[#CEE4FD]"
+									className="cursor-pointer text-blue-primary dark:text-blue-primary-dark"
 								/>
-
-								{/* </div> */}
 							</DrawerTrigger>
 							<DrawerContent>
 								{session?.user ? (
@@ -65,13 +107,13 @@ const Navbar = ({ session }: NavbarProps) => {
 											<Link href="/">
 												<Image
 													src="/logo.svg"
+													alt="logo"
 													width={120}
 													height={20}
-													alt="logo"
 												/>
 											</Link>
 											<Image
-												src={session?.user.avatarUrl}
+												src={session?.user.image}
 												width={40}
 												height={40}
 												alt="user profile"
@@ -82,11 +124,13 @@ const Navbar = ({ session }: NavbarProps) => {
 											{NavLinks.map((link) => {
 												return (
 													<Link
+														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${currentPath === link.href
-															? "text-[#075FC5]"
-															: "text-[#CCCCCC] hover:text-[#999999]"
-															}`}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -111,6 +155,33 @@ const Navbar = ({ session }: NavbarProps) => {
 									</div>
 								) : (
 									<div className="flex flex-col p-4">
+										<div className="flex justify-between items-center">
+											<Link href="/">
+												<Image
+													src="/logo.svg"
+													alt="logo"
+													width={120}
+													height={20}
+												/>
+											</Link>
+										</div>
+										<div className="mt-5 flex flex-col text-[1.25rem] font-semibold">
+											{NavLinks.map((link) => {
+												return (
+													<Link
+														key={link.text}
+														href={link.href}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
+													>
+														<DrawerClose>{link.text}</DrawerClose>
+													</Link>
+												);
+											})}
+										</div>
 										<DrawerHeader>
 											<DrawerTitle>Sign In to AicoNews</DrawerTitle>
 											<DrawerDescription>
@@ -127,28 +198,35 @@ const Navbar = ({ session }: NavbarProps) => {
 									</div>
 								)}
 							</DrawerContent>
-							<Link href="/">
+							<Link
+								href="/"
+								className="relative  w-[120px] h-[32px]"
+							>
 								<Image
 									src="/logo.svg"
-									width={120}
-									height={20}
+									fill
 									alt="logo"
 								/>
 							</Link>
 						</div>
-						{session?.user ? (
-							<Image
-								src={session?.user.avatarUrl}
-								width={40}
-								height={40}
-								alt="user profile"
-								className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-							/>
-						) : (
-							<DrawerTrigger asChild>
-								<Button>Sign In</Button>
-							</DrawerTrigger>
-						)}
+						<div className="flex items-center gap-5">
+							<div>
+								<ToggleTheme />
+							</div>
+							{session?.user ? (
+								<Image
+									src={session?.user.avatarUrl}
+									width={40}
+									height={40}
+									alt="user profile"
+									className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+								/>
+							) : (
+								<DrawerTrigger asChild>
+									<Button>Sign In</Button>
+								</DrawerTrigger>
+							)}
+						</div>
 					</div>
 				</Drawer>
 			</div>

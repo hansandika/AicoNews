@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 const AuthProviders = () => {
 	return (
 		<Button
-			variant={"outline"}
+			variant={"google"}
 			onClick={() => signIn("google")}
 			className="flexBetween gap-2 font-normal "
 		>
