@@ -5,7 +5,7 @@ import { BsBrightnessLowFill } from "react-icons/bs";
 import { HiMiniMoon } from "react-icons/hi2";
 function ToggleTheme() {
 	const [theme, setTheme] = useState("light");
-	if (window === undefined) return null;
+	if (typeof window === undefined) return null;
 
 	useEffect(() => {
 		// Check if window is defined (this is for server-side rendering)

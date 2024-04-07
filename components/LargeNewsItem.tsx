@@ -19,10 +19,10 @@ const LargeNewsItem = ({
 			className="cursor-pointer"
 		>
 			<div className="flex gap-5 w-full">
-				<div className="h-[120px] w-[120px] relative flex-shrink-0">
+				<div className="h-[120px] w-[120px] relative flex-shrink-0 relative">
 					<Image
 						src={thumbnailUrl}
-						layout="fill"
+						fill
 						className="object-cover"
 						alt="news image"
 					/>

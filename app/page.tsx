@@ -20,7 +20,7 @@ const Home = async () => {
 				<div className="h-[200px] sm:h-[320px] w-full relative">
 					<Image
 						src={`${headline.thumbnailUrl}`}
-						layout="fill"
+						fill
 						alt="news image"
 						className="object-cover"
 					/>
