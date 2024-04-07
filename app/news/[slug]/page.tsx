@@ -1,12 +1,11 @@
 import ShareIcon from '@/components/ShareIcon';
 import { NEXTAUTH_URL } from '@/constants/env_var';
-import { news } from '@/db/schema';
 import { getNewsBySlug } from '@/lib/action'
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import parse from 'html-react-parser';
-import { getFormattedDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) => {
   const newsSlug = await getNewsBySlug(slug);
@@ -25,7 +24,7 @@ const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) =>
         <div className="container flex flex-col gap-2 md:gap-4">
           <h1 className="capitalize text-lg md:text-2xl font-semibold">{newsSlug.headline}</h1>
           <div className="flex items-center gap-2 text-sm font-light">
-            <p>{newsSlug.authorName} - <span className="capitalize">{newsSlug.source}</span> • {getFormattedDate(newsSlug.publishedDate)}</p>
+            <p>{newsSlug.authorName} - <span className="capitalize">{newsSlug.source}</span> • {formatDate(newsSlug.publishedDate)}</p>
           </div>
         </div>
       </section>
