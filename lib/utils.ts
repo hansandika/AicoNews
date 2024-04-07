@@ -1,61 +1,19 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+import moment from "moment"
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function getFormattedDate(date: Date): string {
-	const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	const monthIndex = date.getMonth();
-	const day = date.getDate();
-	const year = date.getFullYear();
-	return months[monthIndex] + " " + day + ", " + year;
-}
+export const formatDate = (date: Date) => {
+	const duration = moment.duration(moment().diff(date));
 
-export function getReadableDate(date: Date): string {
-	const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-
-	const interval = Math.floor(seconds / 31536000);
-
-	if (interval > 1) {
-		return interval + " years ago";
+	if (duration.asHours() > 24) {
+		// If the date is more than 24 hours ago, format it as "April 7, 2024"
+		return moment(date).format("MMMM D, YYYY");
+	} else {
+		// If the date is less than 24 hours ago, format it as "2 hours ago"
+		return moment(date).fromNow();
 	}
-	if (interval === 1) {
-		return interval + " year ago";
-	}
-
-	const months = Math.floor(seconds / 2628000);
-	if (months > 1) {
-		return months + " months ago";
-	}
-	if (months === 1) {
-		return months + " month ago";
-	}
-
-	const days = Math.floor(seconds / 86400);
-	if (days > 1) {
-		return days + " days ago";
-	}
-	if (days === 1) {
-		return days + " day ago";
-	}
-
-	const hours = Math.floor(seconds / 3600);
-	if (hours > 1) {
-		return hours + " hours ago";
-	}
-	if (hours === 1) {
-		return hours + " hour ago";
-	}
-
-	const minutes = Math.floor(seconds / 60);
-	if (minutes > 1) {
-		return minutes + " minutes ago";
-	}
-	if (minutes === 1) {
-		return minutes + " minute ago";
-	}
-
-	return "just now";
-}
+};
