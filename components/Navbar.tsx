@@ -42,7 +42,7 @@ const Navbar = ({ session }: NavbarProps) => {
 		<div className="py-4 px-8 flex justify-between items-center">
 			<Link href="/">
 				<Image
-					src="logo.svg"
+					src="/logo.svg"
 					width={150}
 					height={20}
 					alt="logo"
@@ -158,7 +158,7 @@ const Navbar = ({ session }: NavbarProps) => {
 										<div className="flex justify-between items-center">
 											<Link href="/">
 												<Image
-													src="logo.svg"
+													src="/logo.svg"
 													alt="logo"
 													width={120}
 													height={20}
