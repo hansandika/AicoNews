@@ -1,5 +1,5 @@
 import { ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool } from "openai/resources/index.mjs";
-import { retrieveNews, serializeChatHistory } from "./utils";
+import { retrieveNews, serializeChatHistory } from "./utils_chromadb";
 import OpenAI from "openai";
 import { getChatHistory, getNewsBySlug } from "./action";
 import { OPENAI_API_KEY } from "@/constants/env_var";

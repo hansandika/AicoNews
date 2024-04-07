@@ -54,7 +54,7 @@ const Carousel = React.forwardRef<
       opts,
       setApi,
       plugins = [
-        Autoplay({delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true})
+        Autoplay({delay: 3000, stopOnInteraction: false})
       ],
       className,
       children,
@@ -198,7 +198,7 @@ const CarouselItem = React.forwardRef<
       aria-roledescription="slide"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+        orientation === "horizontal" ? "pl-0" : "pt-4",
         className
       )}
       {...props}
@@ -210,14 +210,14 @@ CarouselItem.displayName = "CarouselItem"
 const CarouselNavigation = React.forwardRef<
   HTMLOptionsCollection,
   React.HTMLAttributes<HTMLOptionsCollection>
->(({ className, ...props }) => {
+>(({ className, ...props }, ref) => {
   const {current, scrollToSlide} = useCarousel()
   return (
     <div className="flexCenter gap-3 mt-3" aria-valuenow={current}>
       {Array.from({ length: props["aria-colcount"]! }).map((_, index) => (
         <Button
           key={index}
-          className={`w-4 h-4 p-0 rounded-full ${index == current ? 'bg-black-secondary' : 'bg-black-tertiary'} hover:bg-black-secondary`}
+          className={`w-3 h-3 lg:w-4 lg:h-4 p-0 rounded-full ${index == current ? 'bg-black-secondary' : 'bg-black-tertiary'} hover:bg-black-secondary`}
           onClick={() => scrollToSlide(index)}
         >
         </Button>

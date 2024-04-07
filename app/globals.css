@@ -73,6 +73,7 @@
   body {
     @apply bg-background text-foreground;
   }
+
   .flexCenter {
     @apply flex justify-center items-center;
   }
@@ -84,4 +85,25 @@
   .flexAround {
     @apply flex justify-around items-center;
   }
+
+  .newsCard {
+    @apply flex flex-col md:flex-row max-h-64 md:max-h-96 rounded-lg;
+  }
+
+  .newsThumbnail {
+    @apply w-full md:min-h-96 object-cover;
+  }
+
+  .newsDetails {
+    @apply md:w-3/5 h-24 md:h-96 flex flex-col justify-center gap-2 md:gap-6 p-2 md:px-8 md:py-[64.5px] text-wrap bg-blue-primary text-white;
+  }
+
+  .newsContentPreview {
+    @apply text-xl h-[84px] overflow-clip md:line-clamp-3 hidden;
+  }
+
+  .newsList {
+    @apply grid md:grid-cols-2 gap-x-14 gap-y-3 w-[90vw] container;
+  }
+
 }

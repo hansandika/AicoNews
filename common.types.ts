@@ -22,6 +22,21 @@ export interface UserProfile {
   provider: string;
 }
 
+export interface News {  
+  slug: string;
+  thumbnailUrl: string;
+  headline: string;
+  authorName: string;
+  publishedDate: Date;
+  sourceUrl: string;
+  source: "investing" | "cnbc" | "cnn";
+  content: string;
+  id: string;
+  createdAt: Date;
+  contentHtml: string;
+  categoryName: string;
+}
+
 export interface SessionInterface extends Session {
   user: User & {
     id: string;
