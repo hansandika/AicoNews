@@ -21,7 +21,7 @@ const NewsDetails = ({news, showContentPreview}: Props) => {
       </div>
       {showContentPreview && (
         <div className="newsContentPreview">
-          <Link href={news.sourceUrl} target="_blank" className={news.source === 'investing' ? 'capitalize' : 'uppercase'}>
+          <Link href={news.sourceUrl} target="_blank">
             {news.source}
           </Link> -- <Link href={`news/${news.slug}`}>
               {news.content}

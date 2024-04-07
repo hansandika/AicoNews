@@ -17,7 +17,7 @@ const NewsListItem = ({news}: Props) => {
         <p className="font-semibold text-blue-primary capitalize">{news.categoryName}</p>
         <p className='font-medium line-clamp-3'>{news.headline}</p>
         <p className={'text-black-secondary'}>
-          <span className={news.source === 'investing' ? 'capitalize' : 'uppercase'}>
+          <span>
             {news.source}
           </span> • {formatDate(news.publishedDate)}
         </p>

@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge"
 import moment from "moment"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs));
 }
 
 export const formatDate = (date: Date) => {

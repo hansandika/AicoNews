@@ -29,7 +29,7 @@ export interface News {
   authorName: string;
   publishedDate: Date;
   sourceUrl: string;
-  source: "investing" | "cnbc" | "cnn";
+  source: "Investing" | "CNBC" | "CNN";
   content: string;
   id: string;
   createdAt: Date;

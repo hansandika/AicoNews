@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "source" AS ENUM('investing', 'cnbc', 'cnn');
+ CREATE TYPE "source" AS ENUM('Investing', 'CNBC', 'CNN');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
