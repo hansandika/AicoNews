@@ -1,10 +1,10 @@
 import React from 'react'
-import { News } from '@/common.types'
+import { NewsInstance } from '@/common.types'
 import Link from 'next/link'
 import Image from 'next/image'
 import NewsDetails from './NewsDetails'
 
-const NewsCard = ({news}: {news: News}) => {
+const NewsCard = ({news}: {news: NewsInstance}) => {
   return (
     <div className="newsCard">
       <Link href={`news/${news.slug}`} className="h-[160px] md:h-full">

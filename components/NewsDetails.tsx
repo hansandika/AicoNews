@@ -1,10 +1,10 @@
-import { News } from '@/common.types'
+import { NewsInstance } from '@/common.types'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
 import React from 'react'
 
 type Props = {
-  news: News
+  news: NewsInstance
   showContentPreview?: boolean
 }
 

@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/carousel"
 import { getNewsPagination } from "@/lib/action";
 import NewsCard from "./NewsCard";
-import { News } from "@/common.types";
+import { NewsInstance } from "@/common.types";
 
 const NewsCarousel = async () => {
-  const newsCollection = await getNewsPagination(1,5) as News[];
+  const newsCollection = await getNewsPagination(1,5) as NewsInstance[];
   return (
     <Carousel className="w-full container mb-8 md:mb-12 lg:mb-24">
       <CarouselContent className="w-full flex-grow">

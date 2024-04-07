@@ -22,7 +22,7 @@ export interface UserProfile {
   provider: string;
 }
 
-export interface News {  
+export interface NewsInstance {  
   slug: string;
   thumbnailUrl: string;
   headline: string;

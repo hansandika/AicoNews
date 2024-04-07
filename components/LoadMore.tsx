@@ -1,6 +1,6 @@
 "use client"
 
-import { News } from "@/common.types";
+import { NewsInstance } from "@/common.types";
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { useInView } from "react-intersection-observer";
@@ -12,7 +12,7 @@ let moreAvailable = true
 
 const LoadMore = () => {
   const { ref, inView } = useInView();
-  const [data, setData] = useState<News[]>([]);
+  const [data, setData] = useState<NewsInstance[]>([]);
 
   useEffect(() => {
     if(inView){
