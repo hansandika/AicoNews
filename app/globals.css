@@ -103,7 +103,7 @@
   }
 
   .newsList {
-    @apply grid md:grid-cols-2 gap-x-14 gap-y-3 w-[90vw] container;
+    @apply grid md:grid-cols-2 gap-x-14 gap-y-3 w-full container;
   }
 
 }
