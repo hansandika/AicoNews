@@ -2,9 +2,11 @@ import { getUserChatResponse } from "@/lib/chatbot_action";
 import { getCurrentUser } from "@/lib/session";
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 
-
 export async function POST(request: Request, { params }: { params: { slug: string } }) {
   const session = await getCurrentUser();
+  if (!session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const { message } = await request.json();
 
   const response = await getUserChatResponse({

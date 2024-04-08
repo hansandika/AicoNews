@@ -1,35 +1,29 @@
 "use client";
+import { useTheme } from "next-themes";
 import Script from "next/script";
 import React, { useEffect, useRef, useState } from "react";
 
 function MarketWidgets() {
-	const containerRef = useRef<HTMLDivElement | null>(null);
-	const [theme, setTheme] = useState("light");
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { resolvedTheme: theme } = useTheme()
 
-	useEffect(() => {
-		// If there is no window
-		if (typeof window === "undefined") return;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-		// get theme from local storage
-		const storedTheme = window.localStorage.getItem("theme");
-		if (storedTheme) {
-			setTheme(storedTheme);
-		}
+    const scriptElement = document.createElement("script");
+    scriptElement.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+    scriptElement.async = true;
 
-		const scriptElement = document.createElement("script");
-		scriptElement.src =
-			"https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
-		scriptElement.async = true;
-		scriptElement.text = `
+    scriptElement.text = `
         {
-            "colorTheme": ${theme === "dark" ? '"dark"' : '"light"'},
+            "colorTheme": "${theme}",
             "dateRange": "1M",
             "showChart": true,
             "locale": "en",
             "width": "100%",
             "height": "100%",
             "largeChartUrl": "",
-            "isTransparent": true,
             "showSymbolLogo": true,
             "showFloatingTooltip": true,
             "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
@@ -134,28 +128,34 @@ function MarketWidgets() {
           }
           `;
 
-		if (containerRef.current) {
-			containerRef.current.appendChild(scriptElement);
-		}
+    if (containerRef.current!.children.length > 1) {
+      for (let i = 0; i < 2; i++) {
+        containerRef.current!.removeChild(containerRef.current!.children[0]);
+      }
+    }
 
-		return () => {
-			if (
-				scriptElement &&
-				containerRef.current &&
-				containerRef.current.contains(scriptElement)
-			) {
-				containerRef.current.removeChild(scriptElement);
-			}
-		};
-	}, [theme]);
+    if (containerRef.current) {
+      containerRef.current.appendChild(scriptElement);
+    }
 
-	return (
-		<div
-			ref={containerRef}
-			id="script-container"
-			className="tradingview-widget-container"
-		></div>
-	);
+    return () => {
+      if (
+        scriptElement &&
+        containerRef.current &&
+        containerRef.current.contains(scriptElement)
+      ) {
+        containerRef.current.removeChild(scriptElement);
+      }
+    };
+  }, [theme]);
+
+  return (
+    <div
+      ref={containerRef}
+      id="script-container"
+      className="tradingview-widget-container"
+    ></div>
+  );
 }
 
 export default MarketWidgets;

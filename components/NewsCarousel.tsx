@@ -8,20 +8,20 @@ import {
 } from "@/components/ui/carousel"
 import { getNewsPagination } from "@/lib/action";
 import NewsCard from "./NewsCard";
-import { NewsInstance } from "@/common.types";
+import { NewsInterface } from "@/common.types";
 
 const NewsCarousel = async () => {
-  const newsCollection = await getNewsPagination(1,5) as NewsInstance[];
+  const newsCollection = await getNewsPagination(1, 5) as NewsInterface[];
   return (
     <Carousel className="w-full container mb-8 md:mb-12 lg:mb-24">
       <CarouselContent className="w-full flex-grow">
         {newsCollection.map((news) => (
           <CarouselItem key={news.id}>
-            <NewsCard news ={news} key={news.id}/>
+            <NewsCard news={news} key={news.id} />
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselNavigation aria-colcount={newsCollection.length}/>
+      <CarouselNavigation aria-colcount={newsCollection.length} />
     </Carousel>
   )
 }

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ShareIcon = ({ url, hashtag, quote }: Props) => {
-  return <div className='flex md:flex-col md:items-start items-center order-2 md:order-1 mr-8 mb-4'>
+  return <div className='flex md:flex-col md:items-start items-center order-2 md:order-1'>
     <p className='font-semibold text-primary dark:text-primary mr-2 m md:mr-0'>Share:</p>
 
     <div className="flex items-center gap-2">
