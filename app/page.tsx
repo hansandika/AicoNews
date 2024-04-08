@@ -22,7 +22,7 @@ const Home = async () => {
 						<h3 className="text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 							Highlight
 						</h3>
-						<Separator className="bg-blue-primary dark:bg-blue-primary-dark"></Separator>
+						<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 					</div>
 
 					{/* headline */}
@@ -73,8 +73,7 @@ const Home = async () => {
 						<h3 className="text-[1.5rem] lg:text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 							Latest
 						</h3>
-						{/* <hr className=" bg-blue-primary" /> */}
-						<Separator className="bg-blue-primary dark:bg-blue-primary-dark"></Separator>
+						<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 					</div>
 					<div className="flex w-full flex-col pt-3 sm:pt-5 px-2 xl:px-0 grow  justify-between">
 						{newsItems.map((newsItem, index) => {
@@ -104,11 +103,10 @@ const Home = async () => {
 					<h3 className="text-[1.5rem] lg:text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 						Markets
 					</h3>
-					{/* <hr className=" bg-blue-primary" /> */}
-					<Separator className="bg-blue-primary dark:bg-blue-primary-dark"></Separator>
+					<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 				</div>
 				<div className="h-[600px]">
-					<MarketWidgets></MarketWidgets>
+					<MarketWidgets />
 				</div>
 			</div>
 		</main>
