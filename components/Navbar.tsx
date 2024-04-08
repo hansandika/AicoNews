@@ -13,6 +13,14 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { HiMenuAlt1 } from "react-icons/hi";
@@ -21,8 +29,22 @@ import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import AuthProviders from "./AuthProviders";
 import { NavLinks } from "@/constants";
-
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ToggleTheme from "./ToggleTheme";
+import { LogOut, Users } from "lucide-react";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -39,7 +61,7 @@ const Navbar = ({ session }: NavbarProps) => {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	return isDesktop ? (
-		<div className="py-4 px-8 flex justify-between items-center">
+		<div className="py-4 px-8 flex justify-between items-center max-w-[1400px] mx-auto">
 			<Link href="/">
 				<Image
 					src="/logo.svg"
@@ -67,20 +89,58 @@ const Navbar = ({ session }: NavbarProps) => {
 					})}
 				</div>
 				<div className="flex items-center gap-6">
-					<p>|</p>
+					<p className="text-black-secondary">|</p>
 					<div>
 						<ToggleTheme />
 					</div>
 					{session?.user ? (
-						<Image
-							src={session?.user.image}
-							width={40}
-							height={40}
-							alt="user profile"
-							className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
-						/>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Image
+									src={session?.user.image}
+									width={40}
+									height={40}
+									alt="user profile"
+									className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full cursor-pointer"
+								/>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent className="w-56">
+								<DropdownMenuLabel>My Account</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+
+								<DropdownMenuGroup>
+									<DropdownMenuItem>
+										<Users className="mr-2 h-4 w-4" />
+										<span>Profile</span>
+									</DropdownMenuItem>
+								</DropdownMenuGroup>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem
+									className="cursor-pointer"
+									onClick={() => signOut()}
+								>
+									<LogOut className="mr-2 h-4 w-4" />
+									<span>Log out</span>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					) : (
-						<Button>Sign In</Button>
+						<Dialog>
+							<DialogTrigger>
+								<Button>Sign In</Button>
+							</DialogTrigger>
+							<DialogContent>
+								<DialogHeader>
+									<DialogTitle className="font-semibold text-[1.5rem] text-blue-primary dark:text-blue-primary-dark text-center">
+										Sign In to AicoNews
+									</DialogTitle>
+									<DialogDescription className="text-center pb-5">
+										Sign in to access your account.
+									</DialogDescription>
+									<AuthProviders></AuthProviders>
+								</DialogHeader>
+							</DialogContent>
+						</Dialog>
 					)}
 				</div>
 			</div>
