@@ -1,3 +1,5 @@
+"use server";
+
 import db from "@/db"
 import { chatHistory, news, users } from "@/db/schema"
 import { and, desc, eq } from "drizzle-orm"

@@ -1,15 +1,22 @@
 import ShareIcon from '@/components/ShareIcon';
 import { NEXTAUTH_URL } from '@/constants/env_var';
-import { getNewsBySlug } from '@/lib/action'
+import { getNewsBySlug, getNewsPagination } from '@/lib/action'
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import parse from 'html-react-parser';
 import { formatDate } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import NewsItem from '@/components/NewsItem';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { getCurrentUser } from '@/lib/session';
 
 const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) => {
   const newsSlug = await getNewsBySlug(slug);
   const host = NEXTAUTH_URL;
+  const newsCollection = await getNewsPagination(1, 5);
+  const session = await getCurrentUser();
 
   if (!newsSlug) {
     return notFound();
@@ -28,14 +35,57 @@ const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) =>
           </div>
         </div>
       </section>
-      <div className="flex py-8 md:py-12 container flex-wrap">
+      <div className="flex py-8 md:py-12 container flex-wrap gap-8">
         <ShareIcon url={`${host}/news/${slug}`} hashtag={newsSlug.categoryName} quote={newsSlug.headline} />
-        <article className="prose prose-xl prose-headings:underline prose-a:text-blue-600 order-1 md:order-2">
+        <article className="prose prose-xl prose-headings:underline prose-a:text-blue-600 dark:prose-invert order-1 md:order-2">
           {parse(parse(newsSlug.contentHtml) as string)}
         </article>
-        <div className=''>
+        <div className="order-3 w-full 2xl:w-64">
+          <div className='w-full'>
+            <h3 className="text-[1.5rem] font-bold text-blue-primary dark:text-blue-primary-dark mb-2">
+              Latest
+            </h3>
+            <Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
+          </div>
+          <div className="flex flex-col md:py-4 py-6">
+            {newsCollection.map((newsItem, index) => {
+              return (
+                <div key={index}>
+                  <NewsItem
+                    key={index}
+                    {...newsItem}
+                  />
+                  {index !== newsCollection.length - 1 &&
+                    (
+                      <div className="py-3">
+                        <Separator className="bg-black-tertiary h-[1px]" />
+                      </div>
+                    )
+                  }
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
+      {session?.user && (
+        <Sheet>
+          <SheetTrigger asChild>
+            <div className='fixed z-10 p-3 transition rounded shadow-sm bg-black-primary dark:bg-white right-10 bottom-10 hover:scale-90'>
+              <FaWandMagicSparkles size={24} className="text-white dark:text-black-primary" />
+            </div>
+          </SheetTrigger>
+          <SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
+            <SheetHeader>
+              <SheetTitle className='text-left my-4'>AI Assistant</SheetTitle>
+              <SheetDescription>
+                This action cannot be undone. This will permanently delete your account
+                and remove your data from our servers.
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   )
 }

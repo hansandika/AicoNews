@@ -46,3 +46,8 @@ export interface SessionInterface extends Session {
 		image: string;
 	};
 }
+
+export interface RelatedNewsInterface {
+	slug: string;
+	content: string;
+}

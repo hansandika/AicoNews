@@ -67,24 +67,24 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
 
-  .flexCenter {
-    @apply flex justify-center items-center;
-  }
+	.flexCenter {
+		@apply flex justify-center items-center;
+	}
 
 	.flexBetween {
 		@apply flex justify-between items-center;
 	}
 
-  .flexAround {
-    @apply flex justify-around items-center;
-  }
+	.flexAround {
+		@apply flex justify-around items-center;
+	}
 
   .newsCard {
     @apply flex flex-col md:flex-row md:max-h-96 md:rounded;
@@ -98,12 +98,36 @@
     @apply md:w-3/5 h-32 md:h-96 flex flex-col justify-center gap-3 md:gap-6 p-3 md:px-8 md:py-[64.5px] text-wrap bg-blue-primary text-white;
   }
 
-  .newsContentPreview {
-    @apply text-xl h-[84px] overflow-clip md:line-clamp-3 hidden;
-  }
+	.newsContentPreview {
+		@apply text-xl h-[84px] overflow-clip md:line-clamp-3 hidden;
+	}
 
-  .newsList {
-    @apply grid md:grid-cols-2 gap-x-14 gap-y-3 w-full container;
-  }
+	.newsList {
+		@apply grid md:grid-cols-2 gap-x-14 gap-y-3 w-full container;
+	}
+}
 
+.custom-container {
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	max-width: 1400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (min-width: 640px) {
+	.custom-container {
+		padding-left: 1.25rem;
+		padding-right: 1.25rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.lg\:custom-container {
+		padding-left: 1.25rem;
+		padding-right: 1.25rem;
+		max-width: 1400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
