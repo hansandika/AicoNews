@@ -7,7 +7,7 @@ import NewsDetails from './NewsDetails'
 const NewsCard = ({ news }: { news: NewsInterface }) => {
   return (
     <div className="newsCard">
-      <Link href={`news/${news.slug}`} className="h-[160px] md:h-full">
+      <Link href={`news/${news.slug}`} className="md:h-full">
         <div>
           <Image src={news.thumbnailUrl} height={360} width={640} alt="News Thumbnail" className="newsThumbnail" />
         </div>

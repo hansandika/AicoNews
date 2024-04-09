@@ -13,7 +13,7 @@ import { NewsInterface } from "@/common.types";
 const NewsCarousel = async () => {
   const newsCollection = await getNewsPagination(1, 5) as NewsInterface[];
   return (
-    <Carousel className="w-full container mb-8 md:mb-12 lg:mb-24">
+    <Carousel className="w-full md:container mb-8 md:mb-12">
       <CarouselContent className="w-full flex-grow">
         {newsCollection.map((news) => (
           <CarouselItem key={news.id}>

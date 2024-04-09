@@ -170,7 +170,7 @@ const CarouselContent = React.forwardRef<
   const { carouselRef, orientation } = useCarousel()
 
   return (
-    <div ref={carouselRef} className="overflow-hidden rounded-lg">
+    <div ref={carouselRef} className="overflow-hidden md:rounded">
       <div
         ref={ref}
         className={cn(
@@ -215,9 +215,9 @@ const CarouselNavigation = React.forwardRef<
   return (
     <div className="flexCenter gap-3 mt-3" aria-valuenow={current}>
       {Array.from({ length: props["aria-colcount"]! }).map((_, index) => (
-        <Button
+        <Button variant={"ghost"}
           key={index}
-          className={`w-3 h-3 lg:w-4 lg:h-4 p-0 rounded-full ${index == current ? 'bg-black-secondary' : 'bg-black-tertiary'} hover:bg-black-secondary`}
+          className={`w-3 h-3 lg:w-4 lg:h-4 p-0 rounded-full ${index == current ? 'bg-black-secondary dark:bg-black-tertiary' : 'bg-black-tertiary dark:bg-black-secondary'} hover:bg-black-secondary dark:hover:bg-black-tertiary`}
           onClick={() => scrollToSlide(index)}
         >
         </Button>
