@@ -61,7 +61,7 @@ const cleanNewsString = (inputString: string) => {
 }
 
 const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[]): RelatedNewsInterface[] => {
-	let result: Record<string, string> = {};
+	const result: Record<string, string> = {};
 
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
@@ -93,7 +93,7 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 		{ collectionName: CHROMADB_COLLECTION_NAME, url: CHROMADB_HOST }
 	);
 
-	const result = await vectorStore.similaritySearch(query, 3);
+	const result = await vectorStore.similaritySearch(query, 5);
 
 	const documents = result as DocumentInterface<Record<string, any>>[];
 	const combinedResult = combineRelatedResult(documents);
