@@ -6,6 +6,9 @@ import NewsItem from "@/components/NewsItem";
 import MarketWidgets from "@/components/MarketWidgets";
 import { getNewsPagination } from "@/lib/action";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
+import SearchBar from "@/components/SearchBar";
+import { ComboboxDemo } from "@/components/ComboBox";
 const Home = async () => {
 	const news = await getNewsPagination(1, 9);
 
@@ -36,8 +39,11 @@ const Home = async () => {
 									className="object-cover"
 								/>
 							</div>
-							<div className="bg-blue-primary w-full  py-2 sm:py-4 lg:py-0 px-3 sm:px-5  lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center">
-								<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold lg:mt-2">
+							<Link
+								href={`/news/${headline.slug}`}
+								className="bg-blue-primary w-full  py-2 sm:py-4 lg:py-0 px-3 sm:px-5  lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center"
+							>
+								<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold lg:mt-2 hover:underline">
 									{headline.headline}
 								</h2>
 								<div className="pt-3 sm:pt-4 mb-3 flex items-center justify-between gap-1 text-[0.75rem] text-white">
@@ -51,8 +57,9 @@ const Home = async () => {
 										</div>
 									</div>
 								</div>
-							</div>
+							</Link>
 						</div>
+
 						{/* Highlights */}
 						<div className="flex flex-col gap-3 md: sm:gap-5 py-3 lg:py-0 sm:py-5 px-3 sm:px-5 lg:px-0  lg:grow w-full">
 							{highlightNews.map((newsItem, index) => {

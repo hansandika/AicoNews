@@ -44,7 +44,10 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ToggleTheme from "./ToggleTheme";
-import { LogOut, Users } from "lucide-react";
+import { LogOut, Search, Users } from "lucide-react";
+import { FiSearch } from "react-icons/fi";
+import SearchBar from "./SearchBar";
+import { ComboboxDemo } from "./ComboBox";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -152,7 +155,7 @@ const Navbar = ({ session }: NavbarProps) => {
 		>
 			<div className="">
 				<Drawer direction="top">
-					<div className="flex justify-between">
+					<div className="flex justify-between gap-5">
 						<div className="flex gap-3 items-center">
 							<DrawerTrigger asChild>
 								<HiMenuAlt1
@@ -269,7 +272,9 @@ const Navbar = ({ session }: NavbarProps) => {
 								/>
 							</Link>
 						</div>
-						<div className="flex items-center gap-5">
+						<SearchBar />
+
+						<div className="flex items-center gap-5 shrink-0">
 							<div>
 								<ToggleTheme />
 							</div>
@@ -279,7 +284,7 @@ const Navbar = ({ session }: NavbarProps) => {
 									width={40}
 									height={40}
 									alt="user profile"
-									className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+									className="relative shrink-0 h-10 w-10 overflow-hidden rounded-full"
 								/>
 							) : (
 								<DrawerTrigger asChild>
