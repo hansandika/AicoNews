@@ -33,6 +33,7 @@ export default function RootLayout({
 					attribute="class"
 					defaultTheme="system"
 					enableSystem
+					enableColorScheme={false}
 					disableTransitionOnChange>
 					<div className="dark:bg-black">
 						<NavbarWrapper />

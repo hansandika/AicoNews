@@ -64,7 +64,7 @@ const Navbar = ({ session }: NavbarProps) => {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	return isDesktop ? (
-		<div className="py-4 px-8 flex justify-between items-center max-w-[1400px] mx-auto">
+		<div className="py-4 container flex justify-between items-center">
 			<Link href="/">
 				<Image
 					src="/logo.svg"
@@ -80,11 +80,10 @@ const Navbar = ({ session }: NavbarProps) => {
 							<Link
 								key={link.text}
 								href={link.href}
-								className={`w-full rounded-md py-2 ${
-									currentPath === link.href
-										? "text-blue-primary dark:text-blue-secondary"
-										: "text-black-tertiary hover:text-black-secondary"
-								}`}
+								className={`w-full rounded-md py-2 ${currentPath === link.href
+									? "text-blue-primary dark:text-blue-secondary"
+									: "text-black-tertiary hover:text-black-secondary"
+									}`}
 							>
 								{link.text}
 							</Link>
@@ -153,7 +152,7 @@ const Navbar = ({ session }: NavbarProps) => {
 			className="py-2 sm:py-4 container"
 			suppressHydrationWarning
 		>
-			<div className="">
+			<div>
 				<Drawer direction="top">
 					<div className="flex justify-between gap-5">
 						<div className="flex gap-3 items-center">
@@ -189,11 +188,10 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
-																? "text-blue-primary dark:text-blue-primary-dark"
-																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-														}`}
+														className={`w-full rounded-md py-2 ${currentPath === link.href
+															? "text-blue-primary dark:text-blue-primary-dark"
+															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+															}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -234,11 +232,10 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
-																? "text-blue-primary dark:text-blue-primary-dark"
-																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-														}`}
+														className={`w-full rounded-md py-2 ${currentPath === link.href
+															? "text-blue-primary dark:text-blue-primary-dark"
+															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+															}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
