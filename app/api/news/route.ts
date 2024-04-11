@@ -1,9 +1,8 @@
-import { getUserChatResponse } from "@/lib/chatbot_action";
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { retrieveNewsWithGrouping } from "@/lib/utils_chromadb";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
-  const { message } = await request.json();
-
-  // const stream = OpenAIStream(response)
-  // return new StreamingTextResponse(stream)
+export async function POST(request: NextRequest) {
+  const { query } = await request.json();
+  const result = await retrieveNewsWithGrouping(query);
+  return Response.json({ "relatedNews": result }, { status: 200 });
 }

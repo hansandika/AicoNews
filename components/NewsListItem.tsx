@@ -34,12 +34,12 @@ const NewsListItem = ({ news }: Props) => {
 			</div>
 		</Link>
 	) : (
-		<div className="flex gap-5 gap-y-14">
+		<div className="flex gap-3 md:gap-5 gap-y-14">
 			<Skeleton className="h-[120px] w-[120px] object-cover bg-black-tertiary"></Skeleton>
-			<div className="flex flex-col justify-center gap-2">
-				<Skeleton className="h-4 w-[300px] bg-black-tertiary"></Skeleton>
-				<Skeleton className="h-4 w-[300px] bg-black-tertiary"></Skeleton>
-				<Skeleton className="h-4 w-[300px] bg-black-tertiary"></Skeleton>
+			<div className="flex flex-col justify-center gap-2 w-2/3">
+				<Skeleton className="h-4 w-full bg-black-tertiary"></Skeleton>
+				<Skeleton className="h-4 w-full bg-black-tertiary"></Skeleton>
+				<Skeleton className="h-4 w-full bg-black-tertiary"></Skeleton>
 			</div>
 		</div>
 	);
