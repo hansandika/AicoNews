@@ -14,8 +14,8 @@ const Home = async () => {
 	const newsItems = news.slice(4, 9);
 	const session = await getCurrentUser();
 	return (
-		<main className="xl:max-w-[1400px] xl:mx-auto">
-			<div className="lg:px-8 lg:pt-5 flex flex-col xl:flex-row xl:gap-8">
+		<div className="lg:container">
+			<div className="lg:pt-5 flex flex-col xl:flex-row xl:gap-8">
 				{/* Highlight */}
 				<div>
 					<div className="hidden lg:block  pb-5 w-full">
@@ -36,7 +36,7 @@ const Home = async () => {
 									className="object-cover"
 								/>
 							</div>
-							<div className="bg-blue-primary w-full  py-2 sm:py-4 lg:py-0 px-3 sm:px-5  lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center">
+							<div className="bg-blue-primary w-full py-2 sm:py-4 lg:py-0 px-3 sm:px-5 lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center">
 								<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold lg:mt-2">
 									{headline.headline}
 								</h2>
@@ -54,7 +54,7 @@ const Home = async () => {
 							</div>
 						</div>
 						{/* Highlights */}
-						<div className="flex flex-col gap-3 md: sm:gap-5 py-3 lg:py-0 sm:py-5 px-3 sm:px-5 lg:px-0  lg:grow w-full">
+						<div className="flex flex-col gap-3 md: sm:gap-5 py-3 lg:py-0 sm:py-5 px-3 sm:px-5 lg:px-0 lg:grow w-full">
 							{highlightNews.map((newsItem, index) => {
 								return (
 									<LargeNewsItem
@@ -75,7 +75,7 @@ const Home = async () => {
 						</h3>
 						<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 					</div>
-					<div className="flex w-full flex-col pt-3 sm:pt-5 px-2 xl:px-0 grow  justify-between">
+					<div className="flex w-full flex-col pt-3 sm:pt-5 px-3 sm:px-5 lg:px-0 grow justify-between">
 						{newsItems.map((newsItem, index) => {
 							return (
 								<div key={index}>
@@ -98,7 +98,7 @@ const Home = async () => {
 			</div>
 
 			{/* Markets */}
-			<div className="xl:pt-5 px-3 sm:px-5 lg:px-8 pb-5 w-full">
+			<div className="xl:pt-5 px-3 sm:px-5 lg:px-0 pb-5 w-full">
 				<div>
 					<h3 className="text-[1.5rem] lg:text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 						Markets
@@ -109,7 +109,7 @@ const Home = async () => {
 					<MarketWidgets />
 				</div>
 			</div>
-		</main>
+		</div>
 	);
 };
 

@@ -1,7 +1,6 @@
 "use client";
 import { getMarketWidgetTexts } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import Script from "next/script";
 import React, { useEffect, useRef, useState } from "react";
 
 const MarketWidgets = () => {
