@@ -1,6 +1,6 @@
 "use server";
 
-import { ChatHistory, RelatedNewsInterface } from "@/common.types";
+import { ChatHistory, RelatedNewsContentInterface, RelatedNewsInterface } from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
@@ -61,23 +61,27 @@ const cleanNewsString = (inputString: string) => {
 }
 
 const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[]): RelatedNewsInterface[] => {
-	const result: Record<string, string> = {};
+	const result: Record<string, RelatedNewsContentInterface> = {};
 
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
 		const slug = metadata.slug as string;
 		if (result[slug]) {
-			result[slug] += doc.pageContent;
+			result[slug].content += doc.pageContent;
 		} else {
-			result[slug] = doc.pageContent;
+			result[slug] = {
+				headline: metadata.headline,
+				content: doc.pageContent
+			}
 		}
 	})
 
 	const relatedNews: RelatedNewsInterface[] = Object.keys(result).map((slug) => {
 		return {
 			slug: slug,
-			content: cleanNewsString(result[slug]),
+			headline: result[slug].headline,
+			content: cleanNewsString(result[slug].content),
 		};
 	});
 

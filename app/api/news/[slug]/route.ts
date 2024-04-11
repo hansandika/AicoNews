@@ -18,8 +18,6 @@ export async function POST(request: Request, { params }: { params: { slug: strin
     userId: session.user.id
   })
 
-  console.log(`lastMessage: ${lastMessage}`)
-
   const stream = OpenAIStream(response)
   return new StreamingTextResponse(stream)
 }
