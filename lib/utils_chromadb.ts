@@ -24,12 +24,12 @@ const combinePageContent = (documents: Document[]): string => {
 export const serializeChatHistory = (chatHistory: ChatHistory): string =>
 	chatHistory
 		.map((chatMessage) => {
-			if (chatMessage.type === "human") {
-				return `Human: ${chatMessage.message}`;
-			} else if (chatMessage.type === "AI") {
-				return `Assistant: ${chatMessage.message}`;
+			if (chatMessage.role === "human") {
+				return `Human: ${chatMessage.content}`;
+			} else if (chatMessage.role === "AI") {
+				return `Assistant: ${chatMessage.content}`;
 			} else {
-				return `${chatMessage.message}`;
+				return `${chatMessage.content}`;
 			}
 		})
 		.join("\n");

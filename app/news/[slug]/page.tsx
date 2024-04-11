@@ -1,6 +1,6 @@
 import ShareIcon from '@/components/ShareIcon';
 import { NEXTAUTH_URL } from '@/constants/env_var';
-import { getNewsBySlug, getNewsPagination } from '@/lib/action'
+import { getChatHistory, getNewsBySlug, getNewsPagination } from '@/lib/action'
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react'
@@ -11,6 +11,8 @@ import NewsItem from '@/components/NewsItem';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { getCurrentUser } from '@/lib/session';
+import Chat from '@/components/Chat';
+import DeleteChat from '@/components/DeleteChat';
 
 const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) => {
   const newsSlug = await getNewsBySlug(slug);
@@ -76,11 +78,13 @@ const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) =>
             </div>
           </SheetTrigger>
           <SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
-            <SheetHeader>
-              <SheetTitle className='text-left my-4'>AI Assistant</SheetTitle>
-              <SheetDescription>
-                This action cannot be undone. This will permanently delete your account
-                and remove your data from our servers.
+            <SheetHeader className='h-full'>
+              <SheetTitle className='text-left my-4 flex justify-between items-center pt-4'>
+                AI Assistant
+                <DeleteChat slug={slug} session={session} />
+              </SheetTitle>
+              <SheetDescription className='h-full'>
+                <Chat news={newsSlug} session={session} />
               </SheetDescription>
             </SheetHeader>
           </SheetContent>

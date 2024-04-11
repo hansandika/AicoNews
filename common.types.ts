@@ -1,8 +1,8 @@
 import { User, Session } from "next-auth";
 
 export interface ChatMessage {
-	message: string;
-	type: "human" | "AI";
+	content: string;
+	role: "human" | "AI";
 }
 
 export type ChatHistory = ChatMessage[];
@@ -10,7 +10,7 @@ export type ChatHistory = ChatMessage[];
 export type ChatHistoryDatabase = {
 	userId: string;
 	newsId: string;
-	message: unknown;
+	message: string;
 	createdAt: Date;
 };
 

@@ -16,6 +16,8 @@ const fontSans = FontSans({
 	variable: "--font-sans",
 });
 
+export const revalidate = 3600;
+
 export default function RootLayout({
 	children,
 }: Readonly<{
