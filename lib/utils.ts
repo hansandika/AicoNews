@@ -27,6 +27,7 @@ export const getMarketWidgetTexts = (theme: string): string => {
       "width": "100%",
       "height": "100%",
       "largeChartUrl": "",
+      "isTransparent": true,
       "showSymbolLogo": true,
       "showFloatingTooltip": true,
       "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
@@ -129,5 +130,5 @@ export const getMarketWidgetTexts = (theme: string): string => {
         }
       ]
     }
-    `
-}
+    `;
+};

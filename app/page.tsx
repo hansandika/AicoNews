@@ -112,7 +112,7 @@ const Home = async () => {
 					</h3>
 					<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 				</div>
-				<div className="h-[600px]">
+				<div className="h-[600px] ">
 					<MarketWidgets />
 				</div>
 			</div>

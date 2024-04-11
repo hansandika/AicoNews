@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import useSWR from "swr";
+import useSWR, { Fetcher } from "swr";
 
 import {
 	CommandDialog,
@@ -24,32 +24,26 @@ import {
 } from "lucide-react";
 import { FacebookIcon } from "next-share";
 
-const frameworks = [
-	{
-		value: "next.js",
-		label: "Next.js",
-	},
-	{
-		value: "sveltekit",
-		label: "SvelteKit",
-	},
-	{
-		value: "nuxt.js",
-		label: "Nuxt.js",
-	},
-	{
-		value: "remix",
-		label: "Remix",
-	},
-	{
-		value: "astro",
-		label: "Astro",
-	},
-];
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+type QUERY_KEY = {
+	url: string;
+	query: string;
+};
+
+const fetcher = async (url: string, query: string) =>
+	fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(query),
+	}).then((res) => res.json());
 
 const SearchBar = () => {
-	const { data, error, isLoading } = useSWR("/api/news", fetcher);
+	const url = "/api/news";
+	const [query, setQuery] = useState("");
+	const { data, error, isLoading } = useSWR({ url, query }, () =>
+		fetcher(url, query)
+	);
 
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
@@ -58,58 +52,20 @@ const SearchBar = () => {
 		setOpen(true);
 	};
 
+	const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(e.target.value);
+	};
+
 	return (
-		<>
-			<div className="text-sm text-muted-foreground">
-				<div className="flex w-full">
-					<Button
-						variant={"search"}
-						className="flex grow justify-between "
-						onClick={openSearch}
-					>
-						<p>Search...</p>
-						<FiSearch />
-					</Button>
-				</div>
-			</div>
-			<CommandDialog
-				open={open}
-				onOpenChange={setOpen}
-			>
-				<CommandInput placeholder="Type a command or search..." />
-				<CommandList>
-					<CommandEmpty>No results found.</CommandEmpty>
-					<CommandGroup heading="Suggestions">
-						<CommandItem>
-							<FacebookIcon className="mr-2 h-4 w-4" />
-							<span>Search Emoji</span>
-						</CommandItem>
-						<CommandItem>
-							<RocketIcon className="mr-2 h-4 w-4" />
-							<span>Launch</span>
-						</CommandItem>
-					</CommandGroup>
-					<CommandSeparator />
-					<CommandGroup heading="Settings">
-						<CommandItem>
-							<PersonStandingIcon className="mr-2 h-4 w-4" />
-							<span>Profile</span>
-							<CommandShortcut>⌘P</CommandShortcut>
-						</CommandItem>
-						<CommandItem>
-							<MailIcon className="mr-2 h-4 w-4" />
-							<span>Mail</span>
-							<CommandShortcut>⌘B</CommandShortcut>
-						</CommandItem>
-						<CommandItem>
-							<SettingsIcon className="mr-2 h-4 w-4" />
-							<span>Settings</span>
-							<CommandShortcut>⌘S</CommandShortcut>
-						</CommandItem>
-					</CommandGroup>
-				</CommandList>
-			</CommandDialog>
-		</>
+		<div>
+			<input
+				type="text"
+				onChange={handleFormChange}
+				value={value}
+			/>
+
+			<div>{data}</div>
+		</div>
 	);
 };
 

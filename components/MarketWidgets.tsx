@@ -5,47 +5,47 @@ import Script from "next/script";
 import React, { useEffect, useRef, useState } from "react";
 
 const MarketWidgets = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const { resolvedTheme: theme } = useTheme()
+	const containerRef = useRef<HTMLDivElement | null>(null);
+	const { resolvedTheme: theme } = useTheme();
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+	useEffect(() => {
+		if (typeof window === "undefined") return;
 
-    const scriptElement = document.createElement("script");
-    scriptElement.src =
-      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
-    scriptElement.async = true;
+		const scriptElement = document.createElement("script");
+		scriptElement.src =
+			"https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+		scriptElement.async = true;
 
-    scriptElement.text = getMarketWidgetTexts(theme as string);
+		scriptElement.text = getMarketWidgetTexts(theme as string);
 
-    if (containerRef.current!.children.length > 1) {
-      for (let i = 0; i < 2; i++) {
-        containerRef.current!.removeChild(containerRef.current!.children[0]);
-      }
-    }
+		if (containerRef.current!.children.length > 1) {
+			for (let i = 0; i < 2; i++) {
+				containerRef.current!.removeChild(containerRef.current!.children[0]);
+			}
+		}
 
-    if (containerRef.current) {
-      containerRef.current.appendChild(scriptElement);
-    }
+		if (containerRef.current) {
+			containerRef.current.appendChild(scriptElement);
+		}
 
-    return () => {
-      if (
-        scriptElement &&
-        containerRef.current &&
-        containerRef.current.contains(scriptElement)
-      ) {
-        containerRef.current.removeChild(scriptElement);
-      }
-    };
-  }, [theme]);
+		return () => {
+			if (
+				scriptElement &&
+				containerRef.current &&
+				containerRef.current.contains(scriptElement)
+			) {
+				containerRef.current.removeChild(scriptElement);
+			}
+		};
+	}, [theme]);
 
-  return (
-    <div
-      ref={containerRef}
-      id="script-container"
-      className="tradingview-widget-container"
-    ></div>
-  );
-}
+	return (
+		<div
+			ref={containerRef}
+			id="script-container"
+			className="tradingview-widget-container"
+		></div>
+	);
+};
 
 export default MarketWidgets;

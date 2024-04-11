@@ -36,4 +36,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+chroma.sqlite3
+
+/962b40b2-4bb5-4ae6-8195-8d95e2e5565b
+
 .vscode

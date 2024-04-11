@@ -51,16 +51,17 @@ export const retrieveNews = async (query: string, slug: string) => {
 	return combinedContent;
 };
 
-
 const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
-	let cleanedString = inputString.replace(/\n/g, ' ');
+	let cleanedString = inputString.replace(/\n/g, " ");
 	// Remove quotation marks
-	cleanedString = cleanedString.replace(/\"/g, '');
+	cleanedString = cleanedString.replace(/\"/g, "");
 	return cleanedString;
-}
+};
 
-const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[]): RelatedNewsInterface[] => {
+const combineRelatedResult = (
+	documents: DocumentInterface<Record<string, any>>[]
+): RelatedNewsInterface[] => {
 	const result: Record<string, string> = {};
 
 	// group the result based on metadata slug
@@ -72,17 +73,19 @@ const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[
 		} else {
 			result[slug] = doc.pageContent;
 		}
-	})
-
-	const relatedNews: RelatedNewsInterface[] = Object.keys(result).map((slug) => {
-		return {
-			slug: slug,
-			content: cleanNewsString(result[slug]),
-		};
 	});
 
+	const relatedNews: RelatedNewsInterface[] = Object.keys(result).map(
+		(slug) => {
+			return {
+				slug: slug,
+				content: cleanNewsString(result[slug]),
+			};
+		}
+	);
+
 	return relatedNews;
-}
+};
 
 export const retrieveNewsWithGrouping = async (query: string) => {
 	const vectorStore = await Chroma.fromExistingCollection(
@@ -98,4 +101,4 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	const documents = result as DocumentInterface<Record<string, any>>[];
 	const combinedResult = combineRelatedResult(documents);
 	return combinedResult;
-}
+};
