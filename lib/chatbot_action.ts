@@ -1,12 +1,13 @@
 import {
 	ChatCompletionChunk,
+	ChatCompletionMessage,
 	ChatCompletionMessageParam,
 	ChatCompletionMessageToolCall,
 	ChatCompletionTool,
 } from "openai/resources/index.mjs";
-import { retrieveNews, serializeChatHistory } from "./utils_chromadb";
+import { retrieveNews } from "./utils_chromadb";
 import OpenAI from "openai";
-import { getChatHistory, getNewsBySlug } from "./action";
+import { getNewsBySlug } from "./action";
 import { OPENAI_API_KEY } from "@/constants/env_var";
 
 const openai = new OpenAI({
@@ -39,13 +40,11 @@ const tools: ChatCompletionTool[] = [
 ];
 
 export const getUserChatResponse = async (
-	input: { message: string; slug: string },
+	input: { messages: ChatCompletionMessage[]; slug: string },
 	configurable: { userId: string }
 ) => {
-	const { message, slug } = input;
+	const { messages, slug } = input;
 	const { userId } = configurable;
-
-	let last_chat_history = "";
 
 	const newsBySlug = await getNewsBySlug(slug);
 
@@ -53,11 +52,7 @@ export const getUserChatResponse = async (
 		throw new Error("News not found");
 	}
 
-	const chatHistory = await getChatHistory(newsBySlug.id, userId);
-	const latestChatHistory = chatHistory.slice(-4);
-	last_chat_history = serializeChatHistory(latestChatHistory);
-
-	const messages: ChatCompletionMessageParam[] = [
+	const sytemMessages: ChatCompletionMessageParam[] = [
 		{
 			role: "system",
 			content: `
@@ -72,18 +67,13 @@ export const getUserChatResponse = async (
 					Maintain an unbiased and journalistic tone in your responses. Combine the news results into a coherent answer, stating important data for news readers like significant numbers and statistical data if available. Avoid repeating text and do not fabricate an answer. If you don't know the answer, simply state so.
 
 					slug: ${slug}
-					chat_history: ${last_chat_history}
 				`,
-		},
-		{
-			role: "user",
-			content: message,
 		},
 	];
 
 	const response = await openai.chat.completions.create({
 		model: "gpt-3.5-turbo-0125",
-		messages: messages,
+		messages: [...sytemMessages, ...messages],
 		tools: tools,
 		tool_choice: "auto",
 		stream: true,
@@ -96,7 +86,6 @@ export const getUserChatResponse = async (
 
 	for await (const chatCompletion of response1) {
 		let delta = chatCompletion.choices[0]?.delta;
-		console.log(`delta: ${JSON.stringify(delta)}`);
 
 		if (delta && delta.content) {
 			streamChat += delta.content;
@@ -130,10 +119,8 @@ export const getUserChatResponse = async (
 		chatCompletions.push(chatCompletion);
 	}
 
-	console.log("stream Chat: ", streamChat);
 
-	console.log(JSON.stringify(toolCalls));
-	messages.push({ role: "assistant", tool_calls: toolCalls });
+	sytemMessages.push({ role: "assistant", tool_calls: toolCalls });
 
 	const availableFunctions = {
 		retrieveNews: retrieveNews,
@@ -144,19 +131,12 @@ export const getUserChatResponse = async (
 		const functionToCall =
 			availableFunctions[functionName as keyof typeof availableFunctions];
 		const functionArgs = JSON.parse(toolCall.function.arguments);
-		console.log("Search query:", functionArgs.search_query);
-		console.log("slug: ", functionArgs.slug);
 		const functionResponse = await functionToCall(
 			functionArgs.search_query,
 			functionArgs.slug
 		);
 
-		console.log("current messages 1: " + messages[0].content);
-		console.log("current messages 2: " + messages[1].content);
-		console.log("current messages 3: " + messages[2].content);
-		console.log("function response: " + functionResponse);
-
-		messages.push({
+		sytemMessages.push({
 			tool_call_id: toolCall.id,
 			role: "tool",
 			content: functionResponse,
@@ -164,7 +144,7 @@ export const getUserChatResponse = async (
 
 		const secondResponse = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo-0125",
-			messages: messages,
+			messages: [...sytemMessages, ...messages],
 			stream: true,
 		});
 

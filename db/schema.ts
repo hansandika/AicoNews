@@ -3,7 +3,7 @@ import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid
 import { ChatHistory, ChatHistoryDatabase } from "@/common.types"
 
 // Tables
-export const users = pgTable("users", {
+export const usersSchema = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
@@ -14,7 +14,7 @@ export const users = pgTable("users", {
 
 export const SourceEnum = pgEnum('source', ['Investing', 'CNBC', 'CNN'])
 
-export const news = pgTable("news", {
+export const newsSchema = pgTable("news", {
   id: uuid("id").primaryKey().defaultRandom(),
   headline: text("headline").notNull(),
   slug: text("slug").notNull().unique(),
@@ -29,12 +29,12 @@ export const news = pgTable("news", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const chatHistory = pgTable("chat_history", {
+export const chatHistorySchema = pgTable("chat_history", {
   userId: uuid("user_id").notNull()
-    .references(() => users.id),
+    .references(() => usersSchema.id),
   newsId: uuid("news_id").notNull()
-    .references(() => news.id),
-  message: jsonb("message").notNull().default([{}]).$type<ChatHistory>(),
+    .references(() => newsSchema.id),
+  message: text("message").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => {
   return {
@@ -43,21 +43,21 @@ export const chatHistory = pgTable("chat_history", {
 });
 
 // Relations
-export const userRelations = relations(users, ({ many }) => ({
-  chatHistory: many(chatHistory)
+export const userRelations = relations(usersSchema, ({ many }) => ({
+  chatHistory: many(chatHistorySchema)
 }))
 
-export const newsRelations = relations(news, ({ many }) => ({
-  chatHistory: many(chatHistory)
+export const newsRelations = relations(newsSchema, ({ many }) => ({
+  chatHistory: many(chatHistorySchema)
 }))
 
-export const chatHistoryRelations = relations(chatHistory, ({ one }) => ({
-  user: one(users, {
-    fields: [chatHistory.userId],
-    references: [users.id]
+export const chatHistoryRelations = relations(chatHistorySchema, ({ one }) => ({
+  user: one(usersSchema, {
+    fields: [chatHistorySchema.userId],
+    references: [usersSchema.id]
   }),
-  news: one(news, {
-    fields: [chatHistory.newsId],
-    references: [news.id]
+  news: one(newsSchema, {
+    fields: [chatHistorySchema.newsId],
+    references: [newsSchema.id]
   })
 }))
