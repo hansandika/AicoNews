@@ -97,6 +97,7 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	);
 
 	const result = await vectorStore.similaritySearch(query, 5);
+	console.log("result: " + JSON.stringify(result) + " \n\n");
 
 	const documents = result as DocumentInterface<Record<string, any>>[];
 	const combinedResult = combineRelatedResult(documents);

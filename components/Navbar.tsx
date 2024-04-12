@@ -48,6 +48,13 @@ import { LogOut, Search, Users } from "lucide-react";
 import { FiSearch } from "react-icons/fi";
 import SearchBar from "./SearchBar";
 import { ComboboxDemo } from "./ComboBox";
+import {
+	AnimatePresence,
+	AnimateSharedLayout,
+	motion,
+	MotionProps,
+	useInView,
+} from "framer-motion";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -80,10 +87,11 @@ const Navbar = ({ session }: NavbarProps) => {
 							<Link
 								key={link.text}
 								href={link.href}
-								className={`w-full rounded-md py-2 ${currentPath === link.href
-									? "text-blue-primary dark:text-blue-secondary"
-									: "text-black-tertiary hover:text-black-secondary"
-									}`}
+								className={`w-full rounded-md py-2 ${
+									currentPath === link.href
+										? "text-blue-primary dark:text-blue-secondary"
+										: "text-black-tertiary hover:text-black-secondary"
+								}`}
 							>
 								{link.text}
 							</Link>
@@ -188,10 +196,11 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${currentPath === link.href
-															? "text-blue-primary dark:text-blue-primary-dark"
-															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-															}`}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -232,10 +241,11 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${currentPath === link.href
-															? "text-blue-primary dark:text-blue-primary-dark"
-															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-															}`}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -269,7 +279,14 @@ const Navbar = ({ session }: NavbarProps) => {
 								/>
 							</Link>
 						</div>
-						<SearchBar />
+						<AnimatePresence
+							mode="wait"
+							initial={false}
+						>
+							<CMDKWrapper>
+								<SearchBar />
+							</CMDKWrapper>
+						</AnimatePresence>
 
 						<div className="flex items-center gap-5 shrink-0">
 							<div>
@@ -295,5 +312,17 @@ const Navbar = ({ session }: NavbarProps) => {
 		</div>
 	);
 };
+
+function CMDKWrapper(props: MotionProps & { children: React.ReactNode }) {
+	return (
+		<motion.div
+			initial={{ opacity: 0, scale: 0.98 }}
+			animate={{ opacity: 1, scale: 1 }}
+			exit={{ opacity: 0, scale: 0.98 }}
+			transition={{ duration: 0.2 }}
+			{...props}
+		/>
+	);
+}
 
 export default Navbar;
