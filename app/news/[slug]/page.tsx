@@ -79,10 +79,12 @@ const NewsDetail = async ({ params: { slug } }: { params: { slug: string } }) =>
           </SheetTrigger>
           <SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
             <SheetHeader className='h-full'>
-              <SheetTitle className='text-left my-4 flex justify-between items-center pt-4'>
-                AI Assistant
+              <div className='my-4 flex justify-between items-center pt-4'>
+                <SheetTitle className='text-left '>
+                  AI Assistant
+                </SheetTitle>
                 <DeleteChat slug={slug} session={session} />
-              </SheetTitle>
+              </div>
               <SheetDescription className='h-full'>
                 <Chat news={newsSlug} session={session} />
               </SheetDescription>
