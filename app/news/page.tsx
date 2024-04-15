@@ -3,6 +3,8 @@ import NewsCarousel from "@/components/NewsCarousel";
 import NewsListItem from "@/components/NewsListItem";
 import { getNewsPagination } from "@/lib/action";
 
+export const revalidate = 3600;
+
 const News = async () => {
 	const newsCollection = await getNewsPagination(1, 8);
 	return (

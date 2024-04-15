@@ -1,12 +1,10 @@
 import { ChatHistory } from "@/common.types";
 import { deleteChatHistory, getChatHistory, getNewsBySlug, saveChatHistory } from "@/lib/action";
 import { getCurrentUser } from "@/lib/session";
-import { cva } from "class-variance-authority";
-import { NextApiRequest } from "next";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
-export async function GET(request: NextApiRequest) {
+export async function GET(request: NextRequest) {
   const session = await getCurrentUser();
   if (!session) {
     return new Response("Unauthorized", { status: 401 });

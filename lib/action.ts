@@ -2,7 +2,7 @@
 
 import db from "@/db"
 import { chatHistorySchema, newsSchema, usersSchema } from "@/db/schema"
-import { and, desc, eq } from "drizzle-orm"
+import { and, desc, eq, inArray } from "drizzle-orm"
 import { ChatHistory, ChatHistoryDatabase, ChatMessage, NewsInterface } from "@/common.types"
 import { Message } from "ai";
 
@@ -26,6 +26,16 @@ export const getNewsBySlug = async (slug: string) => {
   const newsBySlug = await db.query.newsSchema.findFirst({
     where: eq(newsSchema.slug, slug)
   }) as NewsInterface;
+  return newsBySlug;
+}
+
+export const getListNewsByListSlug = async (listSlug: string[]) => {
+  const newsBySlug = await db.query.newsSchema.findMany({
+    columns: {
+      contentHtml: false,
+    },
+    where: inArray(newsSchema.slug, listSlug)
+  }) as NewsInterface[];
   return newsBySlug;
 }
 
