@@ -16,7 +16,7 @@ const LargeNewsItem = ({
 	return (
 		<Link
 			href={`/news/${slug}`}
-			className="cursor-pointer"
+			className="cursor-pointer group"
 		>
 			<div className="flex gap-5 w-full">
 				<div className="h-[120px] w-[120px] lg:h-[140px] lg:w-[140px]  flex-shrink-0 relative">
@@ -31,7 +31,9 @@ const LargeNewsItem = ({
 					<h4 className="text-blue-primary dark:text-blue-primary-dark font-bold text-[1rem] capitalize">
 						{categoryName}
 					</h4>
-					<h5 className="text-[1rem] font-bold hover:underline">{headline}</h5>
+					<h5 className="text-[1rem] font-bold group-hover:underline">
+						{headline}
+					</h5>
 					<div className="flex gap-1 text-[0.75rem] text-[#999999]">
 						<p>
 							{source} • {formatDate(publishedDate)}

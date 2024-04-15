@@ -1,7 +1,7 @@
 "use client";
 import { getMarketWidgetTexts } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 const MarketWidgets = () => {
 	const containerRef = useRef<HTMLDivElement | null>(null);

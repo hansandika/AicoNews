@@ -17,8 +17,8 @@ const config = {
 				DEFAULT: "0.75rem",
 				sm: "1.25rem",
 				lg: "1.75rem",
-				xl: "0rem",
-				"2xl": "0rem"
+				xl: "3rem",
+				"2xl": "4rem",
 			},
 			screens: {
 				sm: "640px",

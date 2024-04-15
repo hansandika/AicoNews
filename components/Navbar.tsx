@@ -35,26 +35,14 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuPortal,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ToggleTheme from "./ToggleTheme";
-import { LogOut, Search, Users } from "lucide-react";
-import { FiSearch } from "react-icons/fi";
+import { LogOut, Users } from "lucide-react";
 import SearchBar from "./SearchBar";
-import { ComboboxDemo } from "./ComboBox";
-import {
-	AnimatePresence,
-	AnimateSharedLayout,
-	motion,
-	MotionProps,
-	useInView,
-} from "framer-motion";
+import { AnimatePresence, motion, MotionProps } from "framer-motion";
+import { useTheme } from "next-themes";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -69,18 +57,23 @@ const links = [
 const Navbar = ({ session }: NavbarProps) => {
 	const currentPath = usePathname();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-
+	const { resolvedTheme: theme } = useTheme();
 	return isDesktop ? (
-		<div className="py-4 container flex justify-between items-center">
+		<div className="py-4 desktop-nav lg:container flex justify-between items-center">
 			<Link href="/">
 				<Image
-					src="/logo.svg"
+					src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
 					width={150}
 					height={20}
 					alt="logo"
 				/>
 			</Link>
 			<div className="flex items-center gap-8">
+				<div className="w-[200px]">
+					<CMDKWrapper>
+						<SearchBar />
+					</CMDKWrapper>
+				</div>
 				<div className="flex gap-8 font-medium text-[1rem]">
 					{NavLinks.map((link) => {
 						return (
@@ -157,7 +150,7 @@ const Navbar = ({ session }: NavbarProps) => {
 		</div>
 	) : (
 		<div
-			className="py-2 sm:py-4 container"
+			className="py-3 sm:py-4 px-3 sm:px-5 lg:px-0 "
 			suppressHydrationWarning
 		>
 			<div>
@@ -270,10 +263,10 @@ const Navbar = ({ session }: NavbarProps) => {
 							</DrawerContent>
 							<Link
 								href="/"
-								className="relative  w-[120px] h-[32px]"
+								className="relative  w-[120px] h-[32px] hidden sm:block"
 							>
 								<Image
-									src="/logo.svg"
+									src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
 									fill
 									alt="logo"
 								/>
@@ -283,9 +276,11 @@ const Navbar = ({ session }: NavbarProps) => {
 							mode="wait"
 							initial={false}
 						>
-							<CMDKWrapper>
-								<SearchBar />
-							</CMDKWrapper>
+							<div className="w-full">
+								<CMDKWrapper>
+									<SearchBar />
+								</CMDKWrapper>
+							</div>
 						</AnimatePresence>
 
 						<div className="flex items-center gap-5 shrink-0">
