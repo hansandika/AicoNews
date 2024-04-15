@@ -28,6 +28,8 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@tailwindcss/typography": "^0.5.12",
     "@types/jsonwebtoken": "^9.0.6",
+    "@upstash/ratelimit": "^1.0.3",
+    "@upstash/redis": "^1.29.0",
     "@visheratin/tokenizers": "^0.1.5",
     "@visheratin/web-ai": "^1.4.5",
     "ai": "^3.0.16",

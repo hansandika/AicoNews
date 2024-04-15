@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { Skeleton } from './ui/skeleton'
 import { Message } from 'ai'
 import useSWR, { mutate } from 'swr'
+import { saveChatHistoryRequest } from '@/lib/chat_action'
 
 interface ChatProps {
   news: NewsInterface;
@@ -39,14 +40,23 @@ const Chat = ({ news, session }: ChatProps) => {
   const { messages, input, handleInputChange, handleSubmit, isLoading, error, setMessages } = useChat({
     api: `/api/news/${news.slug}`,
     onFinish: async (message: Message) => {
-      await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ botResponse: message.content, userInput: input, slug: news.slug }),
-      })
+      await saveChatHistoryRequest(message.content, input, news.slug)
       mutate(`/api/chat?slug=${encodeURIComponent(news.slug)}`)
+    },
+    onError: async (error) => {
+      const inputMessage = {
+        id: Math.floor((Math.random() * 100) + 1).toString(),
+        role: 'user',
+        content: input,
+      } as Message
+      const errorMessage = {
+        id: Math.floor((Math.random() * 100) + 1).toString(),
+        role: 'assistant',
+        content: error.message,
+      } as Message
+
+      setMessages([...messages, inputMessage, errorMessage])
+      saveChatHistoryRequest(error.message, input, news.slug)
     },
   })
 
