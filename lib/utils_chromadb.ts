@@ -1,6 +1,10 @@
 "use server";
 
-import { ChatHistory, NewsInterface, RelatedNewsContentInterface } from "@/common.types";
+import {
+	ChatHistory,
+	NewsInterface,
+	RelatedNewsContentInterface,
+} from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
@@ -52,19 +56,20 @@ export const retrieveNews = async (query: string, slug: string) => {
 	return combinedContent;
 };
 
-
 const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
-	let cleanedString = inputString.replace(/\n/g, ' ');
+	let cleanedString = inputString.replace(/\n/g, " ");
 	// Remove quotation marks
-	cleanedString = cleanedString.replace(/\"/g, '');
+	cleanedString = cleanedString.replace(/\"/g, "");
 	return cleanedString;
-}
+};
 
-const combineRelatedResult = async (documents: DocumentInterface<Record<string, any>>[]) => {
+const combineRelatedResult = async (
+	documents: DocumentInterface<Record<string, any>>[]
+) => {
 	const result: Record<string, RelatedNewsContentInterface> = {};
 
-	const listSlug: string[] = []
+	const listSlug: string[] = [];
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
@@ -74,11 +79,11 @@ const combineRelatedResult = async (documents: DocumentInterface<Record<string, 
 		} else {
 			result[slug] = {
 				headline: metadata.headline,
-				content: doc.pageContent
-			}
-			listSlug.push(slug)
+				content: doc.pageContent,
+			};
+			listSlug.push(slug);
 		}
-	})
+	});
 
 	const relatedNews: NewsInterface[] = await getListNewsByListSlug(listSlug);
 
@@ -87,10 +92,10 @@ const combineRelatedResult = async (documents: DocumentInterface<Record<string, 
 		const content = cleanNewsString(result[slug].content);
 		news.content = content;
 		result[slug].content = content;
-	})
+	});
 
 	return relatedNews;
-}
+};
 
 export const retrieveNewsWithGrouping = async (query: string) => {
 	const vectorStore = await Chroma.fromExistingCollection(
@@ -102,8 +107,9 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	);
 
 	const result = await vectorStore.similaritySearch(query, 5);
+	console.log("result: " + JSON.stringify(result) + " \n\n");
 
 	const documents = result as DocumentInterface<Record<string, any>>[];
 	const combinedResult = combineRelatedResult(documents);
 	return combinedResult;
-}
+};

@@ -35,16 +35,14 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuPortal,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ToggleTheme from "./ToggleTheme";
 import { LogOut, Users } from "lucide-react";
+import SearchBar from "./SearchBar";
+import { AnimatePresence, motion, MotionProps } from "framer-motion";
+import { useTheme } from "next-themes";
 type NavbarProps = {
 	session: SessionInterface;
 };
@@ -59,28 +57,34 @@ const links = [
 const Navbar = ({ session }: NavbarProps) => {
 	const currentPath = usePathname();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-
+	const { resolvedTheme: theme } = useTheme();
 	return isDesktop ? (
-		<div className="py-4 container flex justify-between items-center">
+		<div className="py-4 desktop-nav lg:container flex justify-between items-center">
 			<Link href="/">
 				<Image
-					src="/logo.svg"
+					src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
 					width={150}
 					height={20}
 					alt="logo"
 				/>
 			</Link>
 			<div className="flex items-center gap-8">
+				<div className="w-[200px]">
+					<CMDKWrapper>
+						<SearchBar />
+					</CMDKWrapper>
+				</div>
 				<div className="flex gap-8 font-medium text-[1rem]">
 					{NavLinks.map((link) => {
 						return (
 							<Link
 								key={link.text}
 								href={link.href}
-								className={`w-full rounded-md py-2 ${currentPath === link.href
-									? "text-blue-primary dark:text-blue-secondary"
-									: "text-black-tertiary hover:text-black-secondary"
-									}`}
+								className={`w-full rounded-md py-2 ${
+									currentPath === link.href
+										? "text-blue-primary dark:text-blue-secondary"
+										: "text-black-tertiary hover:text-black-secondary"
+								}`}
 							>
 								{link.text}
 							</Link>
@@ -146,12 +150,12 @@ const Navbar = ({ session }: NavbarProps) => {
 		</div>
 	) : (
 		<div
-			className="py-2 sm:py-4 container"
+			className="py-3 sm:py-4 px-3 sm:px-5 lg:px-0 "
 			suppressHydrationWarning
 		>
 			<div>
 				<Drawer direction="top">
-					<div className="flex justify-between">
+					<div className="flex justify-between gap-5">
 						<div className="flex gap-3 items-center">
 							<DrawerTrigger asChild>
 								<HiMenuAlt1
@@ -185,10 +189,11 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${currentPath === link.href
-															? "text-blue-primary dark:text-blue-primary-dark"
-															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-															}`}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -229,10 +234,11 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${currentPath === link.href
-															? "text-blue-primary dark:text-blue-primary-dark"
-															: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-															}`}
+														className={`w-full rounded-md py-2 ${
+															currentPath === link.href
+																? "text-blue-primary dark:text-blue-primary-dark"
+																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -257,16 +263,27 @@ const Navbar = ({ session }: NavbarProps) => {
 							</DrawerContent>
 							<Link
 								href="/"
-								className="relative  w-[120px] h-[32px]"
+								className="relative  w-[120px] h-[32px] hidden sm:block"
 							>
 								<Image
-									src="/logo.svg"
+									src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
 									fill
 									alt="logo"
 								/>
 							</Link>
 						</div>
-						<div className="flex items-center gap-5">
+						<AnimatePresence
+							mode="wait"
+							initial={false}
+						>
+							<div className="w-full">
+								<CMDKWrapper>
+									<SearchBar />
+								</CMDKWrapper>
+							</div>
+						</AnimatePresence>
+
+						<div className="flex items-center gap-5 shrink-0">
 							<div>
 								<ToggleTheme />
 							</div>
@@ -276,7 +293,7 @@ const Navbar = ({ session }: NavbarProps) => {
 									width={40}
 									height={40}
 									alt="user profile"
-									className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+									className="relative shrink-0 h-10 w-10 overflow-hidden rounded-full"
 								/>
 							) : (
 								<DrawerTrigger asChild>
@@ -290,5 +307,17 @@ const Navbar = ({ session }: NavbarProps) => {
 		</div>
 	);
 };
+
+function CMDKWrapper(props: MotionProps & { children: React.ReactNode }) {
+	return (
+		<motion.div
+			initial={{ opacity: 0, scale: 0.98 }}
+			animate={{ opacity: 1, scale: 1 }}
+			exit={{ opacity: 0, scale: 0.98 }}
+			transition={{ duration: 0.2 }}
+			{...props}
+		/>
+	);
+}
 
 export default Navbar;

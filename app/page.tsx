@@ -6,6 +6,10 @@ import NewsItem from "@/components/NewsItem";
 import MarketWidgets from "@/components/MarketWidgets";
 import { getNewsPagination } from "@/lib/action";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
+import SearchBar from "@/components/SearchBar";
+import { ComboboxDemo } from "@/components/ComboBox";
+import LatestNews from "@/components/LatestNews";
 const Home = async () => {
 	const news = await getNewsPagination(1, 9);
 
@@ -36,8 +40,11 @@ const Home = async () => {
 									className="object-cover"
 								/>
 							</div>
-							<div className="bg-blue-primary w-full py-2 sm:py-4 lg:py-0 px-3 sm:px-5 lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center">
-								<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold lg:mt-2">
+							<Link
+								href={`/news/${headline.slug}`}
+								className="bg-blue-primary group w-full  py-2 sm:py-4 lg:py-0 px-3 sm:px-5  lg:flex lg:flex-col lg:grow lg:h-auto lg:justify-center"
+							>
+								<h2 className="text-[1.25rem] sm:text-[1.5rem] text-white font-semibold lg:mt-2 group-hover:underline">
 									{headline.headline}
 								</h2>
 								<div className="pt-3 sm:pt-4 mb-3 flex items-center justify-between gap-1 text-[0.75rem] text-white">
@@ -51,8 +58,9 @@ const Home = async () => {
 										</div>
 									</div>
 								</div>
-							</div>
+							</Link>
 						</div>
+
 						{/* Highlights */}
 						<div className="flex flex-col gap-3 md: sm:gap-5 py-3 lg:py-0 sm:py-5 px-3 sm:px-5 lg:px-0 lg:grow w-full">
 							{highlightNews.map((newsItem, index) => {
@@ -68,44 +76,18 @@ const Home = async () => {
 				</div>
 
 				{/* Latest */}
-				<div className="px-3 sm:px-5 lg:px-0 lg:py-5 xl:py-0 flex flex-col xl:max-w-[320px]">
-					<div>
-						<h3 className="text-[1.5rem] lg:text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
-							Latest
-						</h3>
-						<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
-					</div>
-					<div className="flex w-full flex-col pt-3 sm:pt-5 px-3 sm:px-5 lg:px-0 grow justify-between">
-						{newsItems.map((newsItem, index) => {
-							return (
-								<div key={index}>
-									<NewsItem
-										key={index}
-										{...newsItem}
-									/>
-									{index === newsItems.length - 1 ? (
-										<></>
-									) : (
-										<div className="py-3 xl:py-1 ">
-											<Separator className="bg-black-tertiary h-[1px]" />
-										</div>
-									)}
-								</div>
-							);
-						})}
-					</div>
-				</div>
+				<LatestNews newsItems={newsItems} />
 			</div>
 
 			{/* Markets */}
-			<div className="xl:pt-5 px-3 sm:px-5 lg:px-0 pb-5 w-full">
+			<div className="pt-3 xl:pt-5 px-3 sm:px-5 lg:px-0 pb-5 w-full">
 				<div>
 					<h3 className="text-[1.5rem] lg:text-[1.25rem] font-bold text-blue-primary dark:text-blue-primary-dark pb-2">
 						Markets
 					</h3>
 					<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
 				</div>
-				<div className="h-[600px]">
+				<div className="h-[600px] ">
 					<MarketWidgets />
 				</div>
 			</div>

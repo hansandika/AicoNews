@@ -130,5 +130,5 @@ export const getMarketWidgetTexts = (theme: string): string => {
         }
       ]
     }
-    `
-}
+    `;
+};
