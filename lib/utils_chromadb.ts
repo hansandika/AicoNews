@@ -1,6 +1,6 @@
 "use server";
 
-import { ChatHistory, NewsInterface, RelatedNewsContentInterface, RelatedNewsInterface } from "@/common.types";
+import { ChatHistory, NewsInterface, RelatedNewsContentInterface } from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,

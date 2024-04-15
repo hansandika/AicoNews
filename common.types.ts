@@ -47,12 +47,6 @@ export interface SessionInterface extends Session {
 	};
 }
 
-export interface RelatedNewsInterface {
-	slug: string;
-	headline: string;
-	content: string;
-}
-
 export interface RelatedNewsContentInterface {
 	headline: string;
 	content: string;
