@@ -217,7 +217,6 @@
 
 .vercel {
 	[cmdk-root] {
-		max-width: 640px;
 		width: 100%;
 		padding: 8px;
 		background: #ffffff;
@@ -312,7 +311,7 @@
 
 	[cmdk-list] {
 		height: min(330px, calc(var(--cmdk-list-height)));
-		max-height: 400px;
+		max-height: 560px;
 		overflow: auto;
 		overscroll-behavior: contain;
 		transition: 100ms ease;
