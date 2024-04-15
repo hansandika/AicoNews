@@ -1,6 +1,6 @@
 "use server";
 
-import { ChatHistory, RelatedNewsContentInterface, RelatedNewsInterface } from "@/common.types";
+import { ChatHistory, NewsInterface, RelatedNewsContentInterface, RelatedNewsInterface } from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
@@ -10,6 +10,7 @@ import {
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { Document, DocumentInterface } from "@langchain/core/documents";
 import { OpenAIEmbeddings } from "@langchain/openai";
+import { getListNewsByListSlug } from "./action";
 
 const combinePageContent = (documents: Document[]): string => {
 	let combinedContent: string = "";
@@ -60,9 +61,10 @@ const cleanNewsString = (inputString: string) => {
 	return cleanedString;
 }
 
-const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[]): RelatedNewsInterface[] => {
+const combineRelatedResult = async (documents: DocumentInterface<Record<string, any>>[]) => {
 	const result: Record<string, RelatedNewsContentInterface> = {};
 
+	const listSlug: string[] = []
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
@@ -74,16 +76,18 @@ const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[
 				headline: metadata.headline,
 				content: doc.pageContent
 			}
+			listSlug.push(slug)
 		}
 	})
 
-	const relatedNews: RelatedNewsInterface[] = Object.keys(result).map((slug) => {
-		return {
-			slug: slug,
-			headline: result[slug].headline,
-			content: cleanNewsString(result[slug].content),
-		};
-	});
+	const relatedNews: NewsInterface[] = await getListNewsByListSlug(listSlug);
+
+	relatedNews.forEach((news) => {
+		const slug = news.slug;
+		const content = cleanNewsString(result[slug].content);
+		news.content = content;
+		result[slug].content = content;
+	})
 
 	return relatedNews;
 }
