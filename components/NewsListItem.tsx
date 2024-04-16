@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "./ui/skeleton";
 import { formatDate } from "@/lib/utils";
+import { Suspense } from "react";
 
 type Props = {
 	news?: NewsInterface;
@@ -14,13 +15,15 @@ const NewsListItem = ({ news }: Props) => {
 			href={`news/${news.slug}`}
 			className="group flex gap-3 md:gap-5 gap-y-14"
 		>
+			<Suspense fallback={<Skeleton className="h-[120px] w-[120px] object-cover bg-black-tertiary"></Skeleton>}>
 			<Image
 				src={news.thumbnailUrl}
 				width={100}
 				height={100}
-				className="min-h-[100px] sm:min-h-[120px] sm:w-[120px] object-cover rounded-md"
+				className="aspect-square sm:w-[120px] object-cover rounded-md"
 				alt="News Thumbnail"
 			/>
+			</Suspense>
 			<div className="flex flex-col justify-center max-sm:text-sm">
 				<p className="font-semibold text-blue-primary capitalize">
 					{news.categoryName}
