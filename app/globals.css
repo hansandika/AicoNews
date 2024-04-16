@@ -190,6 +190,18 @@
 	}
 }
 
+::-webkit-scrollbar {
+  @apply w-3;
+}
+
+::-webkit-scrollbar-track {
+	@apply dark:bg-black-secondary bg-black-tertiary;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply dark:bg-black-tertiary bg-black-secondary rounded-lg border-[3px] border-solid dark:border-black-secondary border-black-tertiary;
+}
+
 .custom-container {
 	padding-left: 0.75rem;
 	padding-right: 0.75rem;
