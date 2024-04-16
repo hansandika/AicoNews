@@ -40,11 +40,9 @@ const tools: ChatCompletionTool[] = [
 ];
 
 export const getUserChatResponse = async (
-	input: { messages: ChatCompletionMessage[]; slug: string },
-	configurable: { userId: string }
+	input: { messages: ChatCompletionMessage[]; slug: string, languangeStyle: string }
 ) => {
-	const { messages, slug } = input;
-	const { userId } = configurable;
+	const { messages, slug, languangeStyle } = input;
 
 	const newsBySlug = await getNewsBySlug(slug);
 

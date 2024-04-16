@@ -8,14 +8,13 @@ export async function POST(request: Request, { params }: { params: { slug: strin
   if (!session) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const { messages } = await request.json();
+  const { messages, languangeStyle } = await request.json();
   const lastMessage: ChatCompletionMessage[] = messages.slice(-6);
 
   const response = await getUserChatResponse({
     slug: params.slug,
-    messages: lastMessage
-  }, {
-    userId: session.user.id
+    messages: lastMessage,
+    languangeStyle: languangeStyle as string
   })
 
   const stream = OpenAIStream(response)

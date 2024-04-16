@@ -1,6 +1,6 @@
 'use client'
 import { useChat } from 'ai/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -13,6 +13,7 @@ import { Skeleton } from './ui/skeleton'
 import { Message } from 'ai'
 import useSWR, { mutate } from 'swr'
 import { saveChatHistoryRequest } from '@/lib/chat_action'
+import { LanguageStyle } from '@/constants'
 
 interface ChatProps {
   news: NewsInterface;
@@ -23,6 +24,7 @@ const Chat = ({ news, session }: ChatProps) => {
   const refScrollBar = useRef<HTMLDivElement>(null)
   const refTextArea = useRef<HTMLTextAreaElement>(null)
   const refForm = useRef<HTMLFormElement>(null)
+  const [languangeStyle, setLanguageStyle] = useState<LanguageStyle>(LanguageStyle.FORMAL)
 
   const getInitialChatHistory = async (URL: string) => {
     const chatHistory = await fetch(URL, {
@@ -45,18 +47,21 @@ const Chat = ({ news, session }: ChatProps) => {
     },
     onError: async (error) => {
       const inputMessage = {
-        id: Math.floor((Math.random() * 100) + 1).toString(),
+        id: crypto.randomUUID(),
         role: 'user',
         content: input,
       } as Message
       const errorMessage = {
-        id: Math.floor((Math.random() * 100) + 1).toString(),
+        id: crypto.randomUUID(),
         role: 'assistant',
         content: error.message,
       } as Message
 
       setMessages([...messages, inputMessage, errorMessage])
       saveChatHistoryRequest(error.message, input, news.slug)
+    },
+    body: {
+      languangeStyle: languangeStyle,
     },
   })
 
@@ -88,17 +93,17 @@ const Chat = ({ news, session }: ChatProps) => {
       ref={refScrollBar}
     >
       {messages.map(m => (
-        <div key={m.id} className='whitespace-pre-wrap mb-4'>
+        <div key={m.id} className='whitespace-pre-wrap mb-4 justify-end'>
           {m.role === 'user' && (
-            <div className='flex items-start gap-2.5'>
+            <div className='flex items-start justify-end gap-2.5'>
               <Image
                 src={session?.user.image}
                 width={32}
                 height={32}
                 alt="user profile"
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full order-2"
               />
-              <div className='flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700 text-left'>
+              <div className='flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700 text-left order-1'>
                 <p className='text-sm font-semibold text-gray-900 dark:text-white'>You</p>
                 <div className='text-sm font-normal py-2.5 text-gray-900 dark:text-white'>
                   {m.content}
@@ -108,7 +113,7 @@ const Chat = ({ news, session }: ChatProps) => {
           )}
 
           {m.role === 'assistant' && (
-            <div className='flex items-start gap-2.5'>
+            <div className='flex items-start justify-start gap-2.5'>
               <Image
                 src='/bot.png'
                 width={32}
@@ -130,7 +135,7 @@ const Chat = ({ news, session }: ChatProps) => {
       ))}
 
       {isLoading && (
-        <div className='flex items-start gap-2.5 justify-start'>
+        <div className='flex items-start gap-2.5'>
           <Image
             src='/bot.png'
             width={32}

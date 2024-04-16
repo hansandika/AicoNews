@@ -3,3 +3,8 @@ export const NavLinks = [
   { href: '/news', key: 'news', text: 'News' }
 ];
 export const RateLimitRequestPerDay = 30;
+
+export enum LanguageStyle {
+  FORMAL = 'formal',
+  CASUAL = 'casual',
+}

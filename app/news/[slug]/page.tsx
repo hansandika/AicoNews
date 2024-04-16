@@ -1,6 +1,6 @@
 import ShareIcon from "@/components/ShareIcon";
 import { NEXTAUTH_URL } from "@/constants/env_var";
-import { getChatHistory, getNewsBySlug, getNewsPagination } from "@/lib/action";
+import { getNewsBySlug, getNewsPagination } from "@/lib/action";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -113,12 +113,15 @@ const NewsDetail = async ({
 									session={session}
 								/>
 							</div>
-							<SheetDescription className="h-full">
+							<SheetDescription>
+								Chat with our AI assistant to get more information about this news
+							</SheetDescription>
+							<div className="h-full">
 								<Chat
 									news={newsSlug}
 									session={session}
 								/>
-							</SheetDescription>
+							</div>
 						</SheetHeader>
 					</SheetContent>
 				</Sheet>

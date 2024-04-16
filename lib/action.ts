@@ -83,7 +83,7 @@ export const getChatHistory = async (newsId: string, userId: string) => {
 
   const userChatHistory: Message[] = parsedChatHistory.map(entry => {
     const { content, role } = entry as ChatMessage;
-    return { content, role: role === 'human' ? 'user' : 'assistant', id: Math.floor((Math.random() * 100) + 1).toString() };
+    return { content, role: role === 'human' ? 'user' : 'assistant', id: crypto.randomUUID() };
   });
 
   return userChatHistory
