@@ -16,6 +16,8 @@ const fontSans = FontSans({
 	variable: "--font-sans",
 });
 
+export const revalidate = 3600;
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -33,6 +35,7 @@ export default function RootLayout({
 					attribute="class"
 					defaultTheme="system"
 					enableSystem
+					enableColorScheme={false}
 					disableTransitionOnChange>
 					<div className="dark:bg-black">
 						<NavbarWrapper />

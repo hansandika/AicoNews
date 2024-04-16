@@ -1,6 +1,10 @@
 "use server";
 
-import { ChatHistory, RelatedNewsInterface } from "@/common.types";
+import {
+	ChatHistory,
+	NewsInterface,
+	RelatedNewsContentInterface,
+} from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
@@ -10,6 +14,7 @@ import {
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { Document, DocumentInterface } from "@langchain/core/documents";
 import { OpenAIEmbeddings } from "@langchain/openai";
+import { getListNewsByListSlug } from "./action";
 
 const combinePageContent = (documents: Document[]): string => {
 	let combinedContent: string = "";
@@ -24,12 +29,12 @@ const combinePageContent = (documents: Document[]): string => {
 export const serializeChatHistory = (chatHistory: ChatHistory): string =>
 	chatHistory
 		.map((chatMessage) => {
-			if (chatMessage.type === "human") {
-				return `Human: ${chatMessage.message}`;
-			} else if (chatMessage.type === "AI") {
-				return `Assistant: ${chatMessage.message}`;
+			if (chatMessage.role === "human") {
+				return `Human: ${chatMessage.content}`;
+			} else if (chatMessage.role === "AI") {
+				return `Assistant: ${chatMessage.content}`;
 			} else {
-				return `${chatMessage.message}`;
+				return `${chatMessage.content}`;
 			}
 		})
 		.join("\n");
@@ -51,38 +56,46 @@ export const retrieveNews = async (query: string, slug: string) => {
 	return combinedContent;
 };
 
-
 const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
-	let cleanedString = inputString.replace(/\n/g, ' ');
+	let cleanedString = inputString.replace(/\n/g, " ");
 	// Remove quotation marks
-	cleanedString = cleanedString.replace(/\"/g, '');
+	cleanedString = cleanedString.replace(/\"/g, "");
 	return cleanedString;
-}
+};
 
-const combineRelatedResult = (documents: DocumentInterface<Record<string, any>>[]): RelatedNewsInterface[] => {
-	const result: Record<string, string> = {};
+const combineRelatedResult = async (
+	documents: DocumentInterface<Record<string, any>>[]
+) => {
+	const result: Record<string, RelatedNewsContentInterface> = {};
 
+	const listSlug: string[] = [];
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
 		const slug = metadata.slug as string;
 		if (result[slug]) {
-			result[slug] += doc.pageContent;
+			result[slug].content += doc.pageContent;
 		} else {
-			result[slug] = doc.pageContent;
+			result[slug] = {
+				headline: metadata.headline,
+				content: doc.pageContent,
+			};
+			listSlug.push(slug);
 		}
-	})
+	});
 
-	const relatedNews: RelatedNewsInterface[] = Object.keys(result).map((slug) => {
-		return {
-			slug: slug,
-			content: cleanNewsString(result[slug]),
-		};
+	const relatedNews: NewsInterface[] = await getListNewsByListSlug(listSlug);
+
+	relatedNews.forEach((news) => {
+		const slug = news.slug;
+		const content = cleanNewsString(result[slug].content);
+		news.content = content;
+		result[slug].content = content;
 	});
 
 	return relatedNews;
-}
+};
 
 export const retrieveNewsWithGrouping = async (query: string) => {
 	const vectorStore = await Chroma.fromExistingCollection(
@@ -98,4 +111,4 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	const documents = result as DocumentInterface<Record<string, any>>[];
 	const combinedResult = combineRelatedResult(documents);
 	return combinedResult;
-}
+};
