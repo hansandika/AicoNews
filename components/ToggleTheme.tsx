@@ -7,8 +7,6 @@ import { HiMiniMoon } from "react-icons/hi2";
 function ToggleTheme() {
 	const { resolvedTheme: theme, setTheme } = useTheme()
 
-	if (typeof window === undefined) return null;
-
 	return (
 		<div className="text-blue-secondary">
 			{theme === "dark" ? (

@@ -1,7 +1,6 @@
 "use client";
 
-import { FacebookIcon, FacebookShareButton, TwitterShareButton, TwitterIcon, WhatsappShareButton, WhatsappIcon, LinkedinIcon, LinkedinShareButton, RedditIcon, RedditShareButton } from 'next-share';
-import { FC } from 'react';
+import { FacebookIcon, FacebookShareButton, TwitterShareButton, TwitterIcon, WhatsappShareButton, WhatsappIcon, LinkedinIcon, LinkedinShareButton } from 'next-share';
 
 interface Props {
   url: string;

@@ -6,10 +6,9 @@ import { notFound } from "next/navigation";
 import React from "react";
 import parse from "html-react-parser";
 import { formatDate } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
-import NewsItem from "@/components/NewsItem";
 import { getCurrentUser } from "@/lib/session";
 import ChatCard from "@/components/ChatCard";
+import LatestNews from "@/components/LatestNews";
 
 const NewsDetail = async ({
 	params: { slug },
@@ -58,31 +57,7 @@ const NewsDetail = async ({
 				<article className="prose prose-xl prose-headings:underline prose-a:text-blue-600 dark:prose-invert order-1 md:order-2">
 					{parse(parse(newsSlug.contentHtml) as string)}
 				</article>
-				<div className="order-3 w-full 2xl:w-64">
-					<div className="w-full">
-						<h3 className="text-[1.5rem] font-bold text-blue-primary dark:text-blue-primary-dark mb-2">
-							Latest
-						</h3>
-						<Separator className="bg-blue-primary dark:bg-blue-primary-dark" />
-					</div>
-					<div className="flex flex-col md:py-4 py-6">
-						{newsCollection.map((newsItem, index) => {
-							return (
-								<div key={index}>
-									<NewsItem
-										key={index}
-										{...newsItem}
-									/>
-									{index !== newsCollection.length - 1 && (
-										<div className="py-3">
-											<Separator className="bg-black-tertiary h-[1px]" />
-										</div>
-									)}
-								</div>
-							);
-						})}
-					</div>
-				</div>
+				<LatestNews newsItems={newsCollection} className="order-3 w-full 2xl:max-w-60" />
 			</div>
 			{session?.user && <ChatCard news={newsSlug} session={session} slug={slug} />}
 		</div>

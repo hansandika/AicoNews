@@ -10,8 +10,6 @@ import useDebounce from "@/hooks/use-debounce";
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import NewsListItem from "./NewsListItem";
-import { CgSpinner } from "react-icons/cg";
 import { Skeleton } from "./ui/skeleton";
 import { RelatedNewsInterace } from "@/common.types";
 

@@ -225,11 +225,10 @@ const CarouselNavigation = React.forwardRef<
 				<Button
 					variant={"ghost"}
 					key={index}
-					className={`w-2 h-2 lg:w-2 lg:h-2 p-0 rounded-full ${
-						index == current
+					className={`w-2 h-2 lg:w-2 lg:h-2 p-0 rounded-full ${index == current
 							? "bg-black-secondary dark:bg-black-tertiary"
 							: "bg-black-tertiary dark:bg-black-secondary"
-					} hover:bg-black-secondary dark:hover:bg-black-tertiary`}
+						} hover:bg-black-secondary dark:hover:bg-black-tertiary`}
 					onClick={() => scrollToSlide(index)}
 				></Button>
 			))}

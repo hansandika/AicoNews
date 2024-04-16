@@ -47,13 +47,6 @@ type NavbarProps = {
 	session: SessionInterface;
 };
 
-const links = [
-	{ path: "/", label: "Home" },
-	{ path: "/about", label: "About" },
-	{ path: "/blogs", label: "Blogs" },
-	{ path: "/contact", label: "Contact" },
-];
-
 const Navbar = ({ session }: NavbarProps) => {
 	const currentPath = usePathname();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -80,11 +73,10 @@ const Navbar = ({ session }: NavbarProps) => {
 							<Link
 								key={link.text}
 								href={link.href}
-								className={`w-full rounded-md py-2 ${
-									currentPath === link.href
+								className={`w-full rounded-md py-2 ${currentPath === link.href
 										? "text-blue-primary dark:text-blue-secondary"
 										: "text-black-tertiary hover:text-black-secondary"
-								}`}
+									}`}
 							>
 								{link.text}
 							</Link>
@@ -189,11 +181,10 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
+														className={`w-full rounded-md py-2 ${currentPath === link.href
 																? "text-blue-primary dark:text-blue-primary-dark"
 																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-														}`}
+															}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>
@@ -234,11 +225,10 @@ const Navbar = ({ session }: NavbarProps) => {
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
+														className={`w-full rounded-md py-2 ${currentPath === link.href
 																? "text-blue-primary dark:text-blue-primary-dark"
 																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
-														}`}
+															}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
 													</Link>

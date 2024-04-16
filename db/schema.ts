@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, integer, text, pgTable, serial, varchar, timestamp, jsonb, uuid, primaryKey } from "drizzle-orm/pg-core";
-import { ChatHistory, ChatHistoryDatabase } from "@/common.types"
+import { pgEnum, text, pgTable, varchar, timestamp, uuid, primaryKey } from "drizzle-orm/pg-core";
 
 // Tables
 export const usersSchema = pgTable("users", {

@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      'lh3.googleusercontent.com',
-      'i-invdn-com.investing.com',
-      'media.cnn.com',
-      'image.cnbcfm.com',
-    ]
+    remotePatterns: [
+      { hostname: 'i-invdn-com.investing.com' },
+      { hostname: 'lh3.googleusercontent.com' },
+      { hostname: 'media.cnn.com' },
+      { hostname: 'image.cnbcfm.com' },
+    ],
   }
 };
 

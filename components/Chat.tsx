@@ -1,6 +1,6 @@
 'use client'
 import { useChat } from 'ai/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -39,7 +39,7 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
 
   const { data: initalChatHistory } = useSWR(`/api/chat?slug=${encodeURIComponent(news.slug)}`, getInitialChatHistory)
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error, setMessages } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setMessages } = useChat({
     api: `/api/news/${news.slug}`,
     onFinish: async (message: Message) => {
       await saveChatHistoryRequest(message.content, input, news.slug)
@@ -87,6 +87,8 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
     }
   }
 
+  const lastMessageIsUser = messages[messages.length - 1]?.role === 'user'
+
   return <div className='flex flex-col h-full'>
     <ScrollArea
       className='mb-2 h-[400px] rounded-md border p-4 flex-auto'
@@ -121,7 +123,7 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
                 alt="bot profile"
                 className="w-8 h-8 rounded-full" />
               <div className='flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700'>
-                <div className='flex justify-between'>
+                <div className='flex justify-between items-center'>
                   <p className='text-sm font-semibold text-gray-900 dark:text-white'>Bot</p>
                   <CopyToClipboard message={m} className='-mt-1' />
                 </div>
@@ -134,7 +136,7 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
         </div>
       ))}
 
-      {isLoading && (
+      {isLoading && lastMessageIsUser && (
         <div className='flex items-start gap-2.5'>
           <Image
             src='/bot.png'
@@ -143,7 +145,7 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
             alt="bot profile"
             className="w-8 h-8 rounded-full" />
           <div className='flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700'>
-            <div className='flex justify-between'>
+            <div className='flex justify-between items-center'>
               <p className='text-sm font-semibold text-gray-900 dark:text-white'>Bot</p>
             </div>
             <div className='w-full py-2.5 object-cover flex flex-col justify-center gap-2'>

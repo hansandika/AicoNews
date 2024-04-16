@@ -24,7 +24,7 @@ export default function CopyToClipboard({
   }
 
   return (
-    <div className={cn('', className)} {...props}>
+    <div className={cn(className)} {...props}>
       <Button
         variant='secondary'
         size='icon'

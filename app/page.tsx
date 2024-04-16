@@ -1,14 +1,10 @@
-import { getCurrentUser } from "@/lib/session";
 import Image from "next/image";
 import LargeNewsItem from "../components/LargeNewsItem";
 import { Separator } from "@/components/ui/separator";
-import NewsItem from "@/components/NewsItem";
 import MarketWidgets from "@/components/MarketWidgets";
 import { getNewsPagination } from "@/lib/action";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-import SearchBar from "@/components/SearchBar";
-import { ComboboxDemo } from "@/components/ComboBox";
 import LatestNews from "@/components/LatestNews";
 const Home = async () => {
 	const news = await getNewsPagination(1, 9);
@@ -16,7 +12,7 @@ const Home = async () => {
 	const headline = news[0];
 	const highlightNews = news.slice(1, 4);
 	const newsItems = news.slice(4, 9);
-	const session = await getCurrentUser();
+
 	return (
 		<div className="lg:container">
 			<div className="lg:pt-5 flex flex-col xl:flex-row xl:gap-8">
@@ -76,7 +72,7 @@ const Home = async () => {
 				</div>
 
 				{/* Latest */}
-				<LatestNews newsItems={newsItems} />
+				<LatestNews newsItems={newsItems} className="xl:max-w-[320px]" />
 			</div>
 
 			{/* Markets */}

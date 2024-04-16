@@ -79,19 +79,16 @@ export const getUserChatResponse = async (
 	});
 
 	const [response1, response2] = response.tee();
-	let streamChat = "";
-	let toolCalls: Array<ChatCompletionMessageToolCall> = [];
-	let chatCompletions: Array<ChatCompletionChunk> = [];
+	const toolCalls: Array<ChatCompletionMessageToolCall> = [];
+	const chatCompletions: Array<ChatCompletionChunk> = [];
 
 	for await (const chatCompletion of response1) {
-		let delta = chatCompletion.choices[0]?.delta;
+		const delta = chatCompletion.choices[0]?.delta;
 
-		if (delta && delta.content) {
-			streamChat += delta.content;
-		} else if (delta && delta.tool_calls) {
-			let toolCallChunks = delta.tool_calls;
+		if (delta && delta.tool_calls) {
+			const toolCallChunks = delta.tool_calls;
 
-			for (let toolCallChunk of toolCallChunks) {
+			for (const toolCallChunk of toolCallChunks) {
 				if (toolCalls.length <= toolCallChunk.index) {
 					toolCalls.push({
 						id: "",
@@ -100,7 +97,7 @@ export const getUserChatResponse = async (
 					});
 				}
 
-				let tc = toolCalls[toolCallChunk.index];
+				const tc = toolCalls[toolCallChunk.index];
 
 				if (toolCallChunk.id) {
 					tc["id"] += toolCallChunk.id;

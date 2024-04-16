@@ -6,7 +6,6 @@ import React from "react";
 
 const LargeNewsItem = ({
 	source,
-	id,
 	publishedDate,
 	slug,
 	thumbnailUrl,

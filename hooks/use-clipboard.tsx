@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 export function useClipboard({ timeout = 2000 }: { timeout?: number }) {
-  const [isCopied, setIsCopied] = useState<Boolean>(false)
+  const [isCopied, setIsCopied] = useState<boolean>(false)
 
   const copyToClipboard = (value: string) => {
     if (!value) return

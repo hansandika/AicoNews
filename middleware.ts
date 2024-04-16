@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
   try {
     const { success } = await rateLimiter.limit(ip)
     if (!success) {
-      // Rate limit only 3 requests per day
+      // Rate limit only 30 requests per day
       return new NextResponse(`Sorry, you have exceeded the rate limit of ${RateLimitRequestPerDay} requests per day.`, { status: 429 })
     }
   } catch (error) {

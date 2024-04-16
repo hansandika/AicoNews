@@ -13,7 +13,6 @@ import {
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { Document, DocumentInterface } from "@langchain/core/documents";
 import { OpenAIEmbeddings } from "@langchain/openai";
-import { getListNewsByListSlug } from "./action";
 
 const combinePageContent = (documents: Document[]): string => {
 	let combinedContent: string = "";
@@ -65,7 +64,7 @@ const cleanNewsString = (inputString: string) => {
 
 const combineRelatedResult = async (
 	documents: DocumentInterface<Record<string, any>>[]
-) => {
+): Promise<RelatedNewsInterace[]> => {
 	// const result: Record<string, RelatedNewsContentInterface> = {};
 	const result: RelatedNewsInterace[] = [];
 
@@ -75,12 +74,12 @@ const combineRelatedResult = async (
 		const slug = metadata.slug as string;
 		const index = result.findIndex(e => e.slug === slug);
 		if (index !== -1) {
-			result[index].content += doc.pageContent;
+			result[index].content += cleanNewsString(doc.pageContent);
 		} else {
 			result.push({
 				slug: slug,
 				headline: metadata.headline as string,
-				content: doc.pageContent,
+				content: cleanNewsString(doc.pageContent),
 				date: metadata.publishedDate as Date,
 				source: metadata.source as string,
 			})
@@ -90,7 +89,7 @@ const combineRelatedResult = async (
 	return result
 };
 
-export const retrieveNewsWithGrouping = async (query: string) => {
+export const retrieveNewsWithGrouping = async (query: string): Promise<RelatedNewsInterace[]> => {
 	const vectorStore = await Chroma.fromExistingCollection(
 		new OpenAIEmbeddings({
 			openAIApiKey: OPENAI_API_KEY,
@@ -102,6 +101,6 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	const result = await vectorStore.similaritySearch(query, 5);
 
 	const documents = result as DocumentInterface<Record<string, any>>[];
-	const combinedResult = combineRelatedResult(documents);
+	const combinedResult = await combineRelatedResult(documents);
 	return combinedResult;
 };
