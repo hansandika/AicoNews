@@ -2,8 +2,7 @@
 
 import {
 	ChatHistory,
-	NewsInterface,
-	RelatedNewsContentInterface,
+	RelatedNewsInterace,
 } from "@/common.types";
 import {
 	CHROMADB_COLLECTION_NAME,
@@ -67,34 +66,28 @@ const cleanNewsString = (inputString: string) => {
 const combineRelatedResult = async (
 	documents: DocumentInterface<Record<string, any>>[]
 ) => {
-	const result: Record<string, RelatedNewsContentInterface> = {};
+	// const result: Record<string, RelatedNewsContentInterface> = {};
+	const result: RelatedNewsInterace[] = [];
 
-	const listSlug: string[] = [];
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
 		const slug = metadata.slug as string;
-		if (result[slug]) {
-			result[slug].content += doc.pageContent;
+		const index = result.findIndex(e => e.slug === slug);
+		if (index !== -1) {
+			result[index].content += doc.pageContent;
 		} else {
-			result[slug] = {
-				headline: metadata.headline,
+			result.push({
+				slug: slug,
+				headline: metadata.headline as string,
 				content: doc.pageContent,
-			};
-			listSlug.push(slug);
+				date: metadata.publishedDate as Date,
+				source: metadata.source as string,
+			})
 		}
 	});
 
-	const relatedNews: NewsInterface[] = await getListNewsByListSlug(listSlug);
-
-	relatedNews.forEach((news) => {
-		const slug = news.slug;
-		const content = cleanNewsString(result[slug].content);
-		news.content = content;
-		result[slug].content = content;
-	});
-
-	return relatedNews;
+	return result
 };
 
 export const retrieveNewsWithGrouping = async (query: string) => {

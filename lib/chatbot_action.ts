@@ -40,9 +40,9 @@ const tools: ChatCompletionTool[] = [
 ];
 
 export const getUserChatResponse = async (
-	input: { messages: ChatCompletionMessage[]; slug: string, languangeStyle: string }
+	input: { messages: ChatCompletionMessage[]; slug: string, languageStyle: string }
 ) => {
-	const { messages, slug, languangeStyle } = input;
+	const { messages, slug, languageStyle } = input;
 
 	const newsBySlug = await getNewsBySlug(slug);
 
@@ -65,6 +65,7 @@ export const getUserChatResponse = async (
 					Maintain an unbiased and journalistic tone in your responses. Combine the news results into a coherent answer, stating important data for news readers like significant numbers and statistical data if available. Avoid repeating text and do not fabricate an answer. If you don't know the answer, simply state so.
 
 					slug: ${slug}
+					Answer the following question with language style: ${languageStyle}
 				`,
 		},
 	];

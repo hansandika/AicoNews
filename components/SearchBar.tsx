@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import NewsListItem from "./NewsListItem";
 import { CgSpinner } from "react-icons/cg";
 import { Skeleton } from "./ui/skeleton";
+import { RelatedNewsInterace } from "@/common.types";
 
 const truncate = (text: string) => {
 	const maxLength = 200;
@@ -141,7 +142,7 @@ interface HomeProps {
 const NewsResult = ({ input, closeSearch }: HomeProps) => {
 	const url = "/api/news";
 	const debouncedSearch = useDebounce(input, 500);
-	const { data, error, isLoading, isValidating }: any = useSWR(
+	const { data, error, isLoading } = useSWR(
 		{ url, debouncedSearch },
 		() => fetcher(url, debouncedSearch),
 		{
@@ -149,9 +150,14 @@ const NewsResult = ({ input, closeSearch }: HomeProps) => {
 			keepPreviousData: false,
 		}
 	);
+
+	if (error) {
+		return <div className="text-center">Error fetching news...</div>
+	}
+
 	return (
-		<div className="">
-			{!isLoading && !data && <div className="text-center">No news ser...</div>}
+		<div>
+			{!isLoading && !data && <div className="text-center">No News Result...</div>}
 			{isLoading && (
 				<div>
 					<div className="overflow-hidden px-5 mb-3">
@@ -169,7 +175,7 @@ const NewsResult = ({ input, closeSearch }: HomeProps) => {
 			)}
 			{data && (
 				<Command.Group heading="Related News">
-					{data.relatedNews.map((item: any) => {
+					{data.relatedNews.map((item: RelatedNewsInterace) => {
 						return (
 							<div
 								className="py-1"

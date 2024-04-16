@@ -18,13 +18,13 @@ import { LanguageStyle } from '@/constants'
 interface ChatProps {
   news: NewsInterface;
   session: SessionInterface;
+  languageStyle: LanguageStyle;
 }
 
-const Chat = ({ news, session }: ChatProps) => {
+const Chat = ({ news, session, languageStyle }: ChatProps) => {
   const refScrollBar = useRef<HTMLDivElement>(null)
   const refTextArea = useRef<HTMLTextAreaElement>(null)
   const refForm = useRef<HTMLFormElement>(null)
-  const [languangeStyle, setLanguageStyle] = useState<LanguageStyle>(LanguageStyle.FORMAL)
 
   const getInitialChatHistory = async (URL: string) => {
     const chatHistory = await fetch(URL, {
@@ -61,7 +61,7 @@ const Chat = ({ news, session }: ChatProps) => {
       saveChatHistoryRequest(error.message, input, news.slug)
     },
     body: {
-      languangeStyle: languangeStyle,
+      languageStyle: languageStyle,
     },
   })
 

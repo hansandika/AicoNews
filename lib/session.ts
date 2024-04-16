@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
 				}
 
 				return true;
-			} catch (error: any) {
+			} catch (error) {
 				console.log(error);
 				return false;
 			}

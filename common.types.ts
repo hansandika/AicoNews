@@ -47,7 +47,10 @@ export interface SessionInterface extends Session {
 	};
 }
 
-export interface RelatedNewsContentInterface {
+export interface RelatedNewsInterace {
+	slug: string;
 	headline: string;
 	content: string;
+	date: Date;
+	source: string;
 }
