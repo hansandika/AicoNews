@@ -202,6 +202,17 @@
   @apply dark:bg-black-tertiary bg-black-secondary rounded-lg border-[3px] border-solid dark:border-black-secondary border-black-tertiary;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+
 .custom-container {
 	padding-left: 0.75rem;
 	padding-right: 0.75rem;
