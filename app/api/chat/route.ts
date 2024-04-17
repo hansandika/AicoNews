@@ -1,8 +1,10 @@
 import { ChatHistory } from "@/common.types";
 import { deleteChatHistory, getChatHistory, getNewsBySlug, saveChatHistory } from "@/lib/action";
 import { getCurrentUser } from "@/lib/session";
+import { SaveChatHistoryValidator } from "@/lib/validators/chat";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
+import { fromZodError } from "zod-validation-error";
 
 export async function GET(request: NextRequest) {
   const session = await getCurrentUser();
@@ -27,16 +29,19 @@ export async function POST(request: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { botResponse, userInput, slug } = await request.json();
+  const req = await request.json();
+
+  const chatHistoryValidation = SaveChatHistoryValidator.safeParse(req);
+  if (!chatHistoryValidation.success) {
+    const errorValidation = fromZodError(chatHistoryValidation.error)
+    return Response.json({ error: errorValidation }, { status: 400 });
+  }
+
+  const { botResponse, userInput, slug } = req;
+
   const chatHistories: ChatHistory = [
-    {
-      content: userInput,
-      role: "human",
-    },
-    {
-      content: botResponse,
-      role: "AI",
-    }
+    { content: userInput, role: "human" },
+    { content: botResponse, role: "AI" }
   ]
 
   const newsSlug = await getNewsBySlug(slug);

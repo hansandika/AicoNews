@@ -7,6 +7,8 @@ import { JWT } from "next-auth/jwt";
 import { SessionInterface, UserProfile } from "@/common.types";
 import { createUser, getUser } from "./action";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/constants/env_var";
+import { UserSchemaValidator } from "./validators/user";
+import { fromZodError } from 'zod-validation-error';
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -51,7 +53,7 @@ export const authOptions: NextAuthOptions = {
 
 				return newSession;
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 				return session;
 			}
 		},
@@ -63,25 +65,33 @@ export const authOptions: NextAuthOptions = {
 			account: Account | null;
 		}) {
 			try {
+
+				const userValidation = UserSchemaValidator.safeParse(user);
+				if (!userValidation.success) {
+					const errorValidation = fromZodError(userValidation.error)
+					console.error(errorValidation)
+					return false;
+				}
+
 				// get the user if it exists
 				const userExists = (await getUser(
-					user?.email as string
+					userValidation?.data.email as string
 				)) as UserProfile;
 
 				// if it doesn't exist, create it
 				if (!userExists?.id) {
 					// create the user
 					await createUser(
-						user.name as string,
-						user.email as string,
-						user.image as string,
+						userValidation?.data?.name as string,
+						userValidation?.data?.email as string,
+						userValidation?.data?.image as string,
 						account?.provider as string
 					);
 				}
 
 				return true;
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 				return false;
 			}
 		},
