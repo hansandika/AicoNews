@@ -1,18 +1,18 @@
-"use client";
-import { getMarketWidgetTexts } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import React, { useEffect, useRef } from "react";
+'use client';
+import { getMarketWidgetTexts } from '@/lib/utils';
+import { useTheme } from 'next-themes';
+import React, { useEffect, useRef } from 'react';
 
 const MarketWidgets = () => {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const { resolvedTheme: theme } = useTheme();
 
 	useEffect(() => {
-		if (typeof window === "undefined") return;
+		if (typeof window === 'undefined') return;
 
-		const scriptElement = document.createElement("script");
+		const scriptElement = document.createElement('script');
 		scriptElement.src =
-			"https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+			'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js';
 		scriptElement.async = true;
 
 		scriptElement.text = getMarketWidgetTexts(theme as string);
@@ -41,8 +41,8 @@ const MarketWidgets = () => {
 	return (
 		<div
 			ref={containerRef}
-			id="script-container"
-			className="tradingview-widget-container"
+			id='script-container'
+			className='tradingview-widget-container'
 		></div>
 	);
 };

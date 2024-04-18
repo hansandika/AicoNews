@@ -1,12 +1,12 @@
-import { getServerSession } from "next-auth/next";
-import { NextAuthOptions, User, Account } from "next-auth";
-import { AdapterUser } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
-import jsonwebtoken from "jsonwebtoken";
-import { JWT } from "next-auth/jwt";
-import { SessionInterface, UserProfile } from "@/common.types";
-import { createUser, getUser } from "./action";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/constants/env_var";
+import { getServerSession } from 'next-auth/next';
+import { NextAuthOptions, User, Account } from 'next-auth';
+import { AdapterUser } from 'next-auth/adapters';
+import GoogleProvider from 'next-auth/providers/google';
+import jsonwebtoken from 'jsonwebtoken';
+import { JWT } from 'next-auth/jwt';
+import { SessionInterface, UserProfile } from '@/common.types';
+import { createUser, getUser } from './action';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@/constants/env_var';
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -33,8 +33,8 @@ export const authOptions: NextAuthOptions = {
 		},
 	},
 	theme: {
-		colorScheme: "light",
-		logo: "/logo.png",
+		colorScheme: 'light',
+		logo: '/logo.png',
 	},
 	callbacks: {
 		async session({ session }) {

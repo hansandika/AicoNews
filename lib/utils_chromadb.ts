@@ -1,41 +1,41 @@
-"use server";
+'use server';
 
 import {
 	ChatHistory,
 	RelatedNewsInterace,
-} from "@/common.types";
+} from '@/common.types';
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
 	CHROMADB_OPENAI_MODEL,
 	OPENAI_API_KEY,
-} from "@/constants/env_var";
-import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { Document, DocumentInterface } from "@langchain/core/documents";
-import { OpenAIEmbeddings } from "@langchain/openai";
+} from '@/constants/env_var';
+import { Chroma } from '@langchain/community/vectorstores/chroma';
+import { Document, DocumentInterface } from '@langchain/core/documents';
+import { OpenAIEmbeddings } from '@langchain/openai';
 
 const combinePageContent = (documents: Document[]): string => {
-	let combinedContent: string = "";
+	let combinedContent: string = '';
 	for (const doc of documents) {
-		combinedContent += doc.pageContent + "\n";
+		combinedContent += doc.pageContent + '\n';
 	}
 
-	combinedContent = "NEWS RESULT: " + combinedContent;
+	combinedContent = 'NEWS RESULT: ' + combinedContent;
 	return combinedContent;
 };
 
 export const serializeChatHistory = (chatHistory: ChatHistory): string =>
 	chatHistory
 		.map((chatMessage) => {
-			if (chatMessage.role === "human") {
+			if (chatMessage.role === 'human') {
 				return `Human: ${chatMessage.content}`;
-			} else if (chatMessage.role === "AI") {
+			} else if (chatMessage.role === 'AI') {
 				return `Assistant: ${chatMessage.content}`;
 			} else {
 				return `${chatMessage.content}`;
 			}
 		})
-		.join("\n");
+		.join('\n');
 
 export const retrieveNews = async (query: string, slug: string) => {
 	const vectorStore = await Chroma.fromExistingCollection(
@@ -56,9 +56,9 @@ export const retrieveNews = async (query: string, slug: string) => {
 
 const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
-	let cleanedString = inputString.replace(/\n/g, " ");
+	let cleanedString = inputString.replace(/\n/g, ' ');
 	// Remove quotation marks
-	cleanedString = cleanedString.replace(/\"/g, "");
+	cleanedString = cleanedString.replace(/\"/g, '');
 	return cleanedString;
 };
 

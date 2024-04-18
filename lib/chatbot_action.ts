@@ -4,11 +4,11 @@ import {
 	ChatCompletionMessageParam,
 	ChatCompletionMessageToolCall,
 	ChatCompletionTool,
-} from "openai/resources/index.mjs";
-import { retrieveNews } from "./utils_chromadb";
-import OpenAI from "openai";
-import { getNewsBySlug } from "./action";
-import { OPENAI_API_KEY } from "@/constants/env_var";
+} from 'openai/resources/index.mjs';
+import { retrieveNews } from './utils_chromadb';
+import OpenAI from 'openai';
+import { getNewsBySlug } from './action';
+import { OPENAI_API_KEY } from '@/constants/env_var';
 
 const openai = new OpenAI({
 	apiKey: OPENAI_API_KEY,
@@ -16,24 +16,24 @@ const openai = new OpenAI({
 
 const tools: ChatCompletionTool[] = [
 	{
-		type: "function",
+		type: 'function',
 		function: {
-			name: "retrieveNews",
-			description: "Get current news based on user questions",
+			name: 'retrieveNews',
+			description: 'Get current news based on user questions',
 			parameters: {
-				type: "object",
+				type: 'object',
 				properties: {
 					search_query: {
-						type: "string",
-						description: "search query for news, e.g. 'covid-19 in Indonesia'",
+						type: 'string',
+						description: 'search query for news, e.g. \'covid-19 in Indonesia\'',
 					},
 					slug: {
-						type: "string",
+						type: 'string',
 						description:
-							"slug for news if available, e.g. 'covid-19-in-indonesia'",
+							'slug for news if available, e.g. \'covid-19-in-indonesia\'',
 					},
 				},
-				required: ["search_query", "slug"],
+				required: ['search_query', 'slug'],
 			},
 		},
 	},
@@ -47,12 +47,12 @@ export const getUserChatResponse = async (
 	const newsBySlug = await getNewsBySlug(slug);
 
 	if (!newsBySlug) {
-		throw new Error("News not found");
+		throw new Error('News not found');
 	}
 
 	const sytemMessages: ChatCompletionMessageParam[] = [
 		{
-			role: "system",
+			role: 'system',
 			content: `
 					You are an expert financial analyst and journalist. Your task is to answer any questions about financial and economic news.
 
@@ -71,10 +71,10 @@ export const getUserChatResponse = async (
 	];
 
 	const response = await openai.chat.completions.create({
-		model: "gpt-3.5-turbo-0125",
+		model: 'gpt-3.5-turbo-0125',
 		messages: [...sytemMessages, ...messages],
 		tools: tools,
-		tool_choice: "auto",
+		tool_choice: 'auto',
 		stream: true,
 	});
 
@@ -91,24 +91,24 @@ export const getUserChatResponse = async (
 			for (const toolCallChunk of toolCallChunks) {
 				if (toolCalls.length <= toolCallChunk.index) {
 					toolCalls.push({
-						id: "",
-						type: "function",
-						function: { name: "", arguments: "" },
+						id: '',
+						type: 'function',
+						function: { name: '', arguments: '' },
 					});
 				}
 
 				const tc = toolCalls[toolCallChunk.index];
 
 				if (toolCallChunk.id) {
-					tc["id"] += toolCallChunk.id;
+					tc['id'] += toolCallChunk.id;
 				}
 
 				if (toolCallChunk?.function?.name) {
-					tc["function"]["name"] += toolCallChunk.function.name;
+					tc['function']['name'] += toolCallChunk.function.name;
 				}
 
 				if (toolCallChunk?.function?.arguments) {
-					tc["function"]["arguments"] += toolCallChunk.function.arguments;
+					tc['function']['arguments'] += toolCallChunk.function.arguments;
 				}
 			}
 		}
@@ -116,7 +116,7 @@ export const getUserChatResponse = async (
 	}
 
 
-	sytemMessages.push({ role: "assistant", tool_calls: toolCalls });
+	sytemMessages.push({ role: 'assistant', tool_calls: toolCalls });
 
 	const availableFunctions = {
 		retrieveNews: retrieveNews,
@@ -134,12 +134,12 @@ export const getUserChatResponse = async (
 
 		sytemMessages.push({
 			tool_call_id: toolCall.id,
-			role: "tool",
+			role: 'tool',
 			content: functionResponse,
 		}); // extend conversation with function response
 
 		const secondResponse = await openai.chat.completions.create({
-			model: "gpt-3.5-turbo-0125",
+			model: 'gpt-3.5-turbo-0125',
 			messages: [...sytemMessages, ...messages],
 			stream: true,
 		});
