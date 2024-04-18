@@ -61,7 +61,9 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.0"
+    "vaul": "^0.9.0",
+    "zod": "^3.22.4",
+    "zod-validation-error": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
