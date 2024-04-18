@@ -8,23 +8,23 @@ type Props = {
 }
 
 const NewsDetails = ({ news, showContentPreview }: Props) => {
-  return (
-    <div className="newsDetails">
-      <h2 className="sm:text-[1.5rem] text-[1.25rem] sm:line-clamp-none line-clamp-2 font-bold">{news.headline}</h2>
-      <div className="flexBetween md:justify-normal md:flex gap-5 text-xs">
-        <p className="font-semibold">
-        {news.authorName} <span className='font-light md:invisible visible'>
+	return (
+		<div className='newsDetails'>
+			<h2 className='sm:text-[1.5rem] text-[1.25rem] sm:line-clamp-none line-clamp-2 font-bold'>{news.headline}</h2>
+			<div className='flexBetween md:justify-normal md:flex gap-5 text-xs'>
+				<p className='font-semibold'>
+					{news.authorName} <span className='font-light md:invisible visible'>
           • {news.source}
-        </span></p>
-        {formatDate(news.publishedDate)}
-      </div>
-      {showContentPreview && (
-        <div className="newsContentPreview">
-          {news.source} -- {news.content}
-        </div>
-      )}
-    </div>
-  )
+					</span></p>
+				{formatDate(news.publishedDate)}
+			</div>
+			{showContentPreview && (
+				<div className='newsContentPreview'>
+					{news.source} -- {news.content}
+				</div>
+			)}
+		</div>
+	)
 }
 
 export default NewsDetails
