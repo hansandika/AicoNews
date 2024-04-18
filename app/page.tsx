@@ -72,7 +72,7 @@ const Home = async () => {
 				</div>
 
 				{/* Latest */}
-				<LatestNews newsItems={newsItems} className='xl:max-w-[320px]' />
+				<LatestNews newsItems={newsItems} className='xl:max-w-[320px] px-3 sm:px-5 lg:px-0' />
 			</div>
 
 			{/* Markets */}
