@@ -4,11 +4,11 @@ import {
 	ChatCompletionMessageParam,
 	ChatCompletionMessageToolCall,
 	ChatCompletionTool,
-} from "openai/resources/index.mjs";
-import { retrieveNews } from "./utils_chromadb";
-import OpenAI from "openai";
-import { getNewsBySlug } from "./action";
-import { OPENAI_API_KEY } from "@/constants/env_var";
+} from 'openai/resources/index.mjs';
+import { retrieveNews } from './utils_chromadb';
+import OpenAI from 'openai';
+import { getNewsBySlug } from './action';
+import { OPENAI_API_KEY } from '@/constants/env_var';
 
 const openai = new OpenAI({
 	apiKey: OPENAI_API_KEY,
@@ -16,43 +16,43 @@ const openai = new OpenAI({
 
 const tools: ChatCompletionTool[] = [
 	{
-		type: "function",
+		type: 'function',
 		function: {
-			name: "retrieveNews",
-			description: "Get current news based on user questions",
+			name: 'retrieveNews',
+			description: 'Get current news based on user questions',
 			parameters: {
-				type: "object",
+				type: 'object',
 				properties: {
 					search_query: {
-						type: "string",
-						description: "search query for news, e.g. 'covid-19 in Indonesia'",
+						type: 'string',
+						description: 'search query for news, e.g. \'covid-19 in Indonesia\'',
 					},
 					slug: {
-						type: "string",
+						type: 'string',
 						description:
-							"slug for news if available, e.g. 'covid-19-in-indonesia'",
+							'slug for news if available, e.g. \'covid-19-in-indonesia\'',
 					},
 				},
-				required: ["search_query", "slug"],
+				required: ['search_query', 'slug'],
 			},
 		},
 	},
 ];
 
 export const getUserChatResponse = async (
-	input: { messages: ChatCompletionMessage[]; slug: string, languangeStyle: string }
+	input: { messages: ChatCompletionMessage[]; slug: string, languageStyle: string }
 ) => {
-	const { messages, slug, languangeStyle } = input;
+	const { messages, slug, languageStyle } = input;
 
 	const newsBySlug = await getNewsBySlug(slug);
 
 	if (!newsBySlug) {
-		throw new Error("News not found");
+		throw new Error('News not found');
 	}
 
 	const sytemMessages: ChatCompletionMessageParam[] = [
 		{
-			role: "system",
+			role: 'system',
 			content: `
 					You are an expert financial analyst and journalist. Your task is to answer any questions about financial and economic news.
 
@@ -65,52 +65,50 @@ export const getUserChatResponse = async (
 					Maintain an unbiased and journalistic tone in your responses. Combine the news results into a coherent answer, stating important data for news readers like significant numbers and statistical data if available. Avoid repeating text and do not fabricate an answer. If you don't know the answer, simply state so.
 
 					slug: ${slug}
+					Answer the following question with language style: ${languageStyle}
 				`,
 		},
 	];
 
 	const response = await openai.chat.completions.create({
-		model: "gpt-3.5-turbo-0125",
+		model: 'gpt-3.5-turbo-0125',
 		messages: [...sytemMessages, ...messages],
 		tools: tools,
-		tool_choice: "auto",
+		tool_choice: 'auto',
 		stream: true,
 	});
 
 	const [response1, response2] = response.tee();
-	let streamChat = "";
-	let toolCalls: Array<ChatCompletionMessageToolCall> = [];
-	let chatCompletions: Array<ChatCompletionChunk> = [];
+	const toolCalls: Array<ChatCompletionMessageToolCall> = [];
+	const chatCompletions: Array<ChatCompletionChunk> = [];
 
 	for await (const chatCompletion of response1) {
-		let delta = chatCompletion.choices[0]?.delta;
+		const delta = chatCompletion.choices[0]?.delta;
 
-		if (delta && delta.content) {
-			streamChat += delta.content;
-		} else if (delta && delta.tool_calls) {
-			let toolCallChunks = delta.tool_calls;
+		if (delta && delta.tool_calls) {
+			const toolCallChunks = delta.tool_calls;
 
-			for (let toolCallChunk of toolCallChunks) {
+			for (const toolCallChunk of toolCallChunks) {
 				if (toolCalls.length <= toolCallChunk.index) {
 					toolCalls.push({
-						id: "",
-						type: "function",
-						function: { name: "", arguments: "" },
+						id: '',
+						type: 'function',
+						function: { name: '', arguments: '' },
 					});
 				}
 
-				let tc = toolCalls[toolCallChunk.index];
+				const tc = toolCalls[toolCallChunk.index];
 
 				if (toolCallChunk.id) {
-					tc["id"] += toolCallChunk.id;
+					tc['id'] += toolCallChunk.id;
 				}
 
 				if (toolCallChunk?.function?.name) {
-					tc["function"]["name"] += toolCallChunk.function.name;
+					tc['function']['name'] += toolCallChunk.function.name;
 				}
 
 				if (toolCallChunk?.function?.arguments) {
-					tc["function"]["arguments"] += toolCallChunk.function.arguments;
+					tc['function']['arguments'] += toolCallChunk.function.arguments;
 				}
 			}
 		}
@@ -118,7 +116,7 @@ export const getUserChatResponse = async (
 	}
 
 
-	sytemMessages.push({ role: "assistant", tool_calls: toolCalls });
+	sytemMessages.push({ role: 'assistant', tool_calls: toolCalls });
 
 	const availableFunctions = {
 		retrieveNews: retrieveNews,
@@ -136,12 +134,12 @@ export const getUserChatResponse = async (
 
 		sytemMessages.push({
 			tool_call_id: toolCall.id,
-			role: "tool",
+			role: 'tool',
 			content: functionResponse,
 		}); // extend conversation with function response
 
 		const secondResponse = await openai.chat.completions.create({
-			model: "gpt-3.5-turbo-0125",
+			model: 'gpt-3.5-turbo-0125',
 			messages: [...sytemMessages, ...messages],
 			stream: true,
 		});

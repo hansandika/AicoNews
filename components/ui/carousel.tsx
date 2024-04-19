@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import useEmblaCarousel, {
 	type UseEmblaCarouselType,
-} from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+} from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -17,7 +17,7 @@ type CarouselPlugin = UseCarouselParameters[1];
 type CarouselProps = {
 	opts?: CarouselOptions;
 	plugins?: CarouselPlugin;
-	orientation?: "horizontal" | "vertical";
+	orientation?: 'horizontal' | 'vertical';
 	setApi?: (api: CarouselApi) => void;
 };
 
@@ -38,7 +38,7 @@ function useCarousel() {
 	const context = React.useContext(CarouselContext);
 
 	if (!context) {
-		throw new Error("useCarousel must be used within a <Carousel />");
+		throw new Error('useCarousel must be used within a <Carousel />');
 	}
 
 	return context;
@@ -50,7 +50,7 @@ const Carousel = React.forwardRef<
 >(
 	(
 		{
-			orientation = "horizontal",
+			orientation = 'horizontal',
 			opts,
 			setApi,
 			plugins = [Autoplay({ delay: 5000, stopOnInteraction: true })],
@@ -63,7 +63,7 @@ const Carousel = React.forwardRef<
 		const [carouselRef, api] = useEmblaCarousel(
 			{
 				...opts,
-				axis: orientation === "horizontal" ? "x" : "y",
+				axis: orientation === 'horizontal' ? 'x' : 'y',
 				loop: true,
 			},
 			plugins
@@ -99,10 +99,10 @@ const Carousel = React.forwardRef<
 
 		const handleKeyDown = React.useCallback(
 			(event: React.KeyboardEvent<HTMLDivElement>) => {
-				if (event.key === "ArrowLeft") {
+				if (event.key === 'ArrowLeft') {
 					event.preventDefault();
 					scrollPrev();
-				} else if (event.key === "ArrowRight") {
+				} else if (event.key === 'ArrowRight') {
 					event.preventDefault();
 					scrollNext();
 				}
@@ -124,11 +124,11 @@ const Carousel = React.forwardRef<
 			}
 
 			onSelect(api);
-			api.on("reInit", onSelect);
-			api.on("select", onSelect);
+			api.on('reInit', onSelect);
+			api.on('select', onSelect);
 
 			return () => {
-				api?.off("select", onSelect);
+				api?.off('select', onSelect);
 			};
 		}, [api, onSelect]);
 
@@ -139,7 +139,7 @@ const Carousel = React.forwardRef<
 					api: api,
 					opts,
 					orientation:
-						orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+						orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
 					scrollPrev,
 					scrollNext,
 					scrollToSlide,
@@ -151,9 +151,9 @@ const Carousel = React.forwardRef<
 				<div
 					ref={ref}
 					onKeyDownCapture={handleKeyDown}
-					className={cn("relative", className)}
-					role="region"
-					aria-roledescription="carousel"
+					className={cn('relative', className)}
+					role='region'
+					aria-roledescription='carousel'
 					{...props}
 				>
 					{children}
@@ -162,7 +162,7 @@ const Carousel = React.forwardRef<
 		);
 	}
 );
-Carousel.displayName = "Carousel";
+Carousel.displayName = 'Carousel';
 
 const CarouselContent = React.forwardRef<
 	HTMLDivElement,
@@ -173,13 +173,13 @@ const CarouselContent = React.forwardRef<
 	return (
 		<div
 			ref={carouselRef}
-			className="overflow-hidden lg:rounded"
+			className='overflow-hidden lg:rounded'
 		>
 			<div
 				ref={ref}
 				className={cn(
-					"flex",
-					orientation === "horizontal" ? "" : "-mt-4 flex-col",
+					'flex',
+					orientation === 'horizontal' ? '' : '-mt-4 flex-col',
 					className
 				)}
 				{...props}
@@ -187,7 +187,7 @@ const CarouselContent = React.forwardRef<
 		</div>
 	);
 });
-CarouselContent.displayName = "CarouselContent";
+CarouselContent.displayName = 'CarouselContent';
 
 const CarouselItem = React.forwardRef<
 	HTMLDivElement,
@@ -198,37 +198,37 @@ const CarouselItem = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			role="group"
-			aria-roledescription="slide"
+			role='group'
+			aria-roledescription='slide'
 			className={cn(
-				"min-w-0 shrink-0 grow-0 basis-full",
-				orientation === "horizontal" ? "pl-0" : "pt-4",
+				'min-w-0 shrink-0 grow-0 basis-full',
+				orientation === 'horizontal' ? 'pl-0' : 'pt-4',
 				className
 			)}
 			{...props}
 		/>
 	);
 });
-CarouselItem.displayName = "CarouselItem";
+CarouselItem.displayName = 'CarouselItem';
 
 const CarouselNavigation = React.forwardRef<
-	HTMLOptionsCollection,
-	React.HTMLAttributes<HTMLOptionsCollection>
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
 	const { current, scrollToSlide } = useCarousel();
 	return (
 		<div
-			className="flexCenter gap-2 mt-3"
+			className={`${className} flexCenter gap-2 mt-3`}
 			aria-valuenow={current}
+			ref={ref}
 		>
-			{Array.from({ length: props["aria-colcount"]! }).map((_, index) => (
+			{Array.from({ length: props['aria-colcount']! }).map((_, index) => (
 				<Button
-					variant={"ghost"}
+					variant={'ghost'}
 					key={index}
-					className={`w-2 h-2 lg:w-2 lg:h-2 p-0 rounded-full ${
-						index == current
-							? "bg-black-secondary dark:bg-black-tertiary"
-							: "bg-black-tertiary dark:bg-black-secondary"
+					className={`w-2 h-2 md:w-3 md:h-3 p-0 rounded-full ${index == current
+						? 'bg-black-secondary dark:bg-black-tertiary'
+						: 'bg-black-tertiary dark:bg-black-secondary'
 					} hover:bg-black-secondary dark:hover:bg-black-tertiary`}
 					onClick={() => scrollToSlide(index)}
 				></Button>

@@ -1,25 +1,23 @@
-"use client";
+'use client';
 
-import { useTheme } from "next-themes";
-import React from "react";
-import { BsBrightnessLowFill } from "react-icons/bs";
-import { HiMiniMoon } from "react-icons/hi2";
+import { useTheme } from 'next-themes';
+import React from 'react';
+import { BsBrightnessLowFill } from 'react-icons/bs';
+import { HiMiniMoon } from 'react-icons/hi2';
 function ToggleTheme() {
 	const { resolvedTheme: theme, setTheme } = useTheme()
 
-	if (typeof window === undefined) return null;
-
 	return (
-		<div className="text-blue-secondary">
-			{theme === "dark" ? (
+		<div className='text-blue-secondary'>
+			{theme === 'dark' ? (
 				<BsBrightnessLowFill
 					size={24}
-					onClick={() => setTheme("light")}
+					onClick={() => setTheme('light')}
 				/>
 			) : (
 				<HiMiniMoon
 					size={24}
-					onClick={() => setTheme("dark")}
+					onClick={() => setTheme('dark')}
 				/>
 			)}
 		</div>

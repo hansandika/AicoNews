@@ -1,43 +1,41 @@
-"use server";
+'use server';
 
 import {
 	ChatHistory,
-	NewsInterface,
-	RelatedNewsContentInterface,
-} from "@/common.types";
+	RelatedNewsInterace,
+} from '@/common.types';
 import {
 	CHROMADB_COLLECTION_NAME,
 	CHROMADB_HOST,
 	CHROMADB_OPENAI_MODEL,
 	OPENAI_API_KEY,
-} from "@/constants/env_var";
-import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { Document, DocumentInterface } from "@langchain/core/documents";
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { getListNewsByListSlug } from "./action";
+} from '@/constants/env_var';
+import { Chroma } from '@langchain/community/vectorstores/chroma';
+import { Document, DocumentInterface } from '@langchain/core/documents';
+import { OpenAIEmbeddings } from '@langchain/openai';
 
 const combinePageContent = (documents: Document[]): string => {
-	let combinedContent: string = "";
+	let combinedContent: string = '';
 	for (const doc of documents) {
-		combinedContent += doc.pageContent + "\n";
+		combinedContent += doc.pageContent + '\n';
 	}
 
-	combinedContent = "NEWS RESULT: " + combinedContent;
+	combinedContent = 'NEWS RESULT: ' + combinedContent;
 	return combinedContent;
 };
 
 export const serializeChatHistory = (chatHistory: ChatHistory): string =>
 	chatHistory
 		.map((chatMessage) => {
-			if (chatMessage.role === "human") {
+			if (chatMessage.role === 'human') {
 				return `Human: ${chatMessage.content}`;
-			} else if (chatMessage.role === "AI") {
+			} else if (chatMessage.role === 'AI') {
 				return `Assistant: ${chatMessage.content}`;
 			} else {
 				return `${chatMessage.content}`;
 			}
 		})
-		.join("\n");
+		.join('\n');
 
 export const retrieveNews = async (query: string, slug: string) => {
 	const vectorStore = await Chroma.fromExistingCollection(
@@ -58,46 +56,40 @@ export const retrieveNews = async (query: string, slug: string) => {
 
 const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
-	let cleanedString = inputString.replace(/\n/g, " ");
+	let cleanedString = inputString.replace(/\n/g, ' ');
 	// Remove quotation marks
-	cleanedString = cleanedString.replace(/\"/g, "");
+	cleanedString = cleanedString.replace(/\"/g, '');
 	return cleanedString;
 };
 
 const combineRelatedResult = async (
 	documents: DocumentInterface<Record<string, any>>[]
-) => {
-	const result: Record<string, RelatedNewsContentInterface> = {};
+): Promise<RelatedNewsInterace[]> => {
+	// const result: Record<string, RelatedNewsContentInterface> = {};
+	const result: RelatedNewsInterace[] = [];
 
-	const listSlug: string[] = [];
 	// group the result based on metadata slug
 	documents.forEach((doc) => {
 		const metadata = doc.metadata;
 		const slug = metadata.slug as string;
-		if (result[slug]) {
-			result[slug].content += doc.pageContent;
+		const index = result.findIndex(e => e.slug === slug);
+		if (index !== -1) {
+			result[index].content += cleanNewsString(doc.pageContent);
 		} else {
-			result[slug] = {
-				headline: metadata.headline,
-				content: doc.pageContent,
-			};
-			listSlug.push(slug);
+			result.push({
+				slug: slug,
+				headline: metadata.headline as string,
+				content: cleanNewsString(doc.pageContent),
+				date: metadata.publishedDate as Date,
+				source: metadata.source as string,
+			})
 		}
 	});
 
-	const relatedNews: NewsInterface[] = await getListNewsByListSlug(listSlug);
-
-	relatedNews.forEach((news) => {
-		const slug = news.slug;
-		const content = cleanNewsString(result[slug].content);
-		news.content = content;
-		result[slug].content = content;
-	});
-
-	return relatedNews;
+	return result
 };
 
-export const retrieveNewsWithGrouping = async (query: string) => {
+export const retrieveNewsWithGrouping = async (query: string): Promise<RelatedNewsInterace[]> => {
 	const vectorStore = await Chroma.fromExistingCollection(
 		new OpenAIEmbeddings({
 			openAIApiKey: OPENAI_API_KEY,
@@ -109,6 +101,6 @@ export const retrieveNewsWithGrouping = async (query: string) => {
 	const result = await vectorStore.similaritySearch(query, 5);
 
 	const documents = result as DocumentInterface<Record<string, any>>[];
-	const combinedResult = combineRelatedResult(documents);
+	const combinedResult = await combineRelatedResult(documents);
 	return combinedResult;
 };

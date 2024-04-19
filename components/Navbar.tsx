@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { SessionInterface } from "@/common.types";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import React from "react";
+import { SessionInterface } from '@/common.types';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import React from 'react';
 import {
 	Drawer,
 	DrawerClose,
@@ -12,7 +12,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
-} from "./ui/drawer";
+} from './ui/drawer';
 import {
 	Dialog,
 	DialogContent,
@@ -20,15 +20,15 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "./ui/button";
-import Image from "next/image";
-import { HiMenuAlt1 } from "react-icons/hi";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import AuthProviders from "./AuthProviders";
-import { NavLinks } from "@/constants";
+} from '@/components/ui/dialog';
+import { Button } from './ui/button';
+import Image from 'next/image';
+import { HiMenuAlt1 } from 'react-icons/hi';
+import Link from 'next/link';
+import { signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
+import AuthProviders from './AuthProviders';
+import { NavLinks } from '@/constants';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -37,53 +37,45 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import ToggleTheme from "./ToggleTheme";
-import { LogOut, Users } from "lucide-react";
-import SearchBar from "./SearchBar";
-import { AnimatePresence, motion, MotionProps } from "framer-motion";
-import { useTheme } from "next-themes";
+} from '@/components/ui/dropdown-menu';
+import ToggleTheme from './ToggleTheme';
+import { LogOut, Users } from 'lucide-react';
+import SearchBar from './SearchBar';
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
+import { useTheme } from 'next-themes';
 type NavbarProps = {
 	session: SessionInterface;
 };
 
-const links = [
-	{ path: "/", label: "Home" },
-	{ path: "/about", label: "About" },
-	{ path: "/blogs", label: "Blogs" },
-	{ path: "/contact", label: "Contact" },
-];
-
 const Navbar = ({ session }: NavbarProps) => {
 	const currentPath = usePathname();
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const isDesktop = useMediaQuery('(min-width: 768px)');
 	const { resolvedTheme: theme } = useTheme();
 	return isDesktop ? (
-		<div className="py-4 desktop-nav lg:container flex justify-between items-center">
-			<Link href="/">
+		<div className='py-4 desktop-nav lg:container flex justify-between items-center'>
+			<Link href='/'>
 				<Image
-					src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
+					src={`${theme === 'dark' ? '/logo-dark.svg' : '/logo.svg'}`}
 					width={150}
 					height={20}
-					alt="logo"
+					alt='logo'
 				/>
 			</Link>
-			<div className="flex items-center gap-8">
-				<div className="w-[200px]">
+			<div className='flex items-center gap-8'>
+				<div className='w-[200px]'>
 					<CMDKWrapper>
 						<SearchBar />
 					</CMDKWrapper>
 				</div>
-				<div className="flex gap-8 font-medium text-[1rem]">
+				<div className='flex gap-8 font-medium text-[1rem]'>
 					{NavLinks.map((link) => {
 						return (
 							<Link
 								key={link.text}
 								href={link.href}
-								className={`w-full rounded-md py-2 ${
-									currentPath === link.href
-										? "text-blue-primary dark:text-blue-secondary"
-										: "text-black-tertiary hover:text-black-secondary"
+								className={`w-full rounded-md py-2 ${currentPath === link.href
+									? 'text-blue-primary dark:text-blue-secondary'
+									: 'text-black-tertiary hover:text-black-secondary'
 								}`}
 							>
 								{link.text}
@@ -91,8 +83,8 @@ const Navbar = ({ session }: NavbarProps) => {
 						);
 					})}
 				</div>
-				<div className="flex items-center gap-6">
-					<p className="text-black-secondary">|</p>
+				<div className='flex items-center gap-6'>
+					<p className='text-black-secondary'>|</p>
 					<div>
 						<ToggleTheme />
 					</div>
@@ -103,26 +95,26 @@ const Navbar = ({ session }: NavbarProps) => {
 									src={session?.user.image}
 									width={40}
 									height={40}
-									alt="user profile"
-									className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full cursor-pointer"
+									alt='user profile'
+									className='relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full cursor-pointer'
 								/>
 							</DropdownMenuTrigger>
-							<DropdownMenuContent className="w-56">
+							<DropdownMenuContent className='w-56'>
 								<DropdownMenuLabel>My Account</DropdownMenuLabel>
 								<DropdownMenuSeparator />
 
 								<DropdownMenuGroup>
 									<DropdownMenuItem>
-										<Users className="mr-2 h-4 w-4" />
+										<Users className='mr-2 h-4 w-4' />
 										<span>Profile</span>
 									</DropdownMenuItem>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem
-									className="cursor-pointer"
+									className='cursor-pointer'
 									onClick={() => signOut()}
 								>
-									<LogOut className="mr-2 h-4 w-4" />
+									<LogOut className='mr-2 h-4 w-4' />
 									<span>Log out</span>
 								</DropdownMenuItem>
 							</DropdownMenuContent>
@@ -134,10 +126,10 @@ const Navbar = ({ session }: NavbarProps) => {
 							</DialogTrigger>
 							<DialogContent>
 								<DialogHeader>
-									<DialogTitle className="font-semibold text-[1.5rem] text-blue-primary dark:text-blue-primary-dark text-center">
+									<DialogTitle className='font-semibold text-[1.5rem] text-blue-primary dark:text-blue-primary-dark text-center'>
 										Sign In to AicoNews
 									</DialogTitle>
-									<DialogDescription className="text-center pb-5">
+									<DialogDescription className='text-center pb-5'>
 										Sign in to access your account.
 									</DialogDescription>
 									<AuthProviders></AuthProviders>
@@ -150,27 +142,27 @@ const Navbar = ({ session }: NavbarProps) => {
 		</div>
 	) : (
 		<div
-			className="py-3 sm:py-4 px-3 sm:px-5 lg:px-0 "
+			className='py-3 sm:py-4 px-3 sm:px-5 lg:px-0 '
 			suppressHydrationWarning
 		>
 			<div>
-				<Drawer direction="top">
-					<div className="flex justify-between gap-5">
-						<div className="flex gap-3 items-center">
+				<Drawer direction='top'>
+					<div className='flex justify-between gap-5'>
+						<div className='flex gap-3 items-center'>
 							<DrawerTrigger asChild>
 								<HiMenuAlt1
 									size={24}
-									className="cursor-pointer text-blue-primary dark:text-blue-primary-dark"
+									className='cursor-pointer text-blue-primary dark:text-blue-primary-dark'
 								/>
 							</DrawerTrigger>
 							<DrawerContent>
 								{session?.user ? (
-									<div className="flex p-4 w-full flex-col">
-										<div className="flex justify-between items-center">
-											<Link href="/">
+									<div className='flex p-4 w-full flex-col'>
+										<div className='flex justify-between items-center'>
+											<Link href='/'>
 												<Image
-													src="/logo.svg"
-													alt="logo"
+													src='/logo.svg'
+													alt='logo'
 													width={120}
 													height={20}
 												/>
@@ -179,20 +171,19 @@ const Navbar = ({ session }: NavbarProps) => {
 												src={session?.user.image}
 												width={40}
 												height={40}
-												alt="user profile"
-												className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full"
+												alt='user profile'
+												className='relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full'
 											/>
 										</div>
-										<div className="mt-5 flex flex-col text-[1.25rem] font-semibold">
+										<div className='mt-5 flex flex-col text-[1.25rem] font-semibold'>
 											{NavLinks.map((link) => {
 												return (
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
-																? "text-blue-primary dark:text-blue-primary-dark"
-																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														className={`w-full rounded-md py-2 ${currentPath === link.href
+															? 'text-blue-primary dark:text-blue-primary-dark'
+															: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
 														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
@@ -200,15 +191,15 @@ const Navbar = ({ session }: NavbarProps) => {
 												);
 											})}
 										</div>
-										<div className="pt-4">
+										<div className='pt-4'>
 											<DrawerFooter>
 												<DrawerClose asChild>
 													<Button
-														variant="destructive"
+														variant='destructive'
 														onClick={() => {
 															signOut();
 														}}
-														size="none"
+														size='none'
 													>
 														Log out
 													</Button>
@@ -217,27 +208,26 @@ const Navbar = ({ session }: NavbarProps) => {
 										</div>
 									</div>
 								) : (
-									<div className="flex flex-col p-4">
-										<div className="flex justify-between items-center">
-											<Link href="/">
+									<div className='flex flex-col p-4'>
+										<div className='flex justify-between items-center'>
+											<Link href='/'>
 												<Image
-													src="/logo.svg"
-													alt="logo"
+													src='/logo.svg'
+													alt='logo'
 													width={120}
 													height={20}
 												/>
 											</Link>
 										</div>
-										<div className="mt-5 flex flex-col text-[1.25rem] font-semibold">
+										<div className='mt-5 flex flex-col text-[1.25rem] font-semibold'>
 											{NavLinks.map((link) => {
 												return (
 													<Link
 														key={link.text}
 														href={link.href}
-														className={`w-full rounded-md py-2 ${
-															currentPath === link.href
-																? "text-blue-primary dark:text-blue-primary-dark"
-																: "text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark"
+														className={`w-full rounded-md py-2 ${currentPath === link.href
+															? 'text-blue-primary dark:text-blue-primary-dark'
+															: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
 														}`}
 													>
 														<DrawerClose>{link.text}</DrawerClose>
@@ -255,35 +245,35 @@ const Navbar = ({ session }: NavbarProps) => {
 										<DrawerFooter>
 											<AuthProviders></AuthProviders>
 											<DrawerClose asChild>
-												<Button variant="secondary">Cancel</Button>
+												<Button variant='secondary'>Cancel</Button>
 											</DrawerClose>
 										</DrawerFooter>
 									</div>
 								)}
 							</DrawerContent>
 							<Link
-								href="/"
-								className="relative  w-[120px] h-[32px] hidden sm:block"
+								href='/'
+								className='relative  w-[120px] h-[32px] hidden sm:block'
 							>
 								<Image
-									src={`${theme === "dark" ? "/logo-dark.svg" : "/logo.svg"}`}
+									src={`${theme === 'dark' ? '/logo-dark.svg' : '/logo.svg'}`}
 									fill
-									alt="logo"
+									alt='logo'
 								/>
 							</Link>
 						</div>
 						<AnimatePresence
-							mode="wait"
+							mode='wait'
 							initial={false}
 						>
-							<div className="w-full">
+							<div className='w-full'>
 								<CMDKWrapper>
 									<SearchBar />
 								</CMDKWrapper>
 							</div>
 						</AnimatePresence>
 
-						<div className="flex items-center gap-5 shrink-0">
+						<div className='flex items-center gap-5 shrink-0'>
 							<div>
 								<ToggleTheme />
 							</div>
@@ -292,8 +282,8 @@ const Navbar = ({ session }: NavbarProps) => {
 									src={session?.user.avatarUrl}
 									width={40}
 									height={40}
-									alt="user profile"
-									className="relative shrink-0 h-10 w-10 overflow-hidden rounded-full"
+									alt='user profile'
+									className='relative shrink-0 h-10 w-10 overflow-hidden rounded-full'
 								/>
 							) : (
 								<DrawerTrigger asChild>
