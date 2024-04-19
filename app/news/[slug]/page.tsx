@@ -59,7 +59,7 @@ const NewsDetail = async ({
 				</article>
 				<LatestNews newsItems={newsCollection} className='order-3 w-full 2xl:max-w-60' />
 			</div>
-			{session?.user && <ChatCard news={newsSlug} session={session} slug={slug} />}
+			<ChatCard news={newsSlug} session={session} slug={slug} />
 		</div>
 	);
 };

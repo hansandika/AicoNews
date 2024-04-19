@@ -23,6 +23,7 @@ import DeleteChat from './DeleteChat';
 import { LanguageStyle } from '@/constants';
 import Chat from './Chat';
 import { NewsInterface, SessionInterface } from '@/common.types';
+import AuthProviders from './AuthProviders';
 
 interface ChatCardProps {
 	news: NewsInterface;
@@ -44,37 +45,45 @@ const ChatCard = ({ news, session, slug }: ChatCardProps) => {
 				</div>
 			</SheetTrigger>
 			<SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
-				<SheetHeader className='h-full'>
-					<div className='my-4 flex justify-between items-center pt-4'>
-						<SheetTitle className='text-left '>AI <span className='hidden sm:inline'>Assistant</span> </SheetTitle>
-						<Select value={languageStyle} onValueChange={(value: LanguageStyle) => setLanguageStyle(value)}>
-							<SelectTrigger className='w-[150px] sm:w-[180px] lg:w-full lg:max-w-[230px]'>
-								<SelectValue placeholder='Preferences' />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Preferences</SelectLabel>
-									<SelectItem value={LanguageStyle.CASUAL}>Casual</SelectItem>
-									<SelectItem value={LanguageStyle.FORMAL}>Formal</SelectItem>
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-						<DeleteChat
-							slug={slug}
-							session={session}
-						/>
+				{session?.user ? (
+					<SheetHeader className='h-full'>
+						<div className='my-4 flex justify-between items-center pt-4'>
+							<SheetTitle className='text-left '>AI <span className='hidden sm:inline'>Assistant</span> </SheetTitle>
+							<Select value={languageStyle} onValueChange={(value: LanguageStyle) => setLanguageStyle(value)}>
+								<SelectTrigger className='w-[150px] sm:w-[180px] lg:w-full lg:max-w-[230px]'>
+									<SelectValue placeholder='Preferences' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Preferences</SelectLabel>
+										<SelectItem value={LanguageStyle.CASUAL}>Casual</SelectItem>
+										<SelectItem value={LanguageStyle.FORMAL}>Formal</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+							<DeleteChat
+								slug={slug}
+								session={session}
+							/>
+						</div>
+						<SheetDescription>
+							Chat with our AI assistant to get more information about this news
+						</SheetDescription>
+						<div className='h-full'>
+							<Chat
+								news={news}
+								session={session}
+								languageStyle={languageStyle}
+							/>
+						</div>
+					</SheetHeader>
+				) : (
+					<div className='flex items-center flex-col gap-2 h-full justify-center'>
+						<h3 className='text-center font-medium'>To use our AI Assistant, Please Sign In</h3>
+						<AuthProviders />
 					</div>
-					<SheetDescription>
-						Chat with our AI assistant to get more information about this news
-					</SheetDescription>
-					<div className='h-full'>
-						<Chat
-							news={news}
-							session={session}
-							languageStyle={languageStyle}
-						/>
-					</div>
-				</SheetHeader>
+				)
+				}
 			</SheetContent>
 		</Sheet>
 	)

@@ -132,7 +132,7 @@ const Navbar = ({ session }: NavbarProps) => {
 									<DialogDescription className='text-center pb-5'>
 										Sign in to access your account.
 									</DialogDescription>
-									<AuthProviders></AuthProviders>
+									<AuthProviders />
 								</DialogHeader>
 							</DialogContent>
 						</Dialog>
