@@ -446,3 +446,35 @@
 		right: 100%;
 	}
 }
+
+/* ::-webkit-scrollbar {
+	width: 4px;
+	background-color: #232323;
+}
+
+::-webkit-scrollbar-track {
+	background: white;
+
+	.dark & {
+		background: #232323;
+	}
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.5);
+	border-radius: 8px;
+} */
+
+body {
+	overflow: overlay;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #9dc9fb;
+	border-radius: 8px;
+}
