@@ -190,29 +190,6 @@
 	}
 }
 
-::-webkit-scrollbar {
-  @apply w-3;
-}
-
-::-webkit-scrollbar-track {
-	@apply dark:bg-black-secondary bg-black-tertiary;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply dark:bg-black-tertiary bg-black-secondary rounded-lg border-[3px] border-solid dark:border-black-secondary border-black-tertiary;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-	display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-	-ms-overflow-style: none;  /* IE and Edge */
-	scrollbar-width: none;  /* Firefox */
-}
-
 .custom-container {
 	padding-left: 0.75rem;
 	padding-right: 0.75rem;
@@ -406,66 +383,71 @@
 	}
 }
 
-.bar {
-	position: relative;
-	height: 2px;
-	width: 100%;
-	margin: 0 auto;
-	background: #999999;
-	margin-top: 36px;
-
-	.dark & {
-		background: #ffffff;
-	}
-}
-
-.circle {
-	position: absolute;
-	top: -30px;
-	margin-left: 0;
-	height: 60px;
-	width: 60px;
-	left: 0;
-	background: #999999;
-	border-radius: 30%;
-	animation: move 5s infinite;
-
-	.dark & {
-		background: #ffffff;
-	}
-}
-
 .loading {
-	position: absolute;
-	top: -25px;
-	right: 24px;
-	text-transform: uppercase;
-	color: #ffffff;
-	font-family: helvetica, sans-serif;
-	font-weight: bold;
-
-	.dark & {
-		color: rgba(22, 22, 22, 1);
+	span {
+		display: inline-block;
+		/* margin: 0 -0.05em; */
 	}
 }
 
-@keyframes move {
-	0% {
-		left: 0;
+.loading04 span {
+	animation: loading04 0.7s infinite;
+}
+
+.loading04 span:nth-child(2) {
+	animation-delay: 0.1s;
+}
+
+.loading04 span:nth-child(3) {
+	animation-delay: 0.2s;
+}
+
+.loading04 span:nth-child(4) {
+	animation-delay: 0.3s;
+}
+
+.loading04 span:nth-child(5) {
+	animation-delay: 0.4s;
+}
+
+.loading04 span:nth-child(6) {
+	animation-delay: 0.5s;
+}
+
+.loading04 span:nth-child(7) {
+	animation-delay: 0.6s;
+}
+.loading04 span:nth-child(8) {
+	animation-delay: 0.7s;
+}
+.loading04 span:nth-child(9) {
+	animation-delay: 0.8s;
+}
+.loading04 span:nth-child(10) {
+	animation-delay: 0.9s;
+}
+
+@keyframes loading04 {
+	0%,
+	100% {
+		transform: translateY(0);
 	}
 	50% {
-		left: 68%;
-		transform: rotate(450deg);
-		width: 150px;
-		height: 150px;
+		transform: translateY(8px);
 	}
-	75% {
-		left: 68%;
-		transform: rotate(450deg);
-		width: 150px;
-		height: 150px;
-	}
-	100% {
-		right: 100%;
-	}
+}
+
+/* scroll bar */
+body {
+	overflow: overlay;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #9dc9fb;
+	border-radius: 8px;
 }
