@@ -25,9 +25,9 @@ import Chat from './Chat';
 import { NewsInterface, SessionInterface } from '@/common.types';
 
 interface ChatCardProps {
-  news: NewsInterface;
-  session: SessionInterface;
-  slug: string;
+	news: NewsInterface;
+	session: SessionInterface;
+	slug: string;
 }
 
 const ChatCard = ({ news, session, slug }: ChatCardProps) => {
@@ -46,9 +46,9 @@ const ChatCard = ({ news, session, slug }: ChatCardProps) => {
 			<SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
 				<SheetHeader className='h-full'>
 					<div className='my-4 flex justify-between items-center pt-4'>
-						<SheetTitle className='text-left '>AI Assistant</SheetTitle>
+						<SheetTitle className='text-left '>AI <span className='hidden sm:inline'>Assistant</span> </SheetTitle>
 						<Select value={languageStyle} onValueChange={(value: LanguageStyle) => setLanguageStyle(value)}>
-							<SelectTrigger className='w-[180px]'>
+							<SelectTrigger className='w-[150px] sm:w-[180px] lg:w-full lg:max-w-[230px]'>
 								<SelectValue placeholder='Preferences' />
 							</SelectTrigger>
 							<SelectContent>
@@ -65,7 +65,7 @@ const ChatCard = ({ news, session, slug }: ChatCardProps) => {
 						/>
 					</div>
 					<SheetDescription>
-            Chat with our AI assistant to get more information about this news
+						Chat with our AI assistant to get more information about this news
 					</SheetDescription>
 					<div className='h-full'>
 						<Chat

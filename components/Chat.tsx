@@ -16,9 +16,9 @@ import { saveChatHistoryRequest } from '@/lib/chat_action'
 import { LanguageStyle } from '@/constants'
 
 interface ChatProps {
-  news: NewsInterface;
-  session: SessionInterface;
-  languageStyle: LanguageStyle;
+	news: NewsInterface;
+	session: SessionInterface;
+	languageStyle: LanguageStyle;
 }
 
 const Chat = ({ news, session, languageStyle }: ChatProps) => {
@@ -76,8 +76,8 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
 	}, [initalChatHistory])
 
 	useEffect(() => {
-    refTextArea!.current!.style.height = 'auto';
-    refTextArea!.current!.style.height = refTextArea!.current!.scrollHeight + 'px';
+		refTextArea!.current!.style.height = 'auto';
+		refTextArea!.current!.style.height = refTextArea!.current!.scrollHeight + 'px';
 	}, [input])
 
 	const handleEnterTextArea = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -169,14 +169,14 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
 				rows={1}
 				onKeyDown={handleEnterTextArea}
 				placeholder='Ask me anything...'
-				className='pr-12 placeholder:italic placeholder:text-zinc-600/75 focus-visible:ring-zinc-500'
+				className='pr-16 placeholder:italic placeholder:text-zinc-600/75 focus-visible:ring-zinc-500'
 			/>
 			<Button
 				size='icon'
 				type='submit'
 				variant='secondary'
 				disabled={isLoading}
-				className='absolute right-1 top-1 h-8 w-10'
+				className='absolute right-4 bottom-1 h-8 w-10'
 			>
 				<SendHorizontalIcon className='h-5 w-5 text-blue-primary dark:text-white' />
 			</Button>
