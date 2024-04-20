@@ -162,7 +162,6 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
 			<Textarea
 				name='message'
 				value={input}
-				autoFocus
 				onChange={handleInputChange}
 				disabled={isLoading}
 				ref={refTextArea}

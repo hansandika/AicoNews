@@ -1,12 +1,21 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { }
+	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 	({ className, ...props }, ref) => {
+		const isDesktop = useMediaQuery('(min-width: 768px)');
+
+		React.useEffect(() => {
+			if (isDesktop && ref) {
+				(ref as React.MutableRefObject<HTMLTextAreaElement>).current?.focus();
+			}
+		}, [isDesktop])
+
 		return (
 			<textarea
 				className={cn(

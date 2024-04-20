@@ -15,7 +15,6 @@ import { RelatedNewsInterace } from '@/common.types';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 const truncate = (text: string, maxLength: number) => {
-	// const maxLength = 200;
 	if (text.length > maxLength) {
 		return text.substring(0, maxLength) + '...';
 	} else {

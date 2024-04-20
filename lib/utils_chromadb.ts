@@ -65,7 +65,6 @@ const cleanNewsString = (inputString: string) => {
 const combineRelatedResult = async (
 	documents: DocumentInterface<Record<string, any>>[]
 ): Promise<RelatedNewsInterace[]> => {
-	// const result: Record<string, RelatedNewsContentInterface> = {};
 	const result: RelatedNewsInterace[] = [];
 
 	// group the result based on metadata slug
