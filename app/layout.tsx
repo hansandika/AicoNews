@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
 	title: 'AicoNews',
@@ -25,11 +26,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-			<link
-				rel='icon'
-				href='/favicon.ico'
-				sizes='any'
-			/>
+			<Head>
+				<link
+					rel='icon'
+					href='/favicon.ico'
+					sizes='any'
+				/>
+				<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' />
+			</Head>
 			<body className={cn('font-sans ', fontSans.variable)}>
 				<ThemeProvider
 					attribute='class'
