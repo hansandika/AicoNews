@@ -44,32 +44,34 @@ const ChatCard = ({ news, session, slug }: ChatCardProps) => {
 					/>
 				</div>
 			</SheetTrigger>
-			<SheetContent className='w-[300px] md:w-[800px] lg:w-[1700px]'>
+			<SheetContent className='w-full sm:w-[300px] md:w-[800px] lg:w-[1700px]'>
 				{session?.user ? (
-					<SheetHeader className='h-full'>
-						<div className='my-4 flex justify-between items-center pt-4'>
-							<SheetTitle className='text-left '>AI <span className='hidden sm:inline'>Assistant</span> </SheetTitle>
-							<Select value={languageStyle} onValueChange={(value: LanguageStyle) => setLanguageStyle(value)}>
-								<SelectTrigger className='w-[150px] sm:w-[180px] lg:w-full lg:max-w-[230px]'>
-									<SelectValue placeholder='Preferences' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectLabel>Preferences</SelectLabel>
-										<SelectItem value={LanguageStyle.CASUAL}>Casual</SelectItem>
-										<SelectItem value={LanguageStyle.FORMAL}>Formal</SelectItem>
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-							<DeleteChat
-								slug={slug}
-								session={session}
-							/>
+					<SheetHeader className='h-full relative w-full'>
+						<div className='absolute sm:static'>
+							<div className='my-4 flex justify-between items-center pt-4'>
+								<SheetTitle className='text-left '>AI <span className='hidden sm:inline'>Assistant</span> </SheetTitle>
+								<Select value={languageStyle} onValueChange={(value: LanguageStyle) => setLanguageStyle(value)}>
+									<SelectTrigger className='w-[150px] sm:w-[180px] lg:w-full lg:max-w-[230px]'>
+										<SelectValue placeholder='Preferences' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											<SelectLabel>Preferences</SelectLabel>
+											<SelectItem value={LanguageStyle.CASUAL}>Casual</SelectItem>
+											<SelectItem value={LanguageStyle.FORMAL}>Formal</SelectItem>
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+								<DeleteChat
+									slug={slug}
+									session={session}
+								/>
+							</div>
+							<SheetDescription>
+								Chat with our AI assistant to get more information about this news
+							</SheetDescription>
 						</div>
-						<SheetDescription>
-							Chat with our AI assistant to get more information about this news
-						</SheetDescription>
-						<div className='h-full'>
+						<div className='h-full pt-32 sm:pt-0'>
 							<Chat
 								news={news}
 								session={session}

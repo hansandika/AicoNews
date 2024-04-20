@@ -176,7 +176,7 @@ const Chat = ({ news, session, languageStyle }: ChatProps) => {
 				type='submit'
 				variant='secondary'
 				disabled={isLoading}
-				className='absolute right-4 bottom-1 h-8 w-10'
+				className='absolute right-1 bottom-1 h-8 w-10'
 			>
 				<SendHorizontalIcon className='h-5 w-5 text-blue-primary dark:text-white' />
 			</Button>
