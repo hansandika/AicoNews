@@ -10,7 +10,7 @@ const NewsCard = ({ news }: { news: NewsInterface }) => {
 			<div>
 				<Image src={news.thumbnailUrl} height={360} width={640} alt='News Thumbnail' className='newsThumbnail' />
 			</div>
-			<NewsDetails news={news} showContentPreview={true} />
+			<NewsDetails news={news} />
 		</Link>
 	)
 }

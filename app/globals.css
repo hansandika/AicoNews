@@ -182,7 +182,7 @@
 	}
 
 	.newsContentPreview {
-		@apply text-xl h-[84px] overflow-clip md:line-clamp-3 hidden;
+		@apply hidden md:text-base lg:text-xl overflow-hidden md:line-clamp-3;
 	}
 
 	.newsList {
