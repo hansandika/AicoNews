@@ -137,7 +137,7 @@ const SearchBar = () => {
 interface HomeProps {
 	input: string;
 	closeSearch: () => void;
-	isMobile: boolean;
+	isMobile: boolean | undefined;
 }
 
 const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
@@ -198,7 +198,8 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 										onClick={() => closeSearch()}
 									>
 										<div
-											className={`${isMobile ? 'text-[0.9rem]' : 'text-[1rem]'
+											className={`${
+												isMobile ? 'text-[0.9rem]' : 'text-[1rem]'
 											} font-medium mb-2 `}
 										>
 											{item.headline}
