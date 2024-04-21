@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import NavbarWrapper from '@/components/NavbarWrapper';
-import Footer from '@/components/Footer';
 import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import SubLayout from '../components/SubLayout';
+import { getCurrentUser } from '@/lib/session';
 
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
 	maximumScale: 1,
 	userScalable: false,
-}
+};
 
 export const metadata: Metadata = {
 	title: 'AicoNews',
@@ -25,13 +25,18 @@ const fontSans = FontSans({
 
 export const revalidate = 3600;
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await getCurrentUser();
+
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html
+			lang='en'
+			suppressHydrationWarning
+		>
 			<link
 				rel='icon'
 				href='/favicon.ico'
@@ -43,12 +48,9 @@ export default function RootLayout({
 					defaultTheme='system'
 					enableSystem
 					enableColorScheme={false}
-					disableTransitionOnChange>
-					<div className='dark:bg-black'>
-						<NavbarWrapper />
-						<main>{children}</main>
-						<Footer />
-					</div>
+					disableTransitionOnChange
+				>
+					<SubLayout session={session}>{children}</SubLayout>
 				</ThemeProvider>
 			</body>
 		</html>
