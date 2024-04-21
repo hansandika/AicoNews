@@ -9,7 +9,6 @@ export interface TextareaProps
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 	({ className, ...props }, ref) => {
 		const isDesktop = !useMediaQuery('(max-width: 500px)');
-		console.log(isDesktop);
 		return (
 			<textarea
 				className={cn(
