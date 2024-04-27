@@ -54,7 +54,7 @@ const NewsDetail = async ({
 					hashtag={newsSlug.categoryName}
 					quote={newsSlug.headline}
 				/>
-				<article className='prose prose-xl prose-headings:underline prose-a:text-blue-600 dark:prose-invert order-1 md:order-2'>
+				<article className='prose md:prose-lg lg:prose-xl prose-headings:underline prose-a:text-blue-600 dark:prose-invert order-1 md:order-2'>
 					{parse(parse(newsSlug.contentHtml) as string)}
 				</article>
 				<LatestNews newsItems={newsCollection} className='order-3 w-full 2xl:max-w-60' />

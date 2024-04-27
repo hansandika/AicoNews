@@ -9,8 +9,8 @@ type Props = {
 const NewsDetails = ({ news }: Props) => {
 	return (
 		<div className='newsDetails'>
-			<h2 className='text-[1.25rem] md:text-[1.5rem] line-clamp-2 sm:line-clamp-3 font-bold'>{news.headline}</h2>
-			<div className='flexBetween md:justify-normal md:flex gap-5 text-xs'>
+			<h2 className='text-xl md:text-3xl line-clamp-2 sm:line-clamp-3 font-bold'>{news.headline}</h2>
+			<div className='flexBetween md:justify-normal md:flex gap-5 text-sm lg:text-base'>
 				<p className='font-semibold'>
 					{news.authorName} <span className='font-light md:invisible visible'>
 						• {news.source}

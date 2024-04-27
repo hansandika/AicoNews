@@ -44,13 +44,10 @@ const SearchBar = () => {
 	const isMobile = useMediaQuery('(max-width: 500px)');
 
 	const closeSearch = React.useCallback(() => {
-		// logic to close the dialog
 		setOpen(false);
-		// logic to remove all contents in the dialog
 		setInputValue('');
 	}, []);
 
-	// Toggle the menu when ⌘K is pressed
 	useEffect(() => {
 		const down = (e: KeyboardEvent) => {
 			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
@@ -159,7 +156,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 	return (
 		<div>
 			{!isLoading && !data && (
-				<div className='text-center'>No News Result...</div>
+				<div className='text-center pb-2'>No News Result...</div>
 			)}
 			{isLoading && (
 				<div>
@@ -199,7 +196,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 									>
 										<div
 											className={`${isMobile ? 'text-[0.9rem]' : 'text-[1rem]'
-											} font-medium mb-2 `}
+												} font-medium mb-2 `}
 										>
 											{item.headline}
 										</div>

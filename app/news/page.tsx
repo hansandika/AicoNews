@@ -8,7 +8,7 @@ export const revalidate = 3600;
 const News = async () => {
 	const newsCollection = await getNewsPagination(1, 8);
 	return (
-		<div className='flexCenter flex-col mt-4 mb-8 gap-y-3'>
+		<div className='flexCenter flex-col mb-8 gap-y-3'>
 			<NewsCarousel />
 			<section className='newsList'>
 				{newsCollection.map((news, index) => (
