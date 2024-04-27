@@ -134,7 +134,7 @@ const SearchBar = () => {
 interface HomeProps {
 	input: string;
 	closeSearch: () => void;
-	isMobile: boolean;
+	isMobile: boolean | undefined;
 }
 
 const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
