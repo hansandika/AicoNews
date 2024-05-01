@@ -97,9 +97,11 @@ export const retrieveNewsWithGrouping = async (query: string): Promise<RelatedNe
 		{ collectionName: CHROMADB_COLLECTION_NAME, url: CHROMADB_HOST }
 	);
 
-	const result = await vectorStore.similaritySearch(query, 5);
+	const result = await vectorStore.similaritySearchWithScore(query, 5);
 
-	const documents = result as DocumentInterface<Record<string, any>>[];
+	// Filter documents with similarity score less than 1.5
+	const documents: DocumentInterface<Record<string, any>>[] = result.filter(doc => doc[1] < 1.5).map(doc => doc[0]);
+	;
 	const combinedResult = await combineRelatedResult(documents);
 	return combinedResult;
 };

@@ -155,7 +155,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 
 	return (
 		<div>
-			{!isLoading && !data && (
+			{((!isLoading && !data) || (data && data.relatedNews.length == 0)) && (
 				<div className='text-center pb-2'>No News Result...</div>
 			)}
 			{isLoading && (
@@ -181,7 +181,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 					</div>
 				</div>
 			)}
-			{data && (
+			{data && data.relatedNews.length != 0 && (
 				<Command.Group heading='Related News'>
 					{data.relatedNews.map((item: RelatedNewsInterace) => {
 						return (
@@ -196,7 +196,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 									>
 										<div
 											className={`${isMobile ? 'text-[0.9rem]' : 'text-[1rem]'
-												} font-medium mb-2 `}
+											} font-medium mb-2 `}
 										>
 											{item.headline}
 										</div>
