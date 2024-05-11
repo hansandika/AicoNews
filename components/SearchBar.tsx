@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import useSWR from "swr";
-import { Command } from "cmdk";
-import { useEffect, useState } from "react";
-import { Dialog, DialogContent } from "./ui/dialog";
-import { Button } from "./ui/button";
-import useDebounce from "@/hooks/use-debounce";
-import Link from "next/link";
-import { FiSearch } from "react-icons/fi";
-import { useRouter } from "next/navigation";
-import { Skeleton } from "./ui/skeleton";
-import { RelatedNewsInterace } from "@/common.types";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import * as React from 'react';
+import useSWR from 'swr';
+import { Command } from 'cmdk';
+import { useEffect, useState } from 'react';
+import { Dialog, DialogContent } from './ui/dialog';
+import { Button } from './ui/button';
+import useDebounce from '@/hooks/use-debounce';
+import Link from 'next/link';
+import { FiSearch } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
+import { Skeleton } from './ui/skeleton';
+import { RelatedNewsInterace } from '@/common.types';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 const truncate = (text: string, maxLength: number) => {
 	if (text.length > maxLength) {
-		return text.substring(0, maxLength) + "...";
+		return text.substring(0, maxLength) + '...';
 	} else {
 		return text;
 	}
@@ -28,9 +28,9 @@ const fetcher = async (url: string, query: string) => {
 	}
 
 	const result = fetch(url, {
-		method: "POST",
+		method: 'POST',
 		headers: {
-			"Content-Type": "application/json",
+			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
 			query: query,
@@ -41,64 +41,64 @@ const fetcher = async (url: string, query: string) => {
 
 const SearchBar = () => {
 	const ref = React.useRef<HTMLDivElement | null>(null);
-	const [inputValue, setInputValue] = useState("");
+	const [inputValue, setInputValue] = useState('');
 	const [open, setOpen] = useState(false);
-	const isMobile = useMediaQuery("(max-width: 500px)");
+	const isMobile = useMediaQuery('(max-width: 500px)');
 
 	const closeSearch = React.useCallback(() => {
 		// logic to close the dialog
 		setOpen(false);
 		// logic to remove all contents in the dialog
-		setInputValue("");
+		setInputValue('');
 	}, []);
 
 	// Toggle the menu when ⌘K is pressed
 	useEffect(() => {
 		const down = (e: KeyboardEvent) => {
-			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
 				setOpen((open) => !open);
 			}
 		};
 
-		document.addEventListener("keydown", down);
-		return () => document.removeEventListener("keydown", down);
+		document.addEventListener('keydown', down);
+		return () => document.removeEventListener('keydown', down);
 	}, []);
 
 	function bounce() {
 		if (ref.current) {
-			ref.current.style.transform = "scale(0.96)";
+			ref.current.style.transform = 'scale(0.96)';
 			setTimeout(() => {
 				if (ref.current) {
-					ref.current.style.transform = "";
+					ref.current.style.transform = '';
 				}
 			}, 100);
 
-			setInputValue("");
+			setInputValue('');
 		}
 	}
 
 	return (
-		<div className="flex w-full">
+		<div className='flex w-full'>
 			<Dialog
 				open={open}
 				onOpenChange={() => setOpen(!open)}
 			>
 				<Button
-					className="w-full flex grow justify-between"
-					variant="search"
+					className='w-full flex grow justify-between'
+					variant='search'
 					onClick={() => setOpen(!open)}
 				>
 					<p>Search</p>
 					<FiSearch />
 				</Button>
-				<DialogContent className="overflow-hidden p-0 shadow-lg bg-transparent border-none px-3 sm:px-5">
-					<div className="vercel">
+				<DialogContent className='overflow-hidden p-0 shadow-lg bg-transparent border-none px-3 sm:px-5'>
+					<div className='vercel'>
 						<Command
 							shouldFilter={false}
 							ref={ref}
 							onKeyDown={(e: React.KeyboardEvent) => {
-								if (e.key === "Enter") {
+								if (e.key === 'Enter') {
 									bounce();
 									closeSearch();
 								}
@@ -107,7 +107,7 @@ const SearchBar = () => {
 									return;
 								}
 
-								if (e.key === "Backspace") {
+								if (e.key === 'Backspace') {
 									e.preventDefault();
 									bounce();
 								}
@@ -115,7 +115,7 @@ const SearchBar = () => {
 						>
 							<Command.Input
 								autoFocus
-								placeholder="What news are you looking for?"
+								placeholder='What news are you looking for?'
 								value={inputValue}
 								onValueChange={(value: string) => {
 									setInputValue(value);
@@ -143,11 +143,11 @@ interface HomeProps {
 }
 
 const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
-	const url = "/api/news";
+	const url = '/api/news';
 
 	if (input.length != 0 && input.length <= 3) {
 		return (
-			<div className="text-center text-black-secondary ">
+			<div className='text-center text-black-secondary '>
 				Keywords are too short, please enter more than 3 characters...
 			</div>
 		);
@@ -164,18 +164,18 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 	);
 
 	if (error) {
-		return <div className="text-center">Error fetching news...</div>;
+		return <div className='text-center'>Error fetching news...</div>;
 	}
 
 	return (
 		<div>
 			{!isLoading && !data && (
-				<div className="text-center">No News Result...</div>
+				<div className='text-center'>No News Result...</div>
 			)}
 			{isLoading && (
 				<div>
-					<div className="mb-4 my-1">
-						<div className="loading loading04 text-[1.75rem] md:text-[2rem] font-semibold text-center">
+					<div className='mb-4 my-1'>
+						<div className='loading loading04 text-[1.75rem] md:text-[2rem] font-semibold text-center'>
 							<span>L</span>
 							<span>O</span>
 							<span>A</span>
@@ -188,7 +188,7 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 							<span>.</span>
 						</div>
 					</div>
-					<div className="flex flex-col gap-7 px-3">
+					<div className='flex flex-col gap-7 px-3'>
 						<NewsSkeleton />
 						<NewsSkeleton />
 						<NewsSkeleton />
@@ -196,11 +196,11 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 				</div>
 			)}
 			{data && (
-				<Command.Group heading="Related News">
+				<Command.Group heading='Related News'>
 					{data.relatedNews.map((item: RelatedNewsInterace) => {
 						return (
 							<div
-								className="py-1"
+								className='py-1'
 								key={item.slug}
 							>
 								<Item href={`/news/${item.slug}`}>
@@ -210,12 +210,12 @@ const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 									>
 										<div
 											className={`${
-												isMobile ? "text-[0.9rem]" : "text-[1rem]"
+												isMobile ? 'text-[0.9rem]' : 'text-[1rem]'
 											} font-medium mb-2 `}
 										>
 											{item.headline}
 										</div>
-										<div className="text-[0.75rem] font-normal">
+										<div className='text-[0.75rem] font-normal'>
 											{isMobile
 												? truncate(item.content, 90)
 												: truncate(item.content, 250)}
@@ -250,8 +250,8 @@ const Item = ({
 		<Command.Item onSelect={handleSelect}>
 			{children}
 			{shortcut && (
-				<div cmdk-vercel-shortcuts="">
-					{shortcut.split(" ").map((key) => {
+				<div cmdk-vercel-shortcuts=''>
+					{shortcut.split(' ').map((key) => {
 						return <kbd key={key}>{key}</kbd>;
 					})}
 				</div>
@@ -262,12 +262,12 @@ const Item = ({
 
 const NewsSkeleton = () => {
 	return (
-		<div className="flex flex-col justify-center w-full gap-3">
-			<Skeleton className="h-4 w-full bg-black-tertiary dark:bg-black-secondary" />
-			<div className="flex flex-col gap-1 w-[95%]">
-				<Skeleton className="h-2 w-full bg-black-tertiary dark:bg-black-secondary" />
-				<Skeleton className="h-2 w-full bg-black-tertiary dark:bg-black-secondary" />
-				<Skeleton className="h-2 w-2/3 bg-black-tertiary dark:bg-black-secondary" />
+		<div className='flex flex-col justify-center w-full gap-3'>
+			<Skeleton className='h-4 w-full bg-black-tertiary dark:bg-black-secondary' />
+			<div className='flex flex-col gap-1 w-[95%]'>
+				<Skeleton className='h-2 w-full bg-black-tertiary dark:bg-black-secondary' />
+				<Skeleton className='h-2 w-full bg-black-tertiary dark:bg-black-secondary' />
+				<Skeleton className='h-2 w-2/3 bg-black-tertiary dark:bg-black-secondary' />
 			</div>
 		</div>
 	);
