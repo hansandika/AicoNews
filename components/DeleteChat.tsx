@@ -18,8 +18,8 @@ import { SheetClose } from '@/components/ui/sheet';
 import { useSWRConfig } from 'swr';
 
 interface DeleteChatProps {
-  slug: string;
-  session: SessionInterface;
+	slug: string;
+	session: SessionInterface;
 }
 
 const DeleteChat: FC<DeleteChatProps> = ({ slug, session }) => {
@@ -46,7 +46,7 @@ const DeleteChat: FC<DeleteChatProps> = ({ slug, session }) => {
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your chat.
+						This action cannot be undone. This will permanently delete your chat.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
