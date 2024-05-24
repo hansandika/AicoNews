@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import SubLayout from '../components/SubLayout';
 import { getCurrentUser } from '@/lib/session';
+import { Toaster } from '@/components/ui/toaster'
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -50,7 +51,10 @@ export default async function RootLayout({
 					enableColorScheme={false}
 					disableTransitionOnChange
 				>
-					<SubLayout session={session}>{children}</SubLayout>
+					<SubLayout session={session}>
+						{children}
+						<Toaster />
+					</SubLayout>
 				</ThemeProvider>
 			</body>
 		</html>

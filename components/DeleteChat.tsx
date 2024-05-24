@@ -16,6 +16,7 @@ import { FC } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { SheetClose } from '@/components/ui/sheet';
 import { useSWRConfig } from 'swr';
+import { useToast } from './ui/use-toast';
 
 interface DeleteChatProps {
 	slug: string;
@@ -24,14 +25,26 @@ interface DeleteChatProps {
 
 const DeleteChat: FC<DeleteChatProps> = ({ slug, session }) => {
 	const { mutate } = useSWRConfig()
+	const { toast } = useToast()
 
 	const handleDeleteChatHistory = async () => {
-		await fetch('/api/chat', {
+		const response = await fetch('/api/chat', {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ slug, userId: session?.user?.id }),
+		})
+
+		if (!response.ok) {
+			toast({
+				description: 'Failed to delete chat history.',
+			})
+			return
+		}
+
+		toast({
+			description: 'Your chat history has been deleted.',
 		})
 
 		mutate(`/api/chat?slug=${encodeURIComponent(slug)}`)
