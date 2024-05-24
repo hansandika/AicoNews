@@ -26,7 +26,8 @@ const fetcher = async (url: string, query: string) => {
 	if (query.length === 0) {
 		return null;
 	}
-	return fetch(url, {
+
+	const result = fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -34,7 +35,8 @@ const fetcher = async (url: string, query: string) => {
 		body: JSON.stringify({
 			query: query,
 		}),
-	}).then((res) => res.json());
+	});
+	return (await result).json();
 };
 
 const SearchBar = () => {
@@ -139,6 +141,15 @@ interface HomeProps {
 
 const NewsResult = ({ input, closeSearch, isMobile }: HomeProps) => {
 	const url = '/api/news';
+
+	if (input.length != 0 && input.length <= 3) {
+		return (
+			<div className='text-center text-black-secondary '>
+				Keywords are too short, please enter more than 3 characters...
+			</div>
+		);
+	}
+
 	const debouncedSearch = useDebounce(input, 500);
 	const { data, error, isLoading } = useSWR(
 		{ url, debouncedSearch },
