@@ -65,7 +65,6 @@ export const authOptions: NextAuthOptions = {
 			account: Account | null;
 		}) {
 			try {
-
 				const userValidation = UserSchemaValidator.safeParse(user);
 				if (!userValidation.success) {
 					const errorValidation = fromZodError(userValidation.error)

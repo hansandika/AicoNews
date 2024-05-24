@@ -77,10 +77,9 @@ const Navbar = ({ session }: NavbarProps) => {
 								<Link
 									key={link.text}
 									href={link.href}
-									className={`w-full rounded-md py-2 ${
-										currentPath === link.href
-											? 'text-blue-primary dark:text-blue-secondary'
-											: 'text-black-tertiary hover:text-black-secondary'
+									className={`w-full rounded-md py-2 ${currentPath === link.href
+										? 'text-blue-primary dark:text-blue-secondary'
+										: 'text-black-tertiary hover:text-black-secondary'
 									}`}
 								>
 									{link.text}
@@ -108,13 +107,6 @@ const Navbar = ({ session }: NavbarProps) => {
 									<DropdownMenuLabel>My Account</DropdownMenuLabel>
 									<DropdownMenuSeparator />
 
-									<DropdownMenuGroup>
-										<DropdownMenuItem>
-											<Users className='mr-2 h-4 w-4' />
-											<span>Profile</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
 									<DropdownMenuItem
 										className='cursor-pointer'
 										onClick={() => signOut()}
@@ -186,10 +178,9 @@ const Navbar = ({ session }: NavbarProps) => {
 														<Link
 															key={link.text}
 															href={link.href}
-															className={`w-full rounded-md py-2 ${
-																currentPath === link.href
-																	? 'text-blue-primary dark:text-blue-primary-dark'
-																	: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
+															className={`w-full rounded-md py-2 ${currentPath === link.href
+																? 'text-blue-primary dark:text-blue-primary-dark'
+																: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
 															}`}
 														>
 															<DrawerClose>{link.text}</DrawerClose>
@@ -231,10 +222,9 @@ const Navbar = ({ session }: NavbarProps) => {
 														<Link
 															key={link.text}
 															href={link.href}
-															className={`w-full rounded-md py-2 ${
-																currentPath === link.href
-																	? 'text-blue-primary dark:text-blue-primary-dark'
-																	: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
+															className={`w-full rounded-md py-2 ${currentPath === link.href
+																? 'text-blue-primary dark:text-blue-primary-dark'
+																: 'text-black-tertiary hover:text-black-secondary dark:hover:text-blue-primary-dark'
 															}`}
 														>
 															<DrawerClose>{link.text}</DrawerClose>
