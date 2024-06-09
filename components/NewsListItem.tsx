@@ -9,12 +9,12 @@ import { easeOut, motion } from 'framer-motion';
 
 type Props = {
 	news?: NewsInterface
-	index:number
+	index: number
 };
 
 const variant = {
-	visible: {opacity:0, y:100},
-	hidden: {opacity:1, y:0}
+	visible: { opacity: 0, y: 100 },
+	hidden: { opacity: 1, y: 0 }
 }
 
 const NewsListItem = ({ news, index }: Props) => {
@@ -24,8 +24,8 @@ const NewsListItem = ({ news, index }: Props) => {
 			initial='visible'
 			animate='hidden'
 			transition={{
-				delay:index%8*0.1,
-				duration:0.5,
+				delay: index % 8 * 0.1,
+				duration: 0.5,
 				ease: easeOut
 			}}
 		>
@@ -49,7 +49,7 @@ const NewsListItem = ({ news, index }: Props) => {
 					<p className='font-medium line-clamp-3 group-hover:underline'>
 						{news.headline}
 					</p>
-					<p className={'text-black-secondary'}>
+					<p className='text-black-secondary'>
 						<span>{news.source}</span> • {formatDate(news.publishedDate)}
 					</p>
 				</div>
@@ -61,8 +61,8 @@ const NewsListItem = ({ news, index }: Props) => {
 			initial='visible'
 			animate='hidden'
 			transition={{
-				delay:index%8*0.1,
-				duration:0.5,
+				delay: index % 8 * 0.1,
+				duration: 0.5,
 				ease: easeOut
 			}}
 			className='flex gap-3 md:gap-5 gap-y-14'>

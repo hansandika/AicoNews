@@ -6,8 +6,9 @@ import { getNewsPagination } from '@/lib/action';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import LatestNews from '@/components/LatestNews';
+import { NewsInterface } from '@/common.types';
 const Home = async () => {
-	const news = await getNewsPagination(1, 9);
+	const news = await getNewsPagination(1, 9) as NewsInterface[];
 
 	const headline = news[0];
 	const highlightNews = news.slice(1, 4);
@@ -26,8 +27,8 @@ const Home = async () => {
 					</div>
 
 					{/* headline */}
-					<div className='flex flex-col lg:flex-row lg:gap-5 '>
-						<div className='flex flex-col grow lg:max-w-[640px] xl:max-w-[520px]'>
+					<div className='flex flex-col lg:flex-row lg:gap-5'>
+						<div className='flex flex-col grow min-w-[350px] lg:max-w-[640px] xl:max-w-[520px]'>
 							<div className='h-[200px] sm:h-[300px] w-full relative'>
 								<Image
 									src={`${headline.thumbnailUrl}`}
@@ -44,14 +45,8 @@ const Home = async () => {
 									{headline.headline}
 								</h2>
 								<div className='pt-3 sm:pt-4 mb-3 flex items-center justify-between gap-1 text-[0.75rem] text-white'>
-									<div className='flex gap-3 items-center'>
-										<div className='flex gap-1'>
-											<p className=' font-medium'>{headline.authorName}</p>
-											<p className='font-light'>• {headline.source} </p>
-											<p className='font-light'>
-												• {formatDate(headline.publishedDate)}
-											</p>
-										</div>
+									<div className='flex gap-4 items-center justify-between'>
+										<span className='font-medium'>{headline.authorName} • {headline.source} • {formatDate(headline.publishedDate)}</span>
 									</div>
 								</div>
 							</Link>

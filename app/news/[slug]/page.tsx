@@ -9,6 +9,7 @@ import { formatDate } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/session';
 import ChatCard from '@/components/ChatCard';
 import LatestNews from '@/components/LatestNews';
+import { NewsInterface } from '@/common.types';
 
 const NewsDetail = async ({
 	params: { slug },
@@ -17,7 +18,7 @@ const NewsDetail = async ({
 }) => {
 	const newsSlug = await getNewsBySlug(slug);
 	const host = NEXTAUTH_URL;
-	const newsCollection = await getNewsPagination(1, 5);
+	const newsCollection = await getNewsPagination(1, 5) as NewsInterface[];
 	const session = await getCurrentUser();
 
 	if (!newsSlug) {

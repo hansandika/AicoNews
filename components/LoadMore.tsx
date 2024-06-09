@@ -7,6 +7,8 @@ import { useInView } from 'react-intersection-observer';
 import NewsListItem from './NewsListItem';
 import { getNewsPagination } from '@/lib/action';
 
+const pageSize = 8;
+
 const LoadMore = () => {
 	const { ref, inView } = useInView();
 	const [data, setData] = useState<NewsInterface[]>([]);
@@ -14,10 +16,10 @@ const LoadMore = () => {
 	const [moreAvailable, setMoreAvailable] = useState(true);
 
 	const loadMoreNews = async () => {
-		const newsData = await getNewsPagination(page, 8)
+		const newsData = await getNewsPagination(page, pageSize) as NewsInterface[];
 		setData([...data, ...newsData]);
 		setPage((prev) => prev + 1);
-		if (newsData.length < data.length) {
+		if (newsData.length < pageSize) {
 			setMoreAvailable(false);
 		}
 	}
@@ -32,16 +34,16 @@ const LoadMore = () => {
 		<>
 			<section className='newsList'>
 				{data.map((news, index) => (
-					<NewsListItem news={news} key={news.id} index={index}/>
+					<NewsListItem news={news} key={news.id} index={index} />
 				))}
-				{moreAvailable && data.length % 2 != 0 && <NewsListItem key={'skeleton-3'} index={9}/>}
+				{moreAvailable && data.length % 2 != 0 && <NewsListItem key={'skeleton-3'} index={9} />}
 			</section>
 			<section className='w-full'>
 				{moreAvailable && (
 					<div ref={ref} className='flexCenter flex-col'>
 						<div className='newsList'>
-							<NewsListItem key={'skeleton-1'} index={10}/>
-							<NewsListItem key={'skeleton-2'} index={11}/>
+							<NewsListItem key={'skeleton-1'} index={10} />
+							<NewsListItem key={'skeleton-2'} index={11} />
 						</div>
 						<CgSpinner className='animate-spin my-8' fontSize={40} />
 					</div>

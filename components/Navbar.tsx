@@ -31,14 +31,13 @@ import { NavLinks } from '@/constants';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import ToggleTheme from './ToggleTheme';
-import { LogOut, Users } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import SearchBar from './SearchBar';
 import { AnimatePresence, motion, MotionProps } from 'framer-motion';
 import { useTheme } from 'next-themes';
