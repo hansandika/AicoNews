@@ -5,10 +5,11 @@ export const MessageSchemaValidator = z.object({
 	role: z.enum(['user', 'assistant'])
 })
 
-
 export const ChatValidator = z.object({
 	messages: z.array(MessageSchemaValidator),
 	languageStyle: z.enum(['formal', 'casual'])
 })
+
+export const CommentValidator = z.string().min(1)
 
 export const QuerySchemaValidator = z.string().min(1)

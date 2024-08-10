@@ -1,5 +1,5 @@
 {
-  "id": "f409f573-aff0-44b7-b2a2-bf45f019964b",
+  "id": "4b792ed8-da42-4c59-9fcd-623a107bc750",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -22,10 +22,9 @@
         },
         "message": {
           "name": "message",
-          "type": "jsonb",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'[{}]'::jsonb"
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -73,6 +72,75 @@
           ]
         }
       },
+      "uniqueConstraints": {}
+    },
+    "comments": {
+      "name": "comments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "news_id": {
+          "name": "news_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "comments_user_id_users_id_fk": {
+          "name": "comments_user_id_users_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comments_news_id_news_id_fk": {
+          "name": "comments_news_id_news_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "news",
+          "columnsFrom": [
+            "news_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "news": {

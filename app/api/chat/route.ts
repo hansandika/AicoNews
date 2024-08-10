@@ -3,10 +3,9 @@ import { deleteChatHistory, getChatHistory, getNewsBySlug, saveChatHistory } fro
 import { getCurrentUser } from '@/lib/session';
 import { SaveChatHistoryValidator } from '@/lib/validators/chat';
 import { revalidatePath } from 'next/cache';
-import { NextRequest } from 'next/server';
 import { fromZodError } from 'zod-validation-error';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
 	const session = await getCurrentUser();
 	if (!session) {
 		return new Response('Unauthorized', { status: 401 });
@@ -23,7 +22,7 @@ export async function GET(request: NextRequest) {
 	return Response.json(chatHistory, { status: 200 });
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
 	const session = await getCurrentUser();
 	if (!session) {
 		return new Response('Unauthorized', { status: 401 });
@@ -54,7 +53,7 @@ export async function POST(request: NextRequest) {
 	return Response.json({ 'message': 'Save Chat History Is Successfull' }, { status: 200 });
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(request: Request) {
 	const session = await getCurrentUser();
 	if (!session) {
 		return new Response('Unauthorized', { status: 401 });

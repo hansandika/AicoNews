@@ -54,3 +54,18 @@ export interface RelatedNewsInterace {
 	date: Date;
 	source: string;
 }
+
+export interface CommentInterface {
+	userId: string;
+	newsId: string;
+	message: string;
+	createdAt: Date;
+	user: {
+		id: string;
+		name: string;
+		email: string;
+		avatarUrl: string;
+		provider: string;
+		createdAt: Date;
+	};
+}

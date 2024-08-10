@@ -58,11 +58,13 @@ const cleanNewsString = (inputString: string) => {
 	// Remove newline characters
 	let cleanedString = inputString.replace(/\n/g, ' ');
 	// Remove quotation marks
+	// eslint-disable-next-line no-useless-escape
 	cleanedString = cleanedString.replace(/\"/g, '');
 	return cleanedString;
 };
 
 const combineRelatedResult = async (
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	documents: DocumentInterface<Record<string, any>>[]
 ): Promise<RelatedNewsInterace[]> => {
 	const result: RelatedNewsInterace[] = [];
@@ -100,8 +102,9 @@ export const retrieveNewsWithGrouping = async (query: string): Promise<RelatedNe
 	const result = await vectorStore.similaritySearchWithScore(query, 5);
 
 	// Filter documents with similarity score less than 1.5
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const documents: DocumentInterface<Record<string, any>>[] = result.filter(doc => doc[1] < 1.5).map(doc => doc[0]);
-	;
+
 	const combinedResult = await combineRelatedResult(documents);
 	return combinedResult;
 };

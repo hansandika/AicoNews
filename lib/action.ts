@@ -1,9 +1,9 @@
 'use server';
 
 import db from '@/db'
-import { chatHistorySchema, newsSchema, usersSchema } from '@/db/schema'
+import { chatHistorySchema, commentsSchema, newsSchema, usersSchema } from '@/db/schema'
 import { and, desc, eq } from 'drizzle-orm'
-import { ChatHistory, ChatHistoryDatabase, ChatMessage, NewsInterface } from '@/common.types'
+import { ChatHistory, ChatHistoryDatabase, ChatMessage, CommentInterface, NewsInterface } from '@/common.types'
 import { Message } from 'ai';
 
 export const getUser = async (email: string) => {
@@ -22,6 +22,14 @@ export const createUser = async (name: string, email: string, avatarUrl: string,
 	});
 }
 
+export const createComment = async (userId: string, newsId: string, message: string) => {
+	await db.insert(commentsSchema).values({
+		userId,
+		newsId,
+		message
+	})
+}
+
 export const getNewsBySlug = async (slug: string) => {
 	const newsBySlug = await db.query.newsSchema.findFirst({
 		where: eq(newsSchema.slug, slug)
@@ -37,6 +45,19 @@ export const getNewsPagination = async (page: number, pageSize: number) => {
 		.limit(pageSize)
 		.offset((page - 1) * pageSize);
 	return newsPaginate;
+}
+
+export const getNewsCommentBySlug = async (slug: string) => {
+	const newsBySlug = await getNewsBySlug(slug)
+
+	const comments = await db.query.commentsSchema.findMany({
+		where: eq(commentsSchema.newsId, newsBySlug.id),
+		with: {
+			user: true
+		},
+		orderBy: desc(commentsSchema.createdAt)
+	}) as CommentInterface[]
+	return comments
 }
 
 export const saveChatHistory = async (chatHistory: ChatHistory, newsId: string, userId: string) => {

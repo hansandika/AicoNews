@@ -1,9 +1,8 @@
 import { retrieveNewsWithGrouping } from '@/lib/utils_chromadb';
 import { QuerySchemaValidator } from '@/lib/validators/message';
-import { NextRequest } from 'next/server';
 import { fromZodError } from 'zod-validation-error';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
 	const { query } = await request.json();
 	const queryValidation = QuerySchemaValidator.safeParse(query);
 	if (!queryValidation.success) {

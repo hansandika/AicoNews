@@ -42,16 +42,13 @@ export const chatHistorySchema = pgTable('chat_history', {
 });
 
 export const commentsSchema = pgTable('comments', {
+	id: uuid('id').primaryKey().defaultRandom(),
 	userId: uuid('user_id').notNull()
 		.references(() => usersSchema.id),
 	newsId: uuid('news_id').notNull()
 		.references(() => newsSchema.id),
 	message: text('message').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (table) => {
-	return {
-		pk: primaryKey({ columns: [table.userId, table.newsId] }),
-	};
 });
 
 // Relations

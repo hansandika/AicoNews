@@ -9,7 +9,7 @@
 ## Run migration
 
 ```sh
-npx drizzle-kit generate
+npx drizzle-kit generate:pg
 npx tsx ./db/migrate.ts
 ```
 

@@ -10,6 +10,8 @@ import { getCurrentUser } from '@/lib/session';
 import ChatCard from '@/components/ChatCard';
 import LatestNews from '@/components/LatestNews';
 import { NewsInterface } from '@/common.types';
+import CommentListItem from '@/components/CommentListItem';
+import AddCommentForm from '@/components/AddCommnetForm';
 
 const NewsDetail = async ({
 	params: { slug },
@@ -49,7 +51,7 @@ const NewsDetail = async ({
 					</div>
 				</div>
 			</section>
-			<div className='flex py-8 md:py-12 container flex-wrap gap-8'>
+			<div className='flex py-8 md:py-12 container flex-wrap gap-4'>
 				<ShareIcon
 					url={`${host}/news/${slug}`}
 					hashtag={newsSlug.categoryName}
@@ -60,6 +62,13 @@ const NewsDetail = async ({
 				</article>
 				<LatestNews newsItems={newsCollection} className='order-3 w-full 2xl:max-w-60' />
 			</div>
+
+			<div className='my-8 container'>
+				<h2 className='text-2xl font-bold mb-4'>Comments</h2>
+				{session?.user && <AddCommentForm slug={slug} session={session} />}
+				<CommentListItem slug={slug} />
+			</div>
+
 			<ChatCard news={newsSlug} session={session} slug={slug} />
 		</div>
 	);
