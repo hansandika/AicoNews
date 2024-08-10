@@ -6,7 +6,12 @@
 
 ### 🏠 [Homepage](https://aico-news.vercel.app)
 
-### ✨ [Demo](https://aico-news.vercel.app)
+## Run migration
+
+```sh
+npx drizzle-kit generate
+npx tsx ./db/migrate.ts
+```
 
 ## Install
 

@@ -41,6 +41,19 @@ export const chatHistorySchema = pgTable('chat_history', {
 	};
 });
 
+export const commentsSchema = pgTable('comments', {
+	userId: uuid('user_id').notNull()
+		.references(() => usersSchema.id),
+	newsId: uuid('news_id').notNull()
+		.references(() => newsSchema.id),
+	message: text('message').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => {
+	return {
+		pk: primaryKey({ columns: [table.userId, table.newsId] }),
+	};
+});
+
 // Relations
 export const userRelations = relations(usersSchema, ({ many }) => ({
 	chatHistory: many(chatHistorySchema)
@@ -57,6 +70,17 @@ export const chatHistoryRelations = relations(chatHistorySchema, ({ one }) => ({
 	}),
 	news: one(newsSchema, {
 		fields: [chatHistorySchema.newsId],
+		references: [newsSchema.id]
+	})
+}))
+
+export const commentRelations = relations(commentsSchema, ({ one }) => ({
+	user: one(usersSchema, {
+		fields: [commentsSchema.userId],
+		references: [usersSchema.id]
+	}),
+	news: one(newsSchema, {
+		fields: [commentsSchema.newsId],
 		references: [newsSchema.id]
 	})
 }))
