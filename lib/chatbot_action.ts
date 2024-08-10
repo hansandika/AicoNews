@@ -106,7 +106,6 @@ export const getUserChatResponse = async (
 				if (toolCallChunk?.function?.name) {
 					tc['function']['name'] += toolCallChunk.function.name;
 				}
-
 				if (toolCallChunk?.function?.arguments) {
 					tc['function']['arguments'] += toolCallChunk.function.arguments;
 				}
@@ -122,21 +121,23 @@ export const getUserChatResponse = async (
 		retrieveNews: retrieveNews,
 	};
 
-	for (const toolCall of toolCalls) {
-		const functionName = toolCall.function.name as string;
-		const functionToCall =
-			availableFunctions[functionName as keyof typeof availableFunctions];
-		const functionArgs = JSON.parse(toolCall.function.arguments);
-		const functionResponse = await functionToCall(
-			functionArgs.search_query,
-			functionArgs.slug
-		);
+	if (toolCalls.length > 0) {
+		for (const toolCall of toolCalls) {
+			const functionName = toolCall.function.name as string;
+			const functionToCall =
+				availableFunctions[functionName as keyof typeof availableFunctions];
+			const functionArgs = JSON.parse(toolCall.function.arguments);
+			const functionResponse = await functionToCall(
+				functionArgs.search_query,
+				functionArgs.slug
+			);
 
-		sytemMessages.push({
-			tool_call_id: toolCall.id,
-			role: 'tool',
-			content: functionResponse,
-		}); // extend conversation with function response
+			sytemMessages.push({
+				tool_call_id: toolCall.id,
+				role: 'tool',
+				content: functionResponse,
+			});
+		}
 
 		const secondResponse = await openai.chat.completions.create({
 			model: 'gpt-3.5-turbo-0125',
