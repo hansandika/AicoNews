@@ -56,6 +56,7 @@ export interface RelatedNewsInterace {
 }
 
 export interface CommentInterface {
+	id: string
 	userId: string;
 	newsId: string;
 	message: string;

@@ -104,3 +104,8 @@ export const deleteChatHistory = async (newsId: string, userId: string) => {
 	await db.delete(chatHistorySchema)
 		.where(and(eq(chatHistorySchema.userId, userId), eq(chatHistorySchema.newsId, newsId)));
 }
+
+export const deleteComment = async (commentId: string) => {
+	await db.delete(commentsSchema)
+		.where(eq(commentsSchema.id, commentId));
+}

@@ -66,7 +66,7 @@ const NewsDetail = async ({
 			<div className='my-8 container'>
 				<h2 className='text-2xl font-bold mb-4'>Comments</h2>
 				{session?.user && <AddCommentForm slug={slug} session={session} />}
-				<CommentListItem slug={slug} />
+				<CommentListItem slug={slug} session={session} />
 			</div>
 
 			<ChatCard news={newsSlug} session={session} slug={slug} />
