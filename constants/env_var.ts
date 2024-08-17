@@ -15,3 +15,5 @@ export const CHROMADB_COLLECTION_NAME = process.env.CHROMADB_COLLECTION_NAME as 
 export const CHROMADB_OPENAI_MODEL = process.env.CHROMADB_OPENAI_MODEL as string;
 
 export const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
+
+export const NODE_TEST = process.env.NODE_TEST as string;

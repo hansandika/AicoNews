@@ -33,5 +33,9 @@ export async function POST(request: Request, { params }: { params: { slug: strin
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
 	const { slug } = params
 	const comments = await getNewsCommentBySlug(slug as string);
+
+	if (!comments) {
+		return Response.json({ 'message': 'Comments Not Found' }, { status: 404 });
+	}
 	return Response.json(comments, { status: 200 });
 }

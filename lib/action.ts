@@ -49,6 +49,9 @@ export const getNewsPagination = async (page: number, pageSize: number) => {
 
 export const getNewsCommentBySlug = async (slug: string) => {
 	const newsBySlug = await getNewsBySlug(slug)
+	if (!newsBySlug) {
+		return null
+	}
 
 	const comments = await db.query.commentsSchema.findMany({
 		where: eq(commentsSchema.newsId, newsBySlug.id),

@@ -6,7 +6,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { JWT } from 'next-auth/jwt';
 import { SessionInterface, UserProfile } from '@/common.types';
 import { createUser, getUser } from './action';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@/constants/env_var';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_TEST } from '@/constants/env_var';
 import { UserSchemaValidator } from './validators/user';
 import { fromZodError } from 'zod-validation-error';
 
@@ -98,6 +98,16 @@ export const authOptions: NextAuthOptions = {
 };
 
 export async function getCurrentUser() {
+	if (NODE_TEST == 'TRUE') {
+		return {
+			user: {
+				id: 'c6dedd6a-51ed-489e-b186-2979f3f9c3ed',
+				email: 'test@example.com',
+				name: 'test',
+			},
+		} as SessionInterface;
+	}
+
 	const session = (await getServerSession(authOptions)) as SessionInterface;
 	return session;
 }
